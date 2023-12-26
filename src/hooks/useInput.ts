@@ -4,7 +4,7 @@ import { useState } from "react";
 const useInput = (initValue: any) => {
 	const [text, setText] = useState<any>(initValue);
 
-	const onChangeTextHandler = _.debounce((e) => {
+	const onChangeTextHandler = _.throttle((e) => {
 		setText(e.target.value);
 	}, 1000);
 
