@@ -5,6 +5,7 @@ export default {
 		extend: {
 			colors: {
 				tekhelet: "rgba(61, 52, 139, 1)",
+				"btn-cancel-tekhelet": "rgba(61, 52, 139, 0.05)",
 				"disabled-tekhelet": "rgba(61, 52, 139, 0.3)",
 				iris: "rgba(90, 86, 188, 1)",
 				"medium-slate-blue": "rgba(118, 120, 237, 1)",

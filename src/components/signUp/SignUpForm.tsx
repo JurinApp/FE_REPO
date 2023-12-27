@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import ErrorMsg from "../common/errorMsg/ErrorMsg";
 import SuccessMsg from "../common/successMsg/SuccessMsg";
 import useInput from "@/hooks/useInput";
+import { openConfirmModalState } from "@/states/openConfirmModal";
+import { useSetRecoilState } from "recoil";
 
 interface IIdDuplicateCheck {
 	readonly isIdDuplicateCheck: boolean;
@@ -24,6 +26,7 @@ interface ICodeError {
 }
 
 const SignUpForm = () => {
+	const setIsOpenConfirmModal = useSetRecoilState(openConfirmModalState);
 	const {
 		register,
 		handleSubmit,
@@ -77,6 +80,10 @@ const SignUpForm = () => {
 			codeDuplicateMsg: "인증이 완료되었습니다.",
 			isCodeBtnDisabled: true,
 		});
+	};
+
+	const onClickSignUpBtnHandler = () => {
+		setIsOpenConfirmModal(true);
 	};
 
 	useEffect(() => {
@@ -345,6 +352,7 @@ const SignUpForm = () => {
 				</div>
 				<button
 					type="submit"
+					onClick={onClickSignUpBtnHandler}
 					disabled={
 						!isValid ||
 						!idDuplicateCheck.isIdDuplicateCheck ||
