@@ -14,7 +14,10 @@ export default {
 				"selective-yellow": "rgba(247, 184, 1, 1)",
 			},
 			fontFamily: {
-				HakgyoansimUndongjangL: ["HakgyoansimUndongjangL"],
+				Title: ["Title"],
+			},
+			screens: {
+				sm: { min: "390px" },
 			},
 		},
 	},
