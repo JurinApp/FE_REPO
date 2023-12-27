@@ -12,6 +12,11 @@ export default {
 				danger: "rgba(241, 50, 50, 1)",
 				persimmon: "rgba(243, 91, 4, 1)",
 				"selective-yellow": "rgba(247, 184, 1, 1)",
+				"black-100": "rgba(0,0,0,0.1)",
+				"black-200": "rgba(0,0,0,0.2)",
+				"black-300": "rgba(0,0,0,0.3)",
+				"black-800": "rgba(0,0,0,0.8)",
+				"black-900": "rgba(0,0,0,0.9)",
 			},
 			fontFamily: {
 				Title: ["Title"],

@@ -8,7 +8,7 @@ const useInput = (initValue: any) => {
 		setText(e.target.value);
 	}, 1000);
 
-	return { text, onChangeTextHandler };
+	return [text, onChangeTextHandler, setText];
 };
 
 export default useInput;
