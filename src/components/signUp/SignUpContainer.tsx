@@ -16,7 +16,7 @@ const SignUpContainer = () => {
 	}, []);
 
 	return (
-		<div className="relative h-screen">
+		<div className="h-[calc(100vh - 2.938rem)] relative">
 			<SignUpForm />
 			{confirmModalState.isModalOpen && <SignUpConfirmModal />}
 		</div>
