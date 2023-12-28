@@ -12,3 +12,8 @@
 	font-family: "Title";
 	src: url("./fonts/Title.ttf");
 }
+
+@font-face {
+	font-family: "Roboto";
+	src: url("./fonts/Roboto-Light.ttf");
+}

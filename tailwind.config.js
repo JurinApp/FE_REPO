@@ -21,9 +21,19 @@ export default {
 			},
 			fontFamily: {
 				Title: ["Title"],
+				Roboto: ["Roboto"],
 			},
 			screens: {
 				sm: { min: "390px" },
+			},
+			animation: {
+				"slide-in": "slide 1s ease",
+			},
+			keyframes: {
+				slide: {
+					from: { transform: "translateX(0%)" },
+					to: { transform: "translateX(-100%)" },
+				},
 			},
 		},
 	},
