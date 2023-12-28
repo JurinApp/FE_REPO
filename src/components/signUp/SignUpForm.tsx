@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import ErrorMsg from "../common/errorMsg/ErrorMsg";
 import SuccessMsg from "../common/successMsg/SuccessMsg";
 import useInput from "@/hooks/useInput";
+import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
+import { useSetRecoilState } from "recoil";
 
 interface IIdDuplicateCheck {
 	readonly isIdDuplicateCheck: boolean;
@@ -24,6 +26,7 @@ interface ICodeError {
 }
 
 const SignUpForm = () => {
+	const setConfirmModalState = useSetRecoilState(signUpConfirmModalState);
 	const {
 		register,
 		handleSubmit,
@@ -79,8 +82,17 @@ const SignUpForm = () => {
 		});
 	};
 
+	const onClickSignUpBtnHandler = () => {
+		setConfirmModalState((prevState) => ({
+			...prevState,
+			isModalOpen: true,
+		}));
+	};
+
 	useEffect(() => {
-		if (watch().auth === "student") {
+		const auth = watch().auth;
+
+		if (auth === "student") {
 			setCodeError({
 				isError: false,
 				codeErrorMsg: "",
@@ -96,16 +108,23 @@ const SignUpForm = () => {
 			}
 		}
 
-		if (watch().auth === "teacher") {
+		if (auth === "teacher") {
 			setCodeDuplicateCheck((prevState) => ({
 				...prevState,
 				isCodeDuplicateCheck: false,
 			}));
 		}
+
+		setConfirmModalState((prevState) => ({
+			...prevState,
+			selectedAuth: auth,
+		}));
 	}, [watch().auth]);
 
 	useEffect(() => {
-		if (idDuplicateCheck.isIdBtnDisabled && watch().id.length >= 8) {
+		const id = watch().id;
+
+		if (idDuplicateCheck.isIdBtnDisabled && id.length >= 8) {
 			setIdDuplicateCheck((prevState) => ({
 				...prevState,
 				isIdBtnDisabled: false,
@@ -116,7 +135,7 @@ const SignUpForm = () => {
 			});
 		}
 
-		if (!idDuplicateCheck.isIdBtnDisabled && watch().id.length < 8) {
+		if (!idDuplicateCheck.isIdBtnDisabled && id.length < 8) {
 			setIdDuplicateCheck((prevState) => ({
 				...prevState,
 				isIdBtnDisabled: true,
@@ -124,7 +143,7 @@ const SignUpForm = () => {
 		}
 
 		if (idDuplicateCheck.isIdDuplicateCheck) {
-			const isDisabled = watch().id.length >= 8;
+			const isDisabled = id.length >= 8;
 
 			setIdDuplicateCheck({
 				isIdDuplicateCheck: false,
@@ -135,7 +154,11 @@ const SignUpForm = () => {
 	}, [watch().id]);
 
 	useEffect(() => {
-		if (codeDuplicateCheck.isCodeBtnDisabled && code.length === 8) {
+		if (
+			watch().auth === "teacher" &&
+			codeDuplicateCheck.isCodeBtnDisabled &&
+			code.length === 8
+		) {
 			setCodeDuplicateCheck((prevState) => ({
 				...prevState,
 				isCodeBtnDisabled: false,
@@ -146,16 +169,6 @@ const SignUpForm = () => {
 				isCodeBtnDisabled: true,
 			}));
 		}
-
-		if (codeDuplicateCheck.isCodeDuplicateCheck) {
-			const isDisabled = code.length >= 8;
-
-			setCodeDuplicateCheck({
-				isCodeDuplicateCheck: false,
-				codeDuplicateMsg: "",
-				isCodeBtnDisabled: isDisabled,
-			});
-		}
 	}, [code]);
 
 	return (
@@ -163,7 +176,7 @@ const SignUpForm = () => {
 			<h1 className="text-[1.625rem] font-bold">회원가입</h1>
 			<form onSubmit={handleSubmit(signUpSubmitHandler)}>
 				<div className="mt-6 flex flex-col">
-					<label htmlFor="id" className="text-black-800 mb-1 font-bold">
+					<label htmlFor="id" className="mb-1 font-bold text-black-800">
 						아이디
 					</label>
 					<div
@@ -179,14 +192,14 @@ const SignUpForm = () => {
 								errors.id
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} placeholder:text-black-300 grow border-b py-[0.875rem] outline-none`}
+							} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 							placeholder="아이디"
 							{...register("id")}
 						/>
 						<button
 							type="button"
 							disabled={idDuplicateCheck.isIdBtnDisabled}
-							className="disabled:bg-black-300 bg-black-800 ml-[0.813rem] h-12 w-28 rounded font-medium text-white"
+							className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
 							onClick={idDuplicateCheckHandler}
 						>
 							중복확인
@@ -200,7 +213,7 @@ const SignUpForm = () => {
 					)}
 				</div>
 				<div className="mt-[1.875rem] flex flex-col">
-					<label htmlFor="password" className="text-black-800 mb-1 font-bold">
+					<label htmlFor="password" className="mb-1 font-bold text-black-800">
 						비밀번호
 					</label>
 					<input
@@ -211,7 +224,7 @@ const SignUpForm = () => {
 							errors.password
 								? "border-danger focus:border-danger"
 								: "border-black-100 focus:border-black-800"
-						} placeholder:text-black-300 border-b py-[0.875rem] outline-none ${
+						} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 							errors.password ? "mb-3" : "mb-1"
 						}`}
 						placeholder="비밀번호"
@@ -231,7 +244,7 @@ const SignUpForm = () => {
 							errors.checkPassword
 								? "border-danger focus:border-danger"
 								: "border-black-100 focus:border-black-800"
-						} placeholder:text-black-300 border-b py-[0.875rem] outline-none ${
+						} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 							errors.checkPassword && "mb-3"
 						}`}
 						placeholder="비밀번호 확인"
@@ -242,7 +255,7 @@ const SignUpForm = () => {
 					)}
 				</div>
 				<div className="mt-[1.875rem] flex flex-col">
-					<label htmlFor="name" className="text-black-800 mb-1 font-bold">
+					<label htmlFor="name" className="mb-1 font-bold text-black-800">
 						이름
 					</label>
 					<input
@@ -253,7 +266,7 @@ const SignUpForm = () => {
 							errors.name
 								? "border-danger focus:border-danger"
 								: "border-black-100 focus:border-black-800"
-						} placeholder:text-black-300 border-b py-[0.875rem] outline-none ${
+						} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 							errors.name && "mb-3"
 						}`}
 						placeholder="이름"
@@ -264,7 +277,7 @@ const SignUpForm = () => {
 					)}
 				</div>
 				<div className="mt-[1.875rem] flex h-[10.813rem] flex-col">
-					<label className="text-black-800 mb-1 font-bold">권한</label>
+					<label className="mb-1 font-bold text-black-800">권한</label>
 					<div className="mt-2">
 						<div className="flex">
 							<div className="flex items-center">
@@ -323,13 +336,13 @@ const SignUpForm = () => {
 									codeError.isError
 										? "border-danger focus:border-danger"
 										: "border-black-100 focus:border-black-800"
-								} placeholder:text-black-300 grow border-b py-[0.875rem] outline-none`}
+								} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 								placeholder="인증 코드 입력"
 							/>
 							<button
 								type="button"
 								disabled={codeDuplicateCheck.isCodeBtnDisabled}
-								className="disabled:bg-black-300 bg-black-800 ml-[0.813rem] h-12 w-28 rounded font-medium text-white"
+								className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
 								onClick={codeDuplicateCheckHandler}
 							>
 								확인
@@ -345,12 +358,13 @@ const SignUpForm = () => {
 				</div>
 				<button
 					type="submit"
+					onClick={onClickSignUpBtnHandler}
 					disabled={
 						!isValid ||
 						!idDuplicateCheck.isIdDuplicateCheck ||
 						!codeDuplicateCheck.isCodeDuplicateCheck
 					}
-					className="bg-tekhelet disabled:bg-disabled-tekhelet mb-[2.625rem] mt-[1.5rem] h-[3.25rem] w-full rounded font-bold text-white"
+					className="mb-[2.625rem] mt-[1.5rem] h-[3.25rem] w-full rounded bg-tekhelet font-bold text-white disabled:bg-disabled-tekhelet"
 				>
 					가입하기
 				</button>
