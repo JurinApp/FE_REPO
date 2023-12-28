@@ -1,23 +1,36 @@
-import { openConfirmModalState } from "@/states/openConfirmModal";
+import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
 import { useEffect, useRef } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const SignUpConfirmModal = () => {
-	const setIsOpenConfirmModal = useSetRecoilState(openConfirmModalState);
+	const [confirmModalState, setConfirmModalState] = useRecoilState(
+		signUpConfirmModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
+	const selectedAuthName =
+		confirmModalState.selectedAuth === "teacher" ? "선생님" : "학생";
 
 	const closeBtnModalHandler = () => {
-		setIsOpenConfirmModal(false);
+		setConfirmModalState((prevState) => ({
+			...prevState,
+			isModalOpen: false,
+		}));
 	};
 
 	const confirmBtnModalHandler = () => {
-		setIsOpenConfirmModal(false);
+		setConfirmModalState((prevState) => ({
+			...prevState,
+			isModalOpen: false,
+		}));
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenConfirmModal(false);
+				setConfirmModalState((prevState) => ({
+					...prevState,
+					isModalOpen: false,
+				}));
 			}
 		};
 
@@ -36,8 +49,10 @@ const SignUpConfirmModal = () => {
 			>
 				<div className="flex grow items-center justify-center">
 					<p className="my-auto">
-						<span className="font-medium text-tekhelet">선생님</span>으로
-						가입하시겠습니까?
+						<span className="font-medium text-tekhelet">
+							{selectedAuthName}
+						</span>
+						으로 가입하시겠습니까?
 					</p>
 				</div>
 				<div className="flex">

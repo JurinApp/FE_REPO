@@ -1,4 +1,4 @@
-import { openConfirmModalState } from "@/states/openConfirmModal";
+import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
 import SignUpConfirmModal from "./SignUpConfirmModal";
 import SignUpForm from "./SignUpForm";
 import SignUpHeader from "./SignUpHeader";
@@ -6,13 +6,13 @@ import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 
 const SignUpContainer = () => {
-	const [isOpenConfirmModal, setIsOpenConfirmModal] = useRecoilState(
-		openConfirmModalState,
+	const [confirmModalState, setConfirmModalState] = useRecoilState(
+		signUpConfirmModalState,
 	);
 
 	useEffect(() => {
 		return () => {
-			setIsOpenConfirmModal(false);
+			setConfirmModalState({ selectedAuth: "teacher", isModalOpen: false });
 		};
 	}, []);
 
@@ -20,7 +20,7 @@ const SignUpContainer = () => {
 		<div className="relative h-screen">
 			<SignUpHeader />
 			<SignUpForm />
-			{isOpenConfirmModal && <SignUpConfirmModal />}
+			{confirmModalState.isModalOpen && <SignUpConfirmModal />}
 		</div>
 	);
 };
