@@ -20,6 +20,7 @@ export default {
 			},
 			fontFamily: {
 				Title: ["Title"],
+				Roboto: ["Roboto"],
 			},
 			screens: {
 				sm: { min: "390px" },
