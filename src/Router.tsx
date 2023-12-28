@@ -2,7 +2,6 @@ import Spinner from "@components/common/spinner/Spinner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import Spinner from "@components/common/spinner/Spinner";
 import SplashPage from "./pages/SplashPage";
 
 const LoginPage = lazy(() => import("@pages/LoginPage"));
