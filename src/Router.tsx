@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Spinner from "@components/common/spinner/Spinner";
+import SplashPage from "./pages/SplashPage";
 
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
@@ -13,6 +14,7 @@ const Router = () => {
 		<QueryClientProvider client={queryClient}>
 			<Suspense fallback={<Spinner />}>
 				<Routes>
+					<Route path="/" element={<SplashPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
 				</Routes>
