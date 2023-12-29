@@ -1,13 +1,16 @@
 import SplashContainer from "@/components/splash/SplashContainer";
-import { headerState } from "@/states/headerState";
+import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 const SplashPage = () => {
-	const setIsUseHeader = useSetRecoilState(headerState);
+	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
-		setIsUseHeader(false);
+		setIsUseHeader({
+			isUseHeader: false,
+			isUseMenu: false,
+		});
 	}, []);
 
 	return (
