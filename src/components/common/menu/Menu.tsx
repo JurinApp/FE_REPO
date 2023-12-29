@@ -28,7 +28,7 @@ const Menu = () => {
 	};
 
 	return (
-		<div className="sticky bottom-0 h-[4.188rem] bg-white px-6 py-[0.5rem]">
+		<div className="sticky bottom-0 mx-auto h-[4.188rem] w-full bg-white px-6 py-[0.5rem] sm:w-[24.563rem]">
 			<div className="flex items-center justify-between">
 				{menuArr.map((menu: IMenu) => (
 					<div
