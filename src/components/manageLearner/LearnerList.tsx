@@ -9,15 +9,13 @@ const learnerArr = [
 	{ learnerId: "5", learnerName: "이형규" },
 	{ learnerId: "6", learnerName: "조성주" },
 ];
-// h-[30.5rem]
+
 const LearnerList = () => {
 	return (
-		<div className="">
-			<div className="mt-6 h-screen max-h-[20rem] overflow-y-auto">
-				{learnerArr.map((learnerInfo: ILearnerInfo) => (
-					<LearnerInfo key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
-				))}
-			</div>
+		<div className="h-manage-height mt-6 overflow-y-auto">
+			{learnerArr.map((learnerInfo: ILearnerInfo) => (
+				<LearnerInfo key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
+			))}
 		</div>
 	);
 };

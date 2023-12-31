@@ -1,12 +1,14 @@
 import { deleteConfirmModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
 import { useEffect, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const DeleteLearnerModal = () => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
-	const setIsOpenDeleteModal = useSetRecoilState(deleteConfirmModalState);
+	const [isOpenDeleteModal, setIsOpenDeleteModal] = useRecoilState(
+		deleteConfirmModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -20,15 +22,31 @@ const DeleteLearnerModal = () => {
 
 	useEffect(() => {
 		return () => {
-			setIsOpenDeleteModal(false);
+			if (isOpenDeleteModal) {
+				setIsOpenDeleteModal(false);
+			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const outSideClickHandler = (e: Event) => {
+			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				setIsOpenDeleteModal(false);
+			}
+		};
+
+		document.addEventListener("mousedown", outSideClickHandler);
+
+		return () => {
+			document.removeEventListener("mousedown", outSideClickHandler);
+		};
+	}, [modalRef]);
 
 	return (
 		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
-				className="flex h-[12rem] w-[333px] flex-col rounded bg-white"
+				className="w-modal-width flex h-[12rem] flex-col rounded bg-white"
 			>
 				<div className="flex grow items-center justify-center">
 					<p className="my-auto">

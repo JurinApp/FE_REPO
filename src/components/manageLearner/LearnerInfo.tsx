@@ -1,8 +1,9 @@
 import { ILearnerInfo } from "@/interface/learnerInfo";
+import { paymentPointModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface ILearnerInfoProps {
 	readonly learnerInfo: ILearnerInfo;
@@ -12,6 +13,7 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
 	const [isSelected, setSelected] = useState<boolean>(false);
+	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
 
 	const onClickLearnerHandler = () => {
 		const index = selectedLearners.findIndex((element) => {
@@ -27,6 +29,10 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 			setSelected(false);
 			setSelectedLearners(deepCopySelectedLearners);
 		}
+	};
+
+	const openPaymentPointModalHandler = () => {
+		setIsOpenPaymentPoint(true);
 	};
 
 	useEffect(() => {
@@ -57,6 +63,7 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 			<button
 				type="button"
 				className="mx-4 flex h-6 w-6 items-center justify-center rounded-full bg-tangerine"
+				onClick={openPaymentPointModalHandler}
 			>
 				<PointIcon width={9} height={12} />
 			</button>
