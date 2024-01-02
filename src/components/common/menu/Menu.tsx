@@ -32,6 +32,7 @@ const Menu = () => {
 			<div className="flex items-center justify-between">
 				{menuArr.map((menu: IMenu) => (
 					<div
+						key={menu.key}
 						className="flex flex-col items-center"
 						onClick={() => onClickMenuHandler(menu)}
 					>
