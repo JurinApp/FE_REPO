@@ -172,10 +172,10 @@ const SignUpForm = () => {
 	}, [code]);
 
 	return (
-		<div className="mt-6 px-4 ">
+		<div className="mt-6">
 			<h1 className="text-[1.625rem] font-bold">회원가입</h1>
-			<form onSubmit={handleSubmit(signUpSubmitHandler)}>
-				<div className="mt-6 flex flex-col">
+			<form onSubmit={handleSubmit(signUpSubmitHandler)} className="mt-6 ">
+				<div className="flex flex-col">
 					<label htmlFor="id" className="mb-1 font-bold text-black-800">
 						아이디
 					</label>
