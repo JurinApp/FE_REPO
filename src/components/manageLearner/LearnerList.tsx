@@ -1,19 +1,28 @@
 import { ILearnerInfo } from "@/interface/learnerInfo";
 import LearnerInfo from "./LearnerInfo";
+import { useEffect } from "react";
+import { allCheckState, selectedLearner } from "@/states/manageLearner";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
-const learnerArr = [
-	{ learnerId: "1", learnerName: "공덕현" },
-	{ learnerId: "2", learnerName: "김종진" },
-	{ learnerId: "3", learnerName: "사재혁" },
-	{ learnerId: "4", learnerName: "이수정" },
-	{ learnerId: "5", learnerName: "이형규" },
-	{ learnerId: "6", learnerName: "조성주" },
-];
+interface ILearnerListProps {
+	readonly learnerList: ILearnerInfo[];
+}
 
-const LearnerList = () => {
+const LearnerList = ({ learnerList }: ILearnerListProps) => {
+	const selectedLearners = useRecoilValue(selectedLearner);
+	const setIsAllCheck = useSetRecoilState(allCheckState);
+
+	useEffect(() => {
+		if (selectedLearners.length === learnerList.length) {
+			setIsAllCheck(true);
+		} else {
+			setIsAllCheck(false);
+		}
+	}, [selectedLearners]);
+
 	return (
-		<div className="h-manage-height mt-6 overflow-y-auto">
-			{learnerArr.map((learnerInfo: ILearnerInfo) => (
+		<div className="mt-6 h-manage-height overflow-y-auto">
+			{learnerList.map((learnerInfo: ILearnerInfo) => (
 				<LearnerInfo key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
 			))}
 		</div>

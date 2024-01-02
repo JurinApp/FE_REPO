@@ -1,6 +1,6 @@
 import { ILearnerInfo } from "@/interface/learnerInfo";
 import { paymentPointModalState } from "@/states/confirmModalState";
-import { selectedLearner } from "@/states/manageLearner";
+import { allCheckState, selectedLearner } from "@/states/manageLearner";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -12,8 +12,9 @@ interface ILearnerInfoProps {
 const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
-	const [isSelected, setSelected] = useState<boolean>(false);
 	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
+	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckState);
+	const [isSelected, setSelected] = useState<boolean>(false);
 
 	const onClickLearnerHandler = () => {
 		const index = selectedLearners.findIndex((element) => {
@@ -36,37 +37,54 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	};
 
 	useEffect(() => {
-		if (selectedLearners.length === 0 && isSelected) {
+		if (isAllCheck) {
+			setSelected(true);
+		} else {
 			setSelected(false);
 		}
-	}, [selectedLearners]);
+	}, [isAllCheck]);
 
 	useEffect(() => {
 		return () => {
 			setSelectedLearners([]);
 		};
 	}, []);
+
 	return (
-		<div
-			className={`mx-auto mt-2 flex h-[3.25rem] w-full items-center justify-between rounded ${
-				isSelected
-					? "border-2 border-iris bg-[rgba(118,120,237,0.3)]"
-					: "border border-black-100 bg-white"
-			} sm:w-item-width`}
-		>
-			<div
-				onClick={onClickLearnerHandler}
-				className="flex h-full grow items-center pl-4 text-black-800"
-			>
-				<p>{learnerInfo.learnerName}</p>
+		<div className="mt-2 flex h-[2.875rem] items-center">
+			<div className="mr-3 flex h-full items-center">
+				<label className="hidden" htmlFor="checkLearner">
+					학생선택
+				</label>
+				<input
+					onChange={onClickLearnerHandler}
+					type="checkbox"
+					id="checkLearner"
+					className="h-6 w-6"
+					checked={isSelected}
+				/>
 			</div>
-			<button
-				type="button"
-				className="mx-4 flex h-6 w-6 items-center justify-center rounded-full bg-tangerine"
-				onClick={openPaymentPointModalHandler}
+			<div
+				className={`mx-auto flex h-full w-full items-center justify-between rounded ${
+					isSelected
+						? "border-2 border-iris bg-[rgba(118,120,237,0.3)]"
+						: "border border-black-100 bg-white"
+				} sm:w-item-width`}
 			>
-				<PointIcon width={9} height={12} />
-			</button>
+				<div className="flex h-full grow items-center pl-4 text-sm text-black-800">
+					<p>
+						{learnerInfo.learnerName}
+						<span> ({learnerInfo.learnerId}) </span>
+					</p>
+				</div>
+				<button
+					type="button"
+					className="mx-4 flex h-6 w-6 items-center justify-center rounded-full bg-tangerine"
+					onClick={openPaymentPointModalHandler}
+				>
+					<PointIcon width={9} height={12} />
+				</button>
+			</div>
 		</div>
 	);
 };

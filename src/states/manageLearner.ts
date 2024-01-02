@@ -5,3 +5,8 @@ export const selectedLearner = atom<ILearnerInfo[]>({
 	default: [],
 	key: "selectedLearner",
 });
+
+export const allCheckState = atom<boolean>({
+	default: false,
+	key: "allCheckState",
+});
