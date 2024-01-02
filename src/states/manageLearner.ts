@@ -1,7 +1,6 @@
-import { ILearnerInfo } from "@/interface/learnerInfo";
 import { atom } from "recoil";
 
-export const selectedLearner = atom<ILearnerInfo[]>({
+export const selectedLearner = atom<string[]>({
 	default: [],
 	key: "selectedLearner",
 });

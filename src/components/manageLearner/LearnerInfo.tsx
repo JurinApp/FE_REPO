@@ -1,8 +1,8 @@
 import { ILearnerInfo } from "@/interface/learnerInfo";
 import { paymentPointModalState } from "@/states/confirmModalState";
-import { allCheckState, selectedLearner } from "@/states/manageLearner";
+import { selectedLearner } from "@/states/manageLearner";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface ILearnerInfoProps {
@@ -13,21 +13,17 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
 	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
-	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckState);
-	const [isSelected, setSelected] = useState<boolean>(false);
 
 	const onClickLearnerHandler = () => {
-		const index = selectedLearners.findIndex((element) => {
-			return element.learnerId === learnerInfo.learnerId;
+		const index = selectedLearners.findIndex((learnerId) => {
+			return learnerId === learnerInfo.learnerId;
 		});
 
 		if (index === -1) {
-			setSelectedLearners([...selectedLearners, learnerInfo]);
-			setSelected(true);
+			setSelectedLearners([...selectedLearners, learnerInfo.learnerId]);
 		} else {
 			const deepCopySelectedLearners = [...selectedLearners];
 			deepCopySelectedLearners.splice(index, 1);
-			setSelected(false);
 			setSelectedLearners(deepCopySelectedLearners);
 		}
 	};
@@ -35,14 +31,6 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	const openPaymentPointModalHandler = () => {
 		setIsOpenPaymentPoint(true);
 	};
-
-	useEffect(() => {
-		if (isAllCheck) {
-			setSelected(true);
-		} else {
-			setSelected(false);
-		}
-	}, [isAllCheck]);
 
 	useEffect(() => {
 		return () => {
@@ -61,15 +49,13 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 					type="checkbox"
 					id="checkLearner"
 					className="h-6 w-6"
-					checked={isSelected}
+					checked={
+						selectedLearners.includes(learnerInfo.learnerId) ? true : false
+					}
 				/>
 			</div>
 			<div
-				className={`mx-auto flex h-full w-full items-center justify-between rounded ${
-					isSelected
-						? "border-2 border-iris bg-[rgba(118,120,237,0.3)]"
-						: "border border-black-100 bg-white"
-				} sm:w-item-width`}
+				className={`mx-auto flex h-full w-full items-center justify-between rounded border border-black-100 bg-white sm:w-item-width`}
 			>
 				<div className="flex h-full grow items-center pl-4 text-sm text-black-800">
 					<p>

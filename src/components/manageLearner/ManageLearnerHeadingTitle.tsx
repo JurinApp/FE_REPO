@@ -1,6 +1,6 @@
 import { ILearnerInfo } from "@/interface/learnerInfo";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
-import { useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IManageLearnerHeadingTitleProps {
@@ -14,9 +14,13 @@ const ManageLearnerHeadingTitle = ({
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
-	const clickAllCheckHandler = () => {
-		if (!isAllCheck) {
-			setSelectedLearners(learnerList);
+	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		const isCheck = e.target.checked;
+
+		if (isCheck) {
+			const learnerIdArr = learnerList.map((learner) => learner.learnerId);
+
+			setSelectedLearners(learnerIdArr);
 			setIsAllCheck(true);
 		} else {
 			setSelectedLearners([]);
