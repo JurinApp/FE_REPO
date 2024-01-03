@@ -1,23 +1,23 @@
-import SplashContainer from "@/components/splash/SplashContainer";
+import ManageLearnerContainer from "@/components/manageLearner/ManageLearnerContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const SplashPage = () => {
+const ManageLearnerPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
-			isUseHeader: false,
-			isUseMenu: false,
+			isUseHeader: true,
+			isUseMenu: true,
 		});
 	}, []);
 
 	return (
-		<div>
-			<SplashContainer />
-		</div>
+		<>
+			<ManageLearnerContainer />
+		</>
 	);
 };
 
-export default SplashPage;
+export default ManageLearnerPage;

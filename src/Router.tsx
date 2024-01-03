@@ -4,15 +4,17 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import SplashPage from "./pages/SplashPage";
 import { useRecoilValue } from "recoil";
-import { headerState } from "./states/headerState";
+import { headerMenuUseState } from "./states/headerMenuUseState";
 import Header from "./components/common/header/Header";
+import Menu from "./components/common/menu/Menu";
 
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
+const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
-	const isUseHeader = useRecoilValue(headerState);
+	const { isUseHeader, isUseMenu } = useRecoilValue(headerMenuUseState);
 
 	return (
 		<QueryClientProvider client={queryClient}>
@@ -22,8 +24,10 @@ const Router = () => {
 					<Route path="/" element={<SplashPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
+					<Route path="/manageLearner" element={<ManageLearnerPage />} />
 				</Routes>
 			</Suspense>
+			{isUseMenu && <Menu />}
 		</QueryClientProvider>
 	);
 };

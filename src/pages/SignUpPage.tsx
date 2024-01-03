@@ -1,13 +1,16 @@
-import { headerState } from "@/states/headerState";
+import { headerMenuUseState } from "@/states/headerMenuUseState";
 import SignUpContainer from "@components/signUp/SignUpContainer";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 const SignUpPage = () => {
-	const setIsUseHeader = useSetRecoilState(headerState);
+	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
-		setIsUseHeader(true);
+		setIsUseHeader({
+			isUseHeader: true,
+			isUseMenu: false,
+		});
 	}, []);
 
 	return (
