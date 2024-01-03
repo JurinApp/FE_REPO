@@ -1,10 +1,10 @@
-import { ILearnerInfo } from "@/interface/learnerInfo";
+import { ILearnerItem } from "@/interface/learnerItem";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
 import { ChangeEvent, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IManageLearnerHeadingTitleProps {
-	readonly learnerList: ILearnerInfo[];
+	readonly learnerList: ILearnerItem[];
 }
 
 const ManageLearnerHeadingTitle = ({

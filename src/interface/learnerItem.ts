@@ -1,4 +1,4 @@
-export interface ILearnerInfo {
+export interface ILearnerItem {
 	learnerId: string;
 	learnerName: string;
 }
