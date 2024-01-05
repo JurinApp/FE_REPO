@@ -19,6 +19,16 @@ export default {
 				"black-800": "rgba(0,0,0,0.8)",
 				"black-900": "rgba(0,0,0,0.9)",
 			},
+			width: {
+				"box-width": "22.563rem",
+				"item-width": "21.8rem",
+				"modal-width": "20.813rem",
+			},
+			height: {
+				"body-height": "calc(100vh - 2.938rem - 4.188rem)",
+				"manage-height": "calc(100vh - 22rem)",
+				"box-height": "3.25rem",
+			},
 			fontFamily: {
 				Title: ["Title"],
 				Roboto: ["Roboto"],

@@ -4,18 +4,20 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import SplashPage from "./pages/SplashPage";
 import { useRecoilValue } from "recoil";
-import { headerState } from "./states/headerState";
+import { headerMenuUseState } from "./states/headerMenuUseState";
 import Header from "./components/common/header/Header";
+import Menu from "./components/common/menu/Menu";
 
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
 const MyPage = lazy(() => import("@pages/MyPage"));
 const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
 const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
+const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
-	const isUseHeader = useRecoilValue(headerState);
+	const { isUseHeader, isUseMenu } = useRecoilValue(headerMenuUseState);
 
 	return (
 		<QueryClientProvider client={queryClient}>
@@ -28,8 +30,10 @@ const Router = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
+					<Route path="/manageLearner" element={<ManageLearnerPage />} />
 				</Routes>
 			</Suspense>
+			{isUseMenu && <Menu />}
 		</QueryClientProvider>
 	);
 };
