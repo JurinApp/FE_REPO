@@ -9,6 +9,9 @@ import Header from "./components/common/header/Header";
 
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
+const MyPage = lazy(() => import("@pages/MyPage"));
+const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
+const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -22,6 +25,9 @@ const Router = () => {
 					<Route path="/" element={<SplashPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
+					<Route path="/mypage" element={<MyPage />} />
+					<Route path="/createChannel" element={<CreateChannelPage />} />
+					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
 				</Routes>
 			</Suspense>
 		</QueryClientProvider>

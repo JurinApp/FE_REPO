@@ -35,6 +35,9 @@ export default {
 					to: { transform: "translateX(-100%)" },
 				},
 			},
+			spacing: {
+				"calc-50%-1.469rem": "calc(50% - 1.469rem)",
+			},
 		},
 	},
 	plugins: [],
