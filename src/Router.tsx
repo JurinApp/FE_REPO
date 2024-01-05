@@ -11,6 +11,7 @@ import Menu from "./components/common/menu/Menu";
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
 const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
+const TradeHomePage = lazy(() => import("@pages/TradePage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const Router = () => {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route path="/trade/home" element={<TradeHomePage />} />
 				</Routes>
 			</Suspense>
 			{isUseMenu && <Menu />}
