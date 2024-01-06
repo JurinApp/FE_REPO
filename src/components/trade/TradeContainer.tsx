@@ -10,7 +10,7 @@ const TradeHomeContainer = lazy(
 const TradeContainer = () => {
 	const selectedTab = useRecoilValue(selectedTabState);
 	return (
-		<div className="h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+		<div className="mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
 			<TradeTab />
 			{selectedTab === "tradeHome" && <TradeHomeContainer />}
 			{/* {selectedTab === "tradeTodayTrade" && }
