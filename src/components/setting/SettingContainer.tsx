@@ -1,4 +1,18 @@
+import { useState } from "react";
+import WithdrawalModal from "./WithdrawalModal";
+
 const SettingContainer = () => {
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+	const handleWithdrawal = () => {
+		// TODO 회원 탈퇴 기능 구현
+		setIsModalOpen(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<div className="mx-auto h-[50.312rem] w-[393px] bg-[#ffffff] bg-opacity-5">
 			<div className="mx-4 flex h-[50.312rem] flex-col justify-between text-base">
@@ -39,7 +53,10 @@ const SettingContainer = () => {
 					</section>
 				</div>
 				<div>
-					<button className="mb-4 mt-[10.063rem] flex h-[3.188rem] w-[361px] items-center justify-center rounded border border-danger bg-[#ffffff] font-bold text-danger">
+					<button
+						className="mb-4 mt-[10.063rem] flex h-[3.188rem] w-[361px] items-center justify-center rounded border border-danger bg-[#ffffff] font-bold text-danger"
+						onClick={() => setIsModalOpen(true)}
+					>
 						회원 탈퇴
 					</button>
 					<button className="mb-8 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b] font-bold text-white">
@@ -47,6 +64,13 @@ const SettingContainer = () => {
 					</button>
 				</div>
 			</div>
+			{isModalOpen && (
+				<WithdrawalModal
+					isOpen={isModalOpen}
+					onCancel={handleCancel}
+					onConfirm={handleWithdrawal}
+				/>
+			)}
 		</div>
 	);
 };
