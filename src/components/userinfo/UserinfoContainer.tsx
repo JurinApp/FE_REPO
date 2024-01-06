@@ -10,6 +10,11 @@ type TUser = {
 	school: string;
 	authority: string;
 };
+
+type TChannelInfo = {
+	name: string;
+	code: string;
+};
 export const UserinfoContainer = () => {
 	const authState = useRecoilValue(userinfoState);
 	const curAuthName = authState.curAuth === "teacher" ? "선생님" : "학생";
@@ -17,6 +22,10 @@ export const UserinfoContainer = () => {
 		name: "홍길동",
 		school: "홍길초등학교",
 		authority: "선생님",
+	};
+	let channelInfo: TChannelInfo = {
+		name: "1-A반",
+		code: "1A2B3C4D",
 	};
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const handleConfirm = () => {
@@ -57,12 +66,32 @@ export const UserinfoContainer = () => {
 						<p className="font-medium">{sampleData.authority}</p>
 					</div>
 				</div>
-				<div
-					className="ml-4 flex h-[102px] w-[361px] flex-col items-center justify-center rounded border border-black border-opacity-10 bg-[#000000] bg-opacity-10"
-					id="channelSection"
-				>
-					<p className="font-[500]">채널 정보가 존재하지 않습니다.</p>
-				</div>
+				{channelInfo ? (
+					<div
+						className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
+						id="channelSection"
+					>
+						<div className="my-2 ml-4 flex gap-4">
+							<label className="text-black text-opacity-80" htmlFor="school">
+								학교
+							</label>
+							<p className="font-medium">{sampleData.school}</p>
+						</div>
+						<div className="my-2 ml-4 flex gap-4">
+							<label className="text-black text-opacity-80" htmlFor="authority">
+								권한
+							</label>
+							<p className="font-medium">{sampleData.authority}</p>
+						</div>
+					</div>
+				) : (
+					<div
+						className="ml-4 flex h-[6.375rem] w-[361px] flex-col items-center justify-center rounded border border-black-100 bg-black-100"
+						id="channelSection"
+					>
+						<p className="font-[500]">채널 정보가 존재하지 않습니다.</p>
+					</div>
+				)}
 				{curAuthName === "선생님" ? (
 					<Link to="/createChannel">
 						<button
