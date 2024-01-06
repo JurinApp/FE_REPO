@@ -19,6 +19,8 @@ export default {
 				"black-700": "rgba(0,0,0,0.7)",
 				"black-800": "rgba(0,0,0,0.8)",
 				"black-900": "rgba(0,0,0,0.9)",
+				"stock-blue": "rgba(0,117,255,1)",
+				"stock-red": "rgba(224,23,23,1)",
 			},
 			width: {
 				"box-width": "22.563rem",
