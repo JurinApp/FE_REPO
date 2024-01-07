@@ -56,7 +56,7 @@ export const ModifyUserinfoContainer = () => {
 						autoComplete="off"
 						className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
 					/>
-					<label htmlFor="school-name" className="font-[700]">
+					<label htmlFor="school-name" className="font-bold">
 						학교 이름
 					</label>
 					<input
@@ -68,7 +68,7 @@ export const ModifyUserinfoContainer = () => {
 						autoComplete="off"
 						className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
 					/>
-					<label htmlFor="channel-name" className="font-[700]">
+					<label htmlFor="channel-name" className="font-bold">
 						채널 이름
 					</label>
 					<input
@@ -82,11 +82,11 @@ export const ModifyUserinfoContainer = () => {
 					/>
 				</div>
 				<button
-					className="mb-8 ml-4 flex h-[51px] w-[361px] items-center justify-center rounded bg-[#3d348b]"
+					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
 					id="button"
 					onClick={() => setIsModalOpen(true)}
 				>
-					<p className="font-[500] text-white">수정하기</p>
+					<p className="font-medium text-white">수정하기</p>
 				</button>
 				<ConfirmModal
 					isOpen={isModalOpen}

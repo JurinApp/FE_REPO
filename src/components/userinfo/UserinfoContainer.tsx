@@ -89,25 +89,25 @@ export const UserinfoContainer = () => {
 						className="ml-4 flex h-[6.375rem] w-[361px] flex-col items-center justify-center rounded border border-black-100 bg-black-100"
 						id="channelSection"
 					>
-						<p className="font-[500]">채널 정보가 존재하지 않습니다.</p>
+						<p className="font-medium">채널 정보가 존재하지 않습니다.</p>
 					</div>
 				)}
 				{curAuthName === "선생님" ? (
 					<Link to="/createChannel">
 						<button
-							className="mb-8 ml-4 flex h-[51px] w-[361px] items-center justify-center rounded bg-[#3d348b]"
+							className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
 							id="button"
 						>
-							<p className="font-[500] text-white">채널 생성</p>
+							<p className="font-medium text-white">채널 생성</p>
 						</button>
 					</Link>
 				) : (
 					<button
-						className="mb-8 ml-4 flex h-[51px] w-[361px] items-center justify-center rounded bg-[#3d348b]"
+						className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
 						id="button"
 						onClick={() => setIsModalOpen(true)}
 					>
-						<p className="font-[500] text-white">채널 입장</p>
+						<p className="font-medium text-white">채널 입장</p>
 					</button>
 				)}
 				<EnterChannelModal
