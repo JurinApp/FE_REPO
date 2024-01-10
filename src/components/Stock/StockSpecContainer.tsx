@@ -1,7 +1,7 @@
 const StockSpecContainer = () => {
 	return (
 		<>
-			<div className="flex h-[43.438rem] flex-col">
+			<div className="mx-auto flex h-[43.438rem] flex-col sm:w-[23.563rem]">
 				<section id="stock-spec" className="flex flex-col">
 					<div id="stock-name"></div>
 					<div id="stock-detail">

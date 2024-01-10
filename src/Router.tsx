@@ -15,6 +15,7 @@ const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
 const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
 const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
+const StockSpecPage = lazy(() => import("@pages/StockSpecPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const Router = () => {
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route path="/stockSpec" element={<StockSpecPage />} />
 				</Routes>
 			</Suspense>
 			{isUseMenu && <Menu />}
