@@ -10,6 +10,7 @@ const MyPage = () => {
 		setIsUseHeader({
 			isUseHeader: true,
 			isUseMenu: false,
+			isUseTab: false,
 		});
 	}, []);
 

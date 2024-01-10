@@ -1,9 +1,8 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/tradeStock";
+import IcLow from "@assets/svg/icLow.svg?react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import IcLow from "@assets/svg/icLow.svg?react";
-import IcHigh from "@assets/svg/icHigh.svg?react";
 
 interface TradeStockItemProps {
 	readonly stockItem: IStockItem;
@@ -53,10 +52,10 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					<p>{stockItem.stockName}</p>
 					<div className="mr-[0.875rem] flex text-sm font-medium">
 						<div className="flex items-center">
-							<p className="text-stock-blue mr-[0.125rem]">700</p>
+							<p className="mr-[0.125rem] text-stock-blue">700</p>
 							<IcLow />
 						</div>
-						<p className="text-stock-blue ml-[0.125rem] w-12 text-right">
+						<p className="ml-[0.125rem] w-12 text-right text-stock-blue">
 							1.6%
 						</p>
 					</div>

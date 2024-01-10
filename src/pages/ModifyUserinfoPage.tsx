@@ -10,6 +10,7 @@ const ModifyUserinfoPage = () => {
 		setIsUseHeader({
 			isUseHeader: true,
 			isUseMenu: false,
+			isUseTab: false,
 		});
 	}, []);
 	return (
