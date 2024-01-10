@@ -1,11 +1,11 @@
-import { ILearnerInfo } from "@/interface/learnerInfo";
-import LearnerInfo from "./LearnerInfo";
+import { ILearnerItem } from "@/interface/learnerItem";
+import LearnerItem from "./LearnerItem";
 import { useEffect } from "react";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 interface ILearnerListProps {
-	readonly learnerList: ILearnerInfo[];
+	readonly learnerList: ILearnerItem[];
 }
 
 const LearnerList = ({ learnerList }: ILearnerListProps) => {
@@ -22,8 +22,8 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 
 	return (
 		<div className="mt-6 h-manage-height overflow-y-auto">
-			{learnerList.map((learnerInfo: ILearnerInfo) => (
-				<LearnerInfo key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
+			{learnerList.map((learnerInfo: ILearnerItem) => (
+				<LearnerItem key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
 			))}
 		</div>
 	);

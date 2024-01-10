@@ -10,6 +10,7 @@ const ManageLearnerPage = () => {
 		setIsUseHeader({
 			isUseHeader: true,
 			isUseMenu: true,
+			isUseTab: false,
 		});
 	}, []);
 

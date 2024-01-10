@@ -1,23 +1,24 @@
-import { ModifyUserinfoContainer } from "@/components/modifyUserinfo/ModifyUserinfoContainer";
+import TradeHomeContainer from "@/components/trade/tradeHome/TradeHomeContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const ModifyUserinfoPage = () => {
+const TradePage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
 			isUseHeader: true,
-			isUseMenu: false,
-			isUseTab: false,
+			isUseMenu: true,
+			isUseTab: true,
 		});
 	}, []);
+
 	return (
-		<div>
-			<ModifyUserinfoContainer />
-		</div>
+		<>
+			<TradeHomeContainer />
+		</>
 	);
 };
 
-export default ModifyUserinfoPage;
+export default TradePage;

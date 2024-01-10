@@ -10,6 +10,7 @@ const SignUpPage = () => {
 		setIsUseHeader({
 			isUseHeader: true,
 			isUseMenu: false,
+			isUseTab: false,
 		});
 	}, []);
 

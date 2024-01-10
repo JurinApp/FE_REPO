@@ -7,7 +7,7 @@ type TEnterChannelModalProps = {
 	onCancel: () => void;
 };
 export const EnterChannelModal = (props: TEnterChannelModalProps) => {
-	const { isOpen, onConfirm, onCancel } = props;
+	const { isOpen, onCancel } = props;
 	const [code, setCode] = useState<string>("");
 	const [validateCode, setValidateCode] = useState<boolean>(false);
 	const [verifiedCode, setVerifiedCode] = useState<boolean>(false);
@@ -19,10 +19,10 @@ export const EnterChannelModal = (props: TEnterChannelModalProps) => {
 	};
 	const debounceValidation = debounce(validateCodeFormat, 1000);
 	// 코드 유효성 검증 함수
-	const verifyCode = () => {
-		// TODO: DB에 존재하는 채널 코드 확인 API 추가 예정.
-		setVerifiedCode(true);
-	};
+	// const verifyCode = () => {
+	// TODO: DB에 존재하는 채널 코드 확인 API 추가 예정.
+	setVerifiedCode(true);
+	// };
 
 	const handleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const code = event.target.value;

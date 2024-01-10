@@ -1,4 +1,4 @@
-import { ILearnerInfo } from "@/interface/learnerInfo";
+import { ILearnerItem } from "@/interface/learnerItem";
 import { paymentPointModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
@@ -6,10 +6,10 @@ import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface ILearnerInfoProps {
-	readonly learnerInfo: ILearnerInfo;
+	readonly learnerInfo: ILearnerItem;
 }
 
-const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
+const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
 	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
@@ -75,4 +75,4 @@ const LearnerInfo = ({ learnerInfo }: ILearnerInfoProps) => {
 	);
 };
 
-export default LearnerInfo;
+export default LearnerItem;

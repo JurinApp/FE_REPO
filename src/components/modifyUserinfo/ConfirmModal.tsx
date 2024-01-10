@@ -4,7 +4,7 @@ type TConfirmModalProps = {
 	onCancel: () => void;
 };
 export const ConfirmModal = (props: TConfirmModalProps) => {
-	const { isOpen, onConfirm, onCancel } = props;
+	const { isOpen, onCancel } = props;
 	if (!isOpen) return null;
 
 	return (
