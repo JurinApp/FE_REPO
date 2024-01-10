@@ -2,8 +2,8 @@ import BucketIcon from "@assets/svg/bucketIcon.svg?react";
 import ClipIcon from "@assets/svg/clipSvg.svg?react";
 import TradeIcon from "@assets/svg/tradeIcon.svg?react";
 import UserIcon from "@assets/svg/userIcon.svg?react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IMenu {
 	readonly key: string;
@@ -13,19 +13,41 @@ interface IMenu {
 
 const menuArr = [
 	{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
-	{ key: "trade", name: "주식거래", path: "/trade" },
+	{ key: "trade", name: "주식거래", path: "/trade/home" },
 	{ key: "item", name: "아이템", path: "/item" },
 	{ key: "community", name: "게시판", path: "/community" },
 ];
 
 const Menu = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [selectedMenu, setSelectedMenu] = useState<string>(menuArr[0].key);
 
 	const onClickMenuHandler = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
 		navigate(menu.path);
 	};
+
+	useEffect(() => {
+		const path = location.pathname;
+
+		if (path === "/manageLearner") {
+			setSelectedMenu("manageLearner");
+		}
+		if (
+			path === "/trade/home" ||
+			path === "/trade/todayTrade" ||
+			path === "/trade/myStock"
+		) {
+			setSelectedMenu("trade");
+		}
+		if (path === "/item") {
+			setSelectedMenu("item");
+		}
+		if (path === "/community") {
+			setSelectedMenu("community");
+		}
+	}, []);
 
 	return (
 		<div className="sticky bottom-0 z-[99] mx-auto h-[4.188rem] w-full bg-white px-6 py-[0.5rem] sm:w-[24.563rem]">

@@ -1,24 +1,24 @@
+import TodayTradeContainer from "@/components/trade/todayTrade/TodayTradeContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import SignUpContainer from "@components/signUp/SignUpContainer";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const SignUpPage = () => {
+const TodayTradePage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
 			isUseHeader: true,
-			isUseMenu: false,
-			isUseTab: false,
+			isUseMenu: true,
+			isUseTab: true,
 		});
 	}, []);
 
 	return (
-		<div>
-			<SignUpContainer />
-		</div>
+		<>
+			<TodayTradeContainer />
+		</>
 	);
 };
 
-export default SignUpPage;
+export default TodayTradePage;

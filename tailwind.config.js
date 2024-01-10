@@ -18,8 +18,11 @@ export default {
 				"black-100": "rgba(0,0,0,0.1)",
 				"black-200": "rgba(0,0,0,0.2)",
 				"black-300": "rgba(0,0,0,0.3)",
+				"black-700": "rgba(0,0,0,0.7)",
 				"black-800": "rgba(0,0,0,0.8)",
 				"black-900": "rgba(0,0,0,0.9)",
+				"stock-blue": "rgba(0,117,255,1)",
+				"stock-red": "rgba(224,23,23,1)",
 			},
 			width: {
 				"box-width": "22.563rem",
@@ -30,6 +33,7 @@ export default {
 				"body-height": "calc(100vh - 2.938rem - 4.188rem)",
 				"manage-height": "calc(100vh - 22rem)",
 				"box-height": "3.25rem",
+				"inTrade-height": "calc(100vh - 10.7rem)",
 			},
 			fontFamily: {
 				Title: ["Title"],
