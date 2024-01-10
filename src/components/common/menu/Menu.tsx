@@ -13,7 +13,7 @@ interface IMenu {
 
 const menuArr = [
 	{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
-	{ key: "trade", name: "주식거래", path: "/trade" },
+	{ key: "trade", name: "주식거래", path: "/trade/home" },
 	{ key: "item", name: "아이템", path: "/item" },
 	{ key: "community", name: "게시판", path: "/community" },
 ];
