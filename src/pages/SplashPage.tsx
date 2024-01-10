@@ -10,6 +10,7 @@ const SplashPage = () => {
 		setIsUseHeader({
 			isUseHeader: false,
 			isUseMenu: false,
+			isUseTab: false,
 		});
 	}, []);
 

@@ -10,6 +10,7 @@ const LoginPage = () => {
 		setIsUseHeader({
 			isUseHeader: false,
 			isUseMenu: false,
+			isUseTab: false,
 		});
 	}, []);
 

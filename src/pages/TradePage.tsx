@@ -1,4 +1,4 @@
-import TradeContainer from "@/components/trade/TradeContainer";
+import TradeHomeContainer from "@/components/trade/tradeHome/TradeHomeContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
@@ -10,12 +10,13 @@ const TradePage = () => {
 		setIsUseHeader({
 			isUseHeader: true,
 			isUseMenu: true,
+			isUseTab: true,
 		});
 	}, []);
 
 	return (
 		<>
-			<TradeContainer />
+			<TradeHomeContainer />
 		</>
 	);
 };
