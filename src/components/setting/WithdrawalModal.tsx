@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import { useState } from "react";
 
 const WithdrawalModal = (props: TConfirmModalProps) => {
-	const { isOpen, onConfirm, onCancel } = props;
+	const { isOpen, onCancel } = props;
 	const [password, setPassword] = useState<string>("");
 	const [validatePW, setValidatePW] = useState<boolean>(false);
 	const [verifiedPW, setVerifiedPW] = useState<boolean>(true);
