@@ -36,7 +36,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	}, [selectedStocks]);
 
 	return (
-		<div className="mt-[1.375rem] flex w-full justify-between text-black-800">
+		<div className="flex w-full justify-between pt-[1.375rem] text-black-800">
 			<div className="flex items-center">
 				<input
 					ref={checkBoxRef}

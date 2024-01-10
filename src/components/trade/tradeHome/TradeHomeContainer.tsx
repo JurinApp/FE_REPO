@@ -40,7 +40,7 @@ const TradeHomeContainer = () => {
 	const isOpenDeleteStocksModal = useRecoilValue(deleteStocksModalState);
 
 	return (
-		<div className="relative">
+		<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
 			<div className="px-4">
 				<TradeHomeHeading stockList={STOCK_LIST} />
 				<TradeStockList stockList={STOCK_LIST} />
