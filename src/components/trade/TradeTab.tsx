@@ -1,6 +1,6 @@
 import { selectedTabState } from "@/states/selectedTabState";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 interface ITabs {
@@ -18,11 +18,26 @@ const TABS = [
 const TradeTab = () => {
 	const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const clickTabHandler = (tab: ITabs) => {
 		setSelectedTab(tab.key);
 		navigate(tab.path);
 	};
+
+	useEffect(() => {
+		const path = location.pathname;
+
+		if (path === "/trade/home") {
+			setSelectedTab("tradeHome");
+		}
+		if (path === "/trade/todayTrade") {
+			setSelectedTab("tradeTodayTrade");
+		}
+		if (path === "/trade/myStock") {
+			setSelectedTab("tradeMyStock");
+		}
+	}, [location]);
 
 	useEffect(() => {
 		return () => {
@@ -31,7 +46,7 @@ const TradeTab = () => {
 	}, []);
 
 	return (
-		<div className="grid w-full grid-cols-3 bg-white">
+		<div className="mx-auto grid w-full grid-cols-3 bg-white sm:w-[24.536rem]">
 			{TABS.map((tab) => (
 				<div
 					key={tab.key}
