@@ -2,18 +2,18 @@ import Spinner from "@components/common/spinner/Spinner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import SplashPage from "./pages/SplashPage";
 import { useRecoilValue } from "recoil";
 import { headerMenuUseState } from "./states/headerMenuUseState";
-import Header from "./components/common/header/Header";
-import Menu from "./components/common/menu/Menu";
-import TodayTradePage from "./pages/TodayTradePage";
-import TradeTab from "./components/trade/TradeTab";
 
+const Header = lazy(() => import("@components/common/header/Header"));
+const Menu = lazy(() => import("@components/common/menu/Menu"));
+const TradeTab = lazy(() => import("@components/trade/TradeTab"));
+const SplashPage = lazy(() => import("@pages/SplashPage"));
 const LoginPage = lazy(() => import("@pages/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/SignUpPage"));
 const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
 const TradeHomePage = lazy(() => import("@pages/TradePage"));
+const TodayTradePage = lazy(() => import("@pages/TodayTradePage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
