@@ -31,7 +31,7 @@ export default {
 				"body-height": "calc(100vh - 2.938rem - 4.188rem)",
 				"manage-height": "calc(100vh - 22rem)",
 				"box-height": "3.25rem",
-				"inTrade-height": "calc(100vh - 7.1rem)",
+				"inTrade-height": "calc(100vh - 10.7rem)",
 			},
 			fontFamily: {
 				Title: ["Title"],
