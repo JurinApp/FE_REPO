@@ -1,12 +1,33 @@
 import { IItem } from "@/interface/item";
-import { useRef } from "react";
+import {
+	allCheckItemsState,
+	selectedItemState,
+} from "@/states/selectedItemState";
+import { ChangeEvent, useRef } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IItemHeadingTitleProps {
 	readonly itemList: IItem[];
 }
 
 const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
+	const setSelectedItems = useSetRecoilState(selectedItemState);
+	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckItemsState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
+
+	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		const isCheck = e.target.checked;
+
+		if (isCheck) {
+			const itemIdArr = itemList.map((item) => item.itemId);
+
+			setSelectedItems(itemIdArr);
+			setIsAllCheck(true);
+		} else {
+			setSelectedItems([]);
+			setIsAllCheck(false);
+		}
+	};
 
 	return (
 		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">
@@ -16,8 +37,8 @@ const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 					type="checkbox"
 					id="checkAll"
 					className="h-6 w-6"
-					// checked={isAllCheck}
-					// onChange={clickAllCheckHandler}
+					checked={isAllCheck}
+					onChange={clickAllCheckHandler}
 				/>
 				<label
 					htmlFor="checkAll"
