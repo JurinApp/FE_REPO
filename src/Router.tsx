@@ -18,6 +18,7 @@ const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
 const TradeHomePage = lazy(() => import("@pages/TradePage"));
 const TodayTradePage = lazy(() => import("@pages/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
+const ItemPage = lazy(() => import("@pages/ItemPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const Router = () => {
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
+					<Route path="/item" element={<ItemPage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>
