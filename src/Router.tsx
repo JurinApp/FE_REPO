@@ -21,6 +21,7 @@ const SettingPage = lazy(() => import("@pages/SettingPage"));
 const ItemPage = lazy(() => import("@pages/ItemPage"));
 const RegisterItemPage = lazy(() => import("@pages/RegisterItemPage"));
 const DetailItemPage = lazy(() => import("@pages/DetailItemPage"));
+const EditItemPage = lazy(() => import("@pages/EditItemPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const Router = () => {
 					<Route path="/item" element={<ItemPage />} />
 					<Route path="/item/register" element={<RegisterItemPage />} />
 					<Route path="/item/detail/:itemId" element={<DetailItemPage />} />
+					<Route path="/item/edit/:itemId" element={<EditItemPage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>
