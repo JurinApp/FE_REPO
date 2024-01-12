@@ -14,6 +14,7 @@ interface IItemListProps {
 const ItemList = ({ itemList }: IItemListProps) => {
 	const selectedItems = useRecoilValue(selectedItemState);
 	const setIsAllCheck = useSetRecoilState(allCheckItemsState);
+	const setSelectedItems = useSetRecoilState(selectedItemState);
 
 	useEffect(() => {
 		if (selectedItems.length === itemList.length) {
@@ -22,6 +23,12 @@ const ItemList = ({ itemList }: IItemListProps) => {
 			setIsAllCheck(false);
 		}
 	}, [selectedItems]);
+
+	useEffect(() => {
+		return () => {
+			setSelectedItems([]);
+		};
+	}, []);
 
 	return (
 		<div className="place mt-2 h-[calc(100vh-16rem)] max-h-[36rem] overflow-y-auto">

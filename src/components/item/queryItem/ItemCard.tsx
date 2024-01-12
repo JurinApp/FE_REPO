@@ -1,7 +1,6 @@
 import { IItem } from "@/interface/item";
 import { selectedItemState } from "@/states/selectedItemState";
 import Logo from "@assets/svg/subColorLogo.svg?react";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 interface IItemCardProps {
@@ -24,12 +23,6 @@ const ItemCard = ({ item }: IItemCardProps) => {
 			setSelectedItems(deepCopySelectedItems);
 		}
 	};
-
-	useEffect(() => {
-		return () => {
-			setSelectedItems([]);
-		};
-	}, []);
 
 	return (
 		<div className="relative mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]">
