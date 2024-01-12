@@ -1,7 +1,7 @@
 import Back from "@assets/svg/backIcon.svg?react";
 import { useNavigate } from "react-router-dom";
 
-const BackButton = () => {
+const GoBackButton = () => {
 	const navigate = useNavigate();
 
 	const goBackHandler = () => {
@@ -15,4 +15,4 @@ const BackButton = () => {
 	);
 };
 
-export default BackButton;
+export default GoBackButton;
