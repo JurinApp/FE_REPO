@@ -24,10 +24,12 @@ const ItemList = ({ itemList }: IItemListProps) => {
 	}, [selectedItems]);
 
 	return (
-		<div className="mt-2 grid grid-cols-3 place-items-center">
-			{itemList.map((item: IItem) => (
-				<ItemCard item={item} key={item.itemId}/>
-			))}
+		<div className="place mt-2 h-[calc(100vh-16rem)] max-h-[36rem] overflow-y-auto">
+			<div className="xs:grid-cols-2 grid grid-cols-1 gap-1 sm:grid-cols-3">
+				{itemList.map((item: IItem) => (
+					<ItemCard item={item} key={item.itemId} />
+				))}
+			</div>
 		</div>
 	);
 };

@@ -32,8 +32,8 @@ const ItemCard = ({ item }: IItemCardProps) => {
 	}, []);
 
 	return (
-		<div className="relative mb-[0.875rem] flex h-40 w-[7.188rem] flex-col rounded-[0.25rem]">
-			<div className="bg-sub2-selected flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem]">
+		<div className="relative mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]">
+			<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem] bg-sub2-selected">
 				<input
 					type="checkbox"
 					className="absolute left-2 top-2 h-6 w-6"

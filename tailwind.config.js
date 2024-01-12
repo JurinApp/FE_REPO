@@ -42,6 +42,7 @@ export default {
 			},
 			screens: {
 				sm: { min: "390px" },
+				xs: { max: "389px", min: "260px" },
 			},
 			animation: {
 				"slide-in": "slide 1s ease",

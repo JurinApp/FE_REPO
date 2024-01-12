@@ -6,7 +6,7 @@ const DeleteRegisterButton = () => {
 	const isExistSelectedItems = selectedItems.length !== 0;
 
 	return (
-		<div className="flex w-full">
+		<div className="absolute bottom-8 left-0 mt-4 flex w-full px-4">
 			<button
 				type="button"
 				className="grow rounded-[0.25rem] border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
