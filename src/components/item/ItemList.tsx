@@ -26,7 +26,7 @@ const ItemList = ({ itemList }: IItemListProps) => {
 	return (
 		<div className="mt-2 grid grid-cols-3 place-items-center">
 			{itemList.map((item: IItem) => (
-				<ItemCard item={item} />
+				<ItemCard item={item} key={item.itemId}/>
 			))}
 		</div>
 	);
