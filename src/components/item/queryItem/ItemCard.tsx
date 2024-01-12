@@ -1,6 +1,7 @@
 import { IItem } from "@/interface/item";
 import { selectedItemState } from "@/states/selectedItemState";
 import Logo from "@assets/svg/subColorLogo.svg?react";
+import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 interface IItemCardProps {
@@ -25,7 +26,10 @@ const ItemCard = ({ item }: IItemCardProps) => {
 	};
 
 	return (
-		<div className="relative mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]">
+		<Link
+			to={`/item/detail/${item.itemId}`}
+			className="relative mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]"
+		>
 			<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem] bg-sub2-selected">
 				<input
 					type="checkbox"
@@ -38,7 +42,7 @@ const ItemCard = ({ item }: IItemCardProps) => {
 			<div className="flex grow items-center justify-center rounded-b-[0.25rem] bg-white">
 				<p className="text-sm">{item.itemName}</p>
 			</div>
-		</div>
+		</Link>
 	);
 };
 
