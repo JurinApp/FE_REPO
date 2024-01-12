@@ -19,6 +19,7 @@ const TradeHomePage = lazy(() => import("@pages/TradePage"));
 const TodayTradePage = lazy(() => import("@pages/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
 const ItemPage = lazy(() => import("@pages/ItemPage"));
+const RegisterItemPage = lazy(() => import("@pages/RegisterItemPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const Router = () => {
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
 					<Route path="/item" element={<ItemPage />} />
+					<Route path="/item/register" element={<RegisterItemPage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

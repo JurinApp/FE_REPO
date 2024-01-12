@@ -1,5 +1,6 @@
 import { deleteItemsModalState } from "@/states/confirmModalState";
 import { selectedItemState } from "@/states/selectedItemState";
+import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const DeleteRegisterButton = () => {
@@ -21,12 +22,12 @@ const DeleteRegisterButton = () => {
 			>
 				삭제
 			</button>
-			<button
-				type="button"
-				className="ml-2 h-[3.25rem] grow rounded-[0.25rem] border bg-tekhelet font-bold text-white"
+			<Link
+				to="/item/register"
+				className="ml-2 flex h-[3.25rem] grow items-center justify-center rounded-[0.25rem] border bg-tekhelet font-bold text-white"
 			>
 				등록
-			</button>
+			</Link>
 		</div>
 	);
 };
