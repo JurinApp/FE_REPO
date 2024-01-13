@@ -5,25 +5,25 @@ import { userinfoState } from "@/states/userinfoState";
 import { useState } from "react";
 import { EnterChannelModal } from "../channel/EnterChannelModal";
 
-type TUser = {
-	name: string;
-	school: string;
-	authority: string;
-};
+interface IUser {
+	readonly name: string;
+	readonly school: string;
+	readonly authority: string;
+}
 
-type TChannelInfo = {
+interface IChannelInfo {
 	name: string;
 	code: string;
-};
+}
 export const UserinfoContainer = () => {
 	const authState = useRecoilValue(userinfoState);
 	const curAuthName = authState.curAuth === "teacher" ? "선생님" : "학생";
-	let sampleData: TUser = {
+	let sampleData: IUser = {
 		name: "홍길동",
 		school: "홍길초등학교",
 		authority: "선생님",
 	};
-	let channelInfo: TChannelInfo = {
+	let channelInfo: IChannelInfo = {
 		name: "1-A반",
 		code: "1A2B3C4D",
 	};
@@ -36,7 +36,7 @@ export const UserinfoContainer = () => {
 		setIsModalOpen(false);
 	};
 	return (
-		<div className="mx-auto h-[50.312rem] w-[393px] bg-[#3d348b] bg-opacity-5">
+		<div className="mx-auto h-full bg-[#3d348b] bg-opacity-5 sm:w-[24.563rem]">
 			<div className="flex h-[50.312rem] flex-col justify-end gap-4">
 				<div className="mr-4 flex justify-end">
 					<Link to="/modifyUserinfo">
@@ -110,11 +110,12 @@ export const UserinfoContainer = () => {
 						<p className="font-medium text-white">채널 입장</p>
 					</button>
 				)}
-				<EnterChannelModal
-					isOpen={isModalOpen}
-					onConfirm={handleConfirm}
-					onCancel={handleCancel}
-				/>
+				{isModalOpen && (
+					<EnterChannelModal
+						onConfirm={handleConfirm}
+						onCancel={handleCancel}
+					/>
+				)}
 			</div>
 		</div>
 	);
