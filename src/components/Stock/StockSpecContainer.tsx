@@ -1,31 +1,27 @@
+import StockSpecSection from "./StockSpecSection";
+
+export interface IStockSpec {
+	readonly name: string;
+	readonly price: number;
+	readonly tax: string;
+	readonly basis: string;
+	readonly detail: string;
+}
 const StockSpecContainer = () => {
+	const teacher_weight: IStockSpec = {
+		name: "선생님의 몸무게",
+		price: 700,
+		tax: "0.3%",
+		basis: "가나다",
+		detail: "라마바사",
+	};
 	return (
 		<>
-			<div className="mx-auto flex h-[43.438rem] flex-col sm:w-[23.563rem]">
-				<section id="stock-spec" className="flex flex-col">
-					<div id="stock-name"></div>
-					<div id="stock-detail">
-						<ul>
-							<li className="flex flex-row">
-								<p>가격</p>
-								<p>100</p>
-							</li>
-							<li className="flex flex-row">
-								<p>세금</p>
-								<p>0.3%</p>
-							</li>
-							<li className="flex flex-row">
-								<p>기준</p>
-								<p>가나다라마바사</p>
-							</li>
-							<li className="flex flex-row">
-								<p>내용</p>
-								<p>가나다라마바사</p>
-							</li>
-						</ul>
-					</div>
+			<div className="h-inTrade-height relative mx-auto w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+				<StockSpecSection stockSpec={teacher_weight} />
+				<section id="stock-chart" className="mx-6 mt-6">
+					<div>차트 라이브러리</div>
 				</section>
-				<section id="stock-chart">차트가 들어갈 공간</section>
 			</div>
 		</>
 	);
