@@ -19,3 +19,8 @@ export const deleteItemsModalState = atom<boolean>({
 	default: false,
 	key: "deleteItemsModalState",
 });
+
+export const deletePostsModalState = atom<boolean>({
+	default: false,
+	key: "deletePostsModalState",
+});
