@@ -14,11 +14,15 @@ const SignUpPage = lazy(() => import("@pages/SignUpPage"));
 const MyPage = lazy(() => import("@pages/MyPage"));
 const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
 const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
-const ManageLearnerPage = lazy(() => import("@pages/ManageLearnerPage"));
+const ManageLearnerPage = lazy(() => import("@/pages/ManageLearnerPage"));
 const TradeHomePage = lazy(() => import("@pages/TradePage"));
 const TodayTradePage = lazy(() => import("@pages/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
 const StockSpecPage = lazy(() => import("@pages/StockSpecPage"));
+const ItemPage = lazy(() => import("@pages/ItemPage"));
+const RegisterItemPage = lazy(() => import("@pages/RegisterItemPage"));
+const DetailItemPage = lazy(() => import("@pages/DetailItemPage"));
+const EditItemPage = lazy(() => import("@pages/EditItemPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -42,6 +46,10 @@ const Router = () => {
 					<Route path="/stockSpec" element={<StockSpecPage />} />
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
+					<Route path="/item" element={<ItemPage />} />
+					<Route path="/item/register" element={<RegisterItemPage />} />
+					<Route path="/item/detail/:itemId" element={<DetailItemPage />} />
+					<Route path="/item/edit/:itemId" element={<EditItemPage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

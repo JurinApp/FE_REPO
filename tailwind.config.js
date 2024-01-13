@@ -23,6 +23,7 @@ export default {
 				"black-900": "rgba(0,0,0,0.9)",
 				"stock-blue": "rgba(0,117,255,1)",
 				"stock-red": "rgba(224,23,23,1)",
+				"sub2-selected": "rgba(118,120,237,0.3)",
 			},
 			width: {
 				"box-width": "22.563rem",
@@ -41,6 +42,7 @@ export default {
 			},
 			screens: {
 				sm: { min: "390px" },
+				xs: { max: "389px", min: "260px" },
 			},
 			animation: {
 				"slide-in": "slide 1s ease",
