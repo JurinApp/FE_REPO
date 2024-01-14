@@ -35,14 +35,22 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 		}
 	}, [selectedStocks]);
 
+	useEffect(() => {
+		return () => {
+			if (isAllCheckStock) {
+				setIsAllCheckStock(false);
+			}
+		};
+	}, []);
+
 	return (
-		<div className="flex w-full justify-between pt-[1.375rem] text-black-800">
+		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">
 			<div className="flex items-center">
 				<input
 					ref={checkBoxRef}
 					type="checkbox"
 					id="checkAll"
-					className="h-6 w-6"
+					className="custom-checkBox"
 					checked={isAllCheckStock}
 					onChange={clickAllCheckStockHandler}
 				/>

@@ -43,10 +43,10 @@ const DeleteLearnerModal = () => {
 	}, [modalRef]);
 
 	return (
-		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
-				className="w-modal-width flex h-[12rem] flex-col rounded bg-white"
+				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
 			>
 				<div className="flex grow items-center justify-center">
 					<p className="my-auto">

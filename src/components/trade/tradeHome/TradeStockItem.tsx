@@ -1,7 +1,6 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/tradeStock";
 import IcLow from "@assets/svg/icLow.svg?react";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 interface TradeStockItemProps {
@@ -25,12 +24,6 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 		}
 	};
 
-	useEffect(() => {
-		return () => {
-			setSelectedStocks([]);
-		};
-	}, []);
-
 	return (
 		<div className="mt-2 flex h-[2.875rem] items-center">
 			<div className="mr-3 flex h-full items-center">
@@ -41,7 +34,7 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					onChange={clickStockHandler}
 					type="checkbox"
 					id="checkLearner"
-					className="h-6 w-6"
+					className="custom-checkBox"
 					checked={selectedStocks.includes(stockItem.stockId) ? true : false}
 				/>
 			</div>

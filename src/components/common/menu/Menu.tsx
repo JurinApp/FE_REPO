@@ -15,7 +15,7 @@ const menuArr = [
 	{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
 	{ key: "trade", name: "주식거래", path: "/trade/home" },
 	{ key: "item", name: "아이템", path: "/item" },
-	{ key: "community", name: "게시판", path: "/community" },
+	{ key: "post", name: "게시판", path: "/post" },
 ];
 
 const Menu = () => {
@@ -44,8 +44,8 @@ const Menu = () => {
 		if (path === "/item") {
 			setSelectedMenu("item");
 		}
-		if (path === "/community") {
-			setSelectedMenu("community");
+		if (path === "/post") {
+			setSelectedMenu("post");
 		}
 	}, []);
 
@@ -85,7 +85,7 @@ const Menu = () => {
 								}`}
 							/>
 						)}
-						{menu.key === "community" && (
+						{menu.key === "post" && (
 							<ClipIcon
 								className={`h-[1.75rem] w-[1.625rem] ${
 									menu.key === selectedMenu

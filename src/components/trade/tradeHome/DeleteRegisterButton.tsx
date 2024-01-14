@@ -11,7 +11,7 @@ const DeleteRegisterButton = () => {
 	};
 
 	return (
-		<div className="flex w-full">
+		<div className="absolute bottom-6 left-0 flex w-full px-4">
 			<button
 				type="button"
 				disabled={selectedStocks.length === 0 ? true : false}

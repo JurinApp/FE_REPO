@@ -29,12 +29,12 @@ const SplashContainer = () => {
 			}`}
 		>
 			<figure className="flex grow flex-col items-center justify-center">
-				<Logo width={122} height={142} />
+				<Logo className="h-[8.875rem] w-[7.625rem]" />
 				<figcaption className="mt-[1.875rem] font-Title text-3xl font-light text-white">
 					주린이를 부탁해
 				</figcaption>
 			</figure>
-			<p className="font-Roboto mb-[3.188rem] text-center font-light text-white">
+			<p className="mb-[3.188rem] text-center font-Roboto font-light text-white">
 				project. zero
 			</p>
 		</div>

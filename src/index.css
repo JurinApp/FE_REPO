@@ -31,3 +31,17 @@
 	font-family: "Roboto";
 	src: url("./fonts/Roboto-Light.ttf");
 }
+
+.custom-checkBox {
+	appearance: none;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 0.125rem;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.custom-checkBox:checked {
+	content: url("/src/assets/svg/check.svg");
+	border: none;
+}

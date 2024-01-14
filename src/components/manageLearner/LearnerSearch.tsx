@@ -17,14 +17,14 @@ const LearnerSearch = () => {
 	}, [keyword]);
 
 	return (
-		<div className="mt-[1.375rem] flex items-center border-b border-black-800 ">
+		<div className="mt-[0.125rem] flex items-center border-b border-black-800 ">
 			<input
 				type="text"
 				onChange={setKeyword}
 				className="h-12 w-full bg-inherit outline-none placeholder:text-black-300"
 				placeholder="찾고 있는 학생을 검색해보세요."
 			/>
-			<SearchIcon width={24} height={24} className="mr-[0.875rem]" />
+			<SearchIcon className="mr-[0.875rem] h-6 w-6" />
 		</div>
 	);
 };
