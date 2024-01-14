@@ -7,7 +7,7 @@ interface ITradeStockListProps {
 
 const TradeStockList = ({ stockList }: ITradeStockListProps) => {
 	return (
-		<div className="mt-6 h-[calc(100vh-19.5rem)] overflow-y-auto">
+		<div className="mt-2 h-[calc(100vh-22rem)] overflow-y-auto">
 			{stockList.map((stockItem: IStockItem) => (
 				<TradeStockItem key={stockItem.key} stockItem={stockItem} />
 			))}

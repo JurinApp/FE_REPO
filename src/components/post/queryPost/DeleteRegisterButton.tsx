@@ -12,7 +12,7 @@ const DeleteRegisterButton = () => {
 	};
 
 	return (
-		<div className="absolute bottom-6 flex w-[90%] sm:w-[22.563rem]">
+		<div className="absolute bottom-6 left-0 flex w-full px-4">
 			<button
 				type="button"
 				disabled={selectedPosts.length === 0 ? true : false}

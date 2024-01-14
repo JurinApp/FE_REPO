@@ -14,11 +14,11 @@ const DeleteLearnerButton = () => {
 	};
 
 	return (
-		<div className="mx-auto flex justify-center">
+		<div className="absolute bottom-6 left-0 flex w-full px-4">
 			<button
 				type="button"
 				disabled={!isExistSelectedLearners}
-				className="mb-6 h-box-height w-full rounded border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300 sm:w-item-width"
+				className="h-box-height w-full rounded border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300 sm:w-item-width"
 				onClick={onClickDeleteBtnHandler}
 			>
 				삭제

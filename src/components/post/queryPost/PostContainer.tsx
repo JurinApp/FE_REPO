@@ -36,7 +36,7 @@ const PostContainer = () => {
 	const isOpenDeletePostsModal = useRecoilValue(deletePostsModalState);
 
 	return (
-		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 pt-[0.625rem] sm:w-[24.563rem]">
+		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
 			<PostHeadingAndTitle postList={POST_LIST} />
 			<PostList postList={POST_LIST} />
 			<DeleteRegisterButton />

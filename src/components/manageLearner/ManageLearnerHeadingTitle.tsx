@@ -29,7 +29,7 @@ const ManageLearnerHeadingTitle = ({
 	};
 
 	return (
-		<div className="flex w-full justify-between text-black-800">
+		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">
 			<div className="flex items-center">
 				<input
 					ref={checkBoxRef}

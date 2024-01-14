@@ -13,10 +13,10 @@ const DeleteRegisterButton = () => {
 	};
 
 	return (
-		<div className="absolute bottom-8 left-0 mt-4 flex w-full px-4">
+		<div className="absolute bottom-6 left-0 flex w-full px-4">
 			<button
 				type="button"
-				className="grow rounded-[0.25rem] border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
+				className="h-box-height grow rounded-[0.25rem] border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
 				disabled={!isExistSelectedItems}
 				onClick={clickOpenDeleteItemsModalHandler}
 			>
@@ -24,7 +24,7 @@ const DeleteRegisterButton = () => {
 			</button>
 			<Link
 				to="/item/register"
-				className="ml-2 flex h-[3.25rem] grow items-center justify-center rounded-[0.25rem] border bg-tekhelet font-bold text-white"
+				className="ml-2 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>
 				등록
 			</Link>

@@ -17,7 +17,7 @@ const LearnerSearch = () => {
 	}, [keyword]);
 
 	return (
-		<div className="mt-[1.375rem] flex items-center border-b border-black-800 ">
+		<div className="mt-[0.125rem] flex items-center border-b border-black-800 ">
 			<input
 				type="text"
 				onChange={setKeyword}
