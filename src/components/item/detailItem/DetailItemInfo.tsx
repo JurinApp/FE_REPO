@@ -27,7 +27,7 @@ const DetailItemInfo = () => {
 						<p className="ml-[0.625rem] font-medium">/image/window.jpg</p>
 						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">8</p>
 						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">3,000</p>
-						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
+						<p className="ml-[0.625rem] mt-[0.375rem]">
 							의자 우선권으로 원하는 자 asds adas da sdasdasdasdasd
 						</p>
 					</div>
