@@ -1,10 +1,12 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import AddImage from "@assets/svg/addImage.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
+import { useSetRecoilState } from "recoil";
+import { editItemModalState } from "@/states/confirmModalState";
 
 interface IFormValue {
 	readonly itemName: string;
@@ -20,6 +22,7 @@ interface IThumbNailImg {
 }
 
 const EditItemForm = () => {
+	const setIsOpenEditItemModal = useSetRecoilState(editItemModalState);
 	const labelRef = useRef<HTMLLabelElement>(null);
 	const [formValue, setFormValue] = useState<IFormValue>({
 		itemName: "",
@@ -95,6 +98,11 @@ const EditItemForm = () => {
 				}
 			};
 		}
+	};
+
+	const submitEditItemFormHandler = (e: FormEvent) => {
+		e.preventDefault();
+		setIsOpenEditItemModal(true);
 	};
 
 	return (
@@ -223,6 +231,7 @@ const EditItemForm = () => {
 				<button
 					type="submit"
 					className="mx-auto mt-28 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
+					onClick={submitEditItemFormHandler}
 				>
 					수정
 				</button>

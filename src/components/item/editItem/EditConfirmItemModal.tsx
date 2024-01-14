@@ -1,23 +1,23 @@
-import { editPostModalState } from "@/states/confirmModalState";
+import { editItemModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 
-const EditConfirmModal = () => {
-	const setIsOpenEditModal = useSetRecoilState(editPostModalState);
+const EditConfirmItemModal = () => {
+	const setIsOpenEditItemModal = useSetRecoilState(editItemModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
-		setIsOpenEditModal(false);
+		setIsOpenEditItemModal(false);
 	};
 
-	const registerHandler = () => {
-		setIsOpenEditModal(false);
+	const editHandler = () => {
+		setIsOpenEditItemModal(false);
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenEditModal(false);
+				setIsOpenEditItemModal(false);
 			}
 		};
 
@@ -48,7 +48,7 @@ const EditConfirmModal = () => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={registerHandler}
+						onClick={editHandler}
 					>
 						확인
 					</button>
@@ -58,4 +58,4 @@ const EditConfirmModal = () => {
 	);
 };
 
-export default EditConfirmModal;
+export default EditConfirmItemModal;
