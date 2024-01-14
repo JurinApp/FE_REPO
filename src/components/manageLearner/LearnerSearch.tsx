@@ -24,7 +24,7 @@ const LearnerSearch = () => {
 				className="h-12 w-full bg-inherit outline-none placeholder:text-black-300"
 				placeholder="찾고 있는 학생을 검색해보세요."
 			/>
-			<SearchIcon width={24} height={24} className="mr-[0.875rem]" />
+			<SearchIcon className="mr-[0.875rem] h-6 w-6" />
 		</div>
 	);
 };

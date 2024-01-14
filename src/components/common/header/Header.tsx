@@ -7,7 +7,7 @@ const Header = () => {
 		<header className="sticky top-0 z-[99] mx-auto h-[2.938rem] w-full border-b border-black-200 bg-white sm:w-[24.563rem]">
 			<figure className="flex h-full items-center justify-between px-4">
 				<div className="flex items-center">
-					<Logo width={20} height={24} />
+					<Logo className="h-6 w-5" />
 					<p className="ml-2 font-Title font-light text-iris">
 						주린이를 부탁해
 					</p>

@@ -4,8 +4,8 @@ const LogoSection = () => {
 	return (
 		<div>
 			<figure>
-				<Logo width={110} height={118} className="mx-auto mt-24" />
-				<figcaption className="text-iris font-Title mt-6 text-center text-[1.75rem] font-light">
+				<Logo className="mx-auto mt-24 h-[7.375rem] w-[6.875rem]" />
+				<figcaption className="mt-6 text-center font-Title text-[1.75rem] font-light text-iris">
 					주린이를 부탁해
 				</figcaption>
 			</figure>

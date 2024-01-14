@@ -34,7 +34,7 @@ const PostList = ({ postList }: IPostListProps) => {
 	return (
 		<div className="mt-2 h-[calc(100vh-18rem)] overflow-y-auto">
 			{postList.map((post: IPost) => (
-				<PostItem post={post} />
+				<PostItem post={post} key={post.postId} />
 			))}
 		</div>
 	);

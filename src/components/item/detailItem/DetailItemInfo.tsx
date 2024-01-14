@@ -8,7 +8,7 @@ const DetailItemInfo = () => {
 					의자 우선권
 				</p>
 				<div className="mt-[0.875rem] flex h-[9.375rem] items-center justify-center rounded-[0.25rem] bg-sub2-selected">
-					<Logo width={67} height={80} />
+					<Logo className="h-20 w-[4.188rem]" />
 				</div>
 				<div className="mt-[0.875rem] flex">
 					<div className="flex flex-col">

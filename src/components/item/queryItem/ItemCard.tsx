@@ -32,7 +32,7 @@ const ItemCard = ({ item }: IItemCardProps) => {
 				className="mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]"
 			>
 				<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem] bg-sub2-selected">
-					<Logo width={52} height={62} />
+					<Logo className="h-[3.875rem] w-[3.25rem]" />
 				</div>
 				<div className="flex grow items-center justify-center rounded-b-[0.25rem] bg-white">
 					<p className="text-sm">{item.itemName}</p>

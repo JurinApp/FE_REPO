@@ -39,7 +39,7 @@ const DeleteLearnerButton = () => {
 				onClick={openPaymentPointModalHandler}
 			>
 				<div className="mr-[0.375rem] flex h-6 w-6 items-center justify-center rounded-full bg-tangerine">
-					<PointIcon width={9} height={12} />
+					<PointIcon className="h-3 w-[0.563rem]" />
 				</div>
 				포인트 지급
 			</button>
