@@ -25,6 +25,7 @@ const EditItemPage = lazy(() => import("@pages/EditItemPage"));
 const PostPage = lazy(() => import("@pages/PostPage"));
 const RegisterPostPage = lazy(() => import("@pages/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/DetailPostPage"));
+const EditPostPage = lazy(() => import("@pages/EditPostPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const Router = () => {
 					<Route path="/post" element={<PostPage />} />
 					<Route path="/post/register" element={<RegisterPostPage />} />
 					<Route path="/post/detail/:postId" element={<DetailPostPage />} />
+					<Route path="/post/edit/:postId" element={<EditPostPage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

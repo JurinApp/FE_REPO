@@ -4,3 +4,10 @@ export interface IPost {
 	readonly postContent: string;
 	readonly postRegDate: string;
 }
+
+export interface IPostFormValue {
+	readonly itemName: string;
+	readonly registerDate: string;
+	readonly title: string;
+	readonly content: string;
+}
