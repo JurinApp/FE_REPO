@@ -1,6 +1,7 @@
 import { IPost } from "@/interface/post";
 import { selectedPostsState } from "@/states/selectedPostState";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 interface IPostItemProps {
@@ -31,7 +32,10 @@ const PostItem = ({ post }: IPostItemProps) => {
 	}, []);
 
 	return (
-		<div className="mb-2 flex h-[4.5rem] w-full sm:w-[21.563rem]">
+		<Link
+			to={`/post/detail/${post.postId}`}
+			className="mb-2 flex h-[4.5rem] w-full sm:w-[21.563rem]"
+		>
 			<div className="flex items-center">
 				<label className="hidden">선택</label>
 				<input
@@ -54,7 +58,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 					{post.postRegDate}
 				</p>
 			</div>
-		</div>
+		</Link>
 	);
 };
 
