@@ -1,12 +1,14 @@
 import { paymentPointModalState } from "@/states/confirmModalState";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const setIsOpenPaymentPointModal = useSetRecoilState(paymentPointModalState);
+	const [isOpenPaymentPointModal, setIsOpenPaymentPointModal] = useRecoilState(
+		paymentPointModalState,
+	);
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
 
@@ -58,6 +60,14 @@ const PaymentPointModal = () => {
 			document.removeEventListener("mousedown", outSideClickHandler);
 		};
 	}, [modalRef]);
+
+	useEffect(() => {
+		return () => {
+			if (isOpenPaymentPointModal) {
+				setIsOpenPaymentPointModal(false);
+			}
+		};
+	}, []);
 
 	return (
 		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">

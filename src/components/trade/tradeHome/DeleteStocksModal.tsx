@@ -1,10 +1,12 @@
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
 import { useEffect, useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const DeleteStocksModal = () => {
-	const setIsOpenDeleteStocksModal = useSetRecoilState(deleteStocksModalState);
+	const [isOpenDeleteStocksModal, setIsOpenDeleteStocksModal] = useRecoilState(
+		deleteStocksModalState,
+	);
 	const selectedStocks = useRecoilValue(selectedStock);
 	const modalRef = useRef<HTMLDivElement>(null);
 
@@ -30,8 +32,16 @@ const DeleteStocksModal = () => {
 		};
 	}, [modalRef]);
 
+	useEffect(() => {
+		return () => {
+			if (isOpenDeleteStocksModal) {
+				setIsOpenDeleteStocksModal(false);
+			}
+		};
+	}, []);
+
 	return (
-		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"

@@ -1,6 +1,5 @@
 import { IPost } from "@/interface/post";
 import { selectedPostsState } from "@/states/selectedPostState";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
@@ -24,12 +23,6 @@ const PostItem = ({ post }: IPostItemProps) => {
 			setSelectedPosts(deepCopySelectedPosts);
 		}
 	};
-
-	useEffect(() => {
-		return () => {
-			setSelectedPosts([]);
-		};
-	}, []);
 
 	return (
 		<div className="mb-2 flex h-[4.5rem] w-full sm:w-[21.563rem]">

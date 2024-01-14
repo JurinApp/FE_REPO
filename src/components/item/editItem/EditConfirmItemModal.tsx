@@ -1,9 +1,10 @@
 import { editItemModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const EditConfirmItemModal = () => {
-	const setIsOpenEditItemModal = useSetRecoilState(editItemModalState);
+	const [isOpenEditItemModal, setIsOpenEditItemModal] =
+		useRecoilState(editItemModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -27,6 +28,14 @@ const EditConfirmItemModal = () => {
 			document.removeEventListener("mousedown", outSideClickHandler);
 		};
 	}, [modalRef]);
+
+	useEffect(() => {
+		return () => {
+			if (isOpenEditItemModal) {
+				setIsOpenEditItemModal(false);
+			}
+		};
+	}, []);
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">

@@ -1,9 +1,11 @@
 import { registerConfirmModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const RegisterConfirmModal = () => {
-	const setIsOpenRegisterModal = useSetRecoilState(registerConfirmModalState);
+	const [isOpenRegisterModal, setIsOpenRegisterModal] = useRecoilState(
+		registerConfirmModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -27,6 +29,14 @@ const RegisterConfirmModal = () => {
 			document.removeEventListener("mousedown", outSideClickHandler);
 		};
 	}, [modalRef]);
+
+	useEffect(() => {
+		return () => {
+			if (isOpenRegisterModal) {
+				setIsOpenRegisterModal(false);
+			}
+		};
+	}, []);
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">

@@ -1,6 +1,5 @@
 import { ILearnerItem } from "@/interface/learnerItem";
 import { selectedLearner } from "@/states/manageLearner";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 interface ILearnerInfoProps {
@@ -24,12 +23,6 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 			setSelectedLearners(deepCopySelectedLearners);
 		}
 	};
-
-	useEffect(() => {
-		return () => {
-			setSelectedLearners([]);
-		};
-	}, []);
 
 	return (
 		<div className="mt-2 flex h-[2.875rem] items-center">

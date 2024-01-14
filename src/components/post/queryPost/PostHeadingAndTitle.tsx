@@ -3,7 +3,7 @@ import {
 	allCheckPostsState,
 	selectedPostsState,
 } from "@/states/selectedPostState";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IPostHeadingAndTitleProps {
@@ -28,6 +28,14 @@ const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 			setIsAllCheck(false);
 		}
 	};
+
+	useEffect(() => {
+		return () => {
+			if (isAllCheck) {
+				setIsAllCheck(false);
+			}
+		};
+	}, []);
 
 	return (
 		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">

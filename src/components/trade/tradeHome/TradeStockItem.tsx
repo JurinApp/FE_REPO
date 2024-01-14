@@ -1,7 +1,6 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/tradeStock";
 import IcLow from "@assets/svg/icLow.svg?react";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 interface TradeStockItemProps {
@@ -24,12 +23,6 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 			setSelectedStocks(deepCopySelectedStocks);
 		}
 	};
-
-	useEffect(() => {
-		return () => {
-			setSelectedStocks([]);
-		};
-	}, []);
 
 	return (
 		<div className="mt-2 flex h-[2.875rem] items-center">

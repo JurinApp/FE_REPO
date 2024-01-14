@@ -1,11 +1,10 @@
 import { deleteDetailItemModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const DeleteDetailItemModal = () => {
-	const setIsOpenDeleteDetailItemModal = useSetRecoilState(
-		deleteDetailItemModalState,
-	);
+	const [isOpenDeleteDetailItemModal, setIsOpenDeleteDetailItemModal] =
+		useRecoilState(deleteDetailItemModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -29,6 +28,14 @@ const DeleteDetailItemModal = () => {
 			document.removeEventListener("mousedown", outSideClickHandler);
 		};
 	}, [modalRef]);
+
+	useEffect(() => {
+		return () => {
+			if (isOpenDeleteDetailItemModal) {
+				setIsOpenDeleteDetailItemModal(false);
+			}
+		};
+	});
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
