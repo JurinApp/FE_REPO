@@ -1,6 +1,6 @@
 import { deletePostsModalState } from "@/states/confirmModalState";
 import { selectedPostsState } from "@/states/selectedPostState";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 const DeletePostsModal = () => {
@@ -16,6 +16,20 @@ const DeletePostsModal = () => {
 		setSelectedPosts([]);
 		setIsOpenDeletePostsModal(false);
 	};
+
+	useEffect(() => {
+		const outSideClickHandler = (e: Event) => {
+			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				setIsOpenDeletePostsModal(false);
+			}
+		};
+
+		document.addEventListener("mousedown", outSideClickHandler);
+
+		return () => {
+			document.removeEventListener("mousedown", outSideClickHandler);
+		};
+	}, [modalRef]);
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
