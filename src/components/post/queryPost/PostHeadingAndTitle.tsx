@@ -36,7 +36,7 @@ const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 					ref={checkBoxRef}
 					type="checkbox"
 					id="checkAll"
-					className="h-6 w-6"
+					className="custom-checkBox"
 					checked={isAllCheck}
 					onChange={clickAllCheckHandler}
 				/>

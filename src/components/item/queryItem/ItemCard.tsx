@@ -33,7 +33,7 @@ const ItemCard = ({ item }: IItemCardProps) => {
 			<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem] bg-sub2-selected">
 				<input
 					type="checkbox"
-					className="absolute left-2 top-2 h-6 w-6"
+					className="custom-checkBox absolute left-2 top-2"
 					onChange={onClickItemHandler}
 					checked={selectedItems.includes(item.itemId) ? true : false}
 				/>

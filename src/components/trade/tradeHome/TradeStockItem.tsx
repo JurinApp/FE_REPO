@@ -41,7 +41,7 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					onChange={clickStockHandler}
 					type="checkbox"
 					id="checkLearner"
-					className="h-6 w-6"
+					className="custom-checkBox"
 					checked={selectedStocks.includes(stockItem.stockId) ? true : false}
 				/>
 			</div>

@@ -48,7 +48,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 					onChange={onClickLearnerHandler}
 					type="checkbox"
 					id="checkLearner"
-					className="h-6 w-6"
+					className="custom-checkBox"
 					checked={
 						selectedLearners.includes(learnerInfo.learnerId) ? true : false
 					}
