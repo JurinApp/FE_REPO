@@ -63,7 +63,7 @@ const PaymentPointModal = () => {
 		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
-				className="w-modal-width flex flex-col rounded bg-white"
+				className="flex w-modal-width flex-col rounded bg-white"
 			>
 				<div className="mb-6 mt-12 flex grow items-center justify-center">
 					<p className="my-auto text-lg">포인트를 지급하시겠습니까?</p>
@@ -102,7 +102,7 @@ const PaymentPointModal = () => {
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
 						onClick={paymentPointHandler}
 					>
-						지급
+						확인
 					</button>
 				</div>
 			</div>
