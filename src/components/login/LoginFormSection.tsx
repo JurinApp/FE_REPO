@@ -1,9 +1,10 @@
 import { LOGIN_SCHEMA } from "@/constants/formSchema";
+import useAxios from "@/hooks/useAxios";
 import ErrorMsg from "@components/common/errorMsg/ErrorMsg";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface ILoginFormValues {
 	readonly id: string;
@@ -16,10 +17,13 @@ interface IError {
 }
 
 const LoginFormSection = () => {
+	const { axiosData } = useAxios();
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
 		watch,
+		getValues,
 		formState: { isValid, errors },
 	} = useForm({
 		defaultValues: {
@@ -47,14 +51,36 @@ const LoginFormSection = () => {
 		return true;
 	};
 
-	const submitHandler = (data: ILoginFormValues) => {
+	const submitHandler = async (data: ILoginFormValues) => {
 		if (!validate(data)) return;
 
-		// 임시 에러, API 만들어지면 로그인 기능 붙일 예정
-		setLoginError({
-			isError: true,
-			errorMsg: "아이디나 비밀번호를 다시 확인해주세요.",
+		const response = await axiosData("default", {
+			method: "POST",
+			url: "/api/api/v1/auth/signin",
+			data: {
+				username: getValues().id,
+				password: getValues().password,
+			},
 		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 200) {
+				navigate("/mypage");
+			}
+
+			if (status === 400) {
+				setLoginError({
+					isError: true,
+					errorMsg: "아이디나 비밀번호를 다시 확인해주세요.",
+				});
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시후에 다시 시도해주세요");
+			}
+		}
 	};
 
 	useEffect(() => {
@@ -100,13 +126,13 @@ const LoginFormSection = () => {
 				<button
 					type="submit"
 					disabled={!isValid}
-					className="disabled:bg-disabled-tekhelet bg-tekhelet  mb-4 w-full rounded-[0.25rem] py-4 font-bold text-white"
+					className="mb-4 w-full  rounded-[0.25rem] bg-tekhelet py-4 font-bold text-white disabled:bg-disabled-tekhelet"
 				>
 					로그인
 				</button>
 				<Link
 					to="/signUp"
-					className="text-tekhelet border-iris w-full rounded-[0.25rem] border py-4 text-center font-bold"
+					className="w-full rounded-[0.25rem] border border-iris py-4 text-center font-bold text-tekhelet"
 				>
 					회원가입
 				</Link>
