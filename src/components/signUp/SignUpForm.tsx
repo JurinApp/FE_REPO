@@ -89,7 +89,7 @@ const SignUpForm = () => {
 
 			if (status === 200) {
 				setIsSignUp(false);
-				navigate("/signUp/success");
+				navigate("/successSignUp");
 			}
 			// TODO : 에러핸들링 예정
 		}
