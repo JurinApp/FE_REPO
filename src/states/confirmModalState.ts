@@ -10,6 +10,11 @@ export const paymentPointModalState = atom<boolean>({
 	key: "paymentPointModalState",
 });
 
+export const registerTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "registerTradeStockModalState",
+});
+
 export const deleteStocksModalState = atom<boolean>({
 	default: false,
 	key: "deleteStocksModalState",
