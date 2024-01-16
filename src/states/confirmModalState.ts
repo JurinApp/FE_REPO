@@ -10,14 +10,19 @@ export const paymentPointModalState = atom<boolean>({
 	key: "paymentPointModalState",
 });
 
+export const deleteStocksModalState = atom<boolean>({
+	default: false,
+	key: "deleteStocksModalState",
+});
+
 export const registerTradeStockModalState = atom<boolean>({
 	default: false,
 	key: "registerTradeStockModalState",
 });
 
-export const deleteStocksModalState = atom<boolean>({
+export const deleteDetailTradeStockModalState = atom<boolean>({
 	default: false,
-	key: "deleteStocksModalState",
+	key: "deleteDetailTradeStockModalState",
 });
 
 export const deleteItemsModalState = atom<boolean>({

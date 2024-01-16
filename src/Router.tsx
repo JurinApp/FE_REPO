@@ -22,6 +22,9 @@ const TradeHomePage = lazy(() => import("@pages/educator/trade/TradePage"));
 const RegisterTradeStockPage = lazy(
 	() => import("@pages/educator/trade/RegisterTradeStockPage"),
 );
+const DetailTradeStockPage = lazy(
+	() => import("@pages/educator/trade/DetailTradeStockPage"),
+);
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
 const ItemPage = lazy(() => import("@pages/educator/item/ItemPage"));
@@ -65,6 +68,10 @@ const Router = () => {
 					<Route
 						path="/trade/stock/register"
 						element={<RegisterTradeStockPage />}
+					/>
+					<Route
+						path="/trade/stock/detail/:stockId"
+						element={<DetailTradeStockPage />}
 					/>
 					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
 					<Route path="/item" element={<ItemPage />} />
