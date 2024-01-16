@@ -91,10 +91,15 @@ const SignUpForm = () => {
 				setIsSignUp(false);
 				navigate("/successSignUp");
 			}
-			// TODO : 에러핸들링 예정
-		}
 
-		console.log(response);
+			if (status === 400) {
+				// TODO : 400에러 코드 에러 핸들링 예정
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+		}
 	};
 
 	const idDuplicateCheckHandler = async () => {
