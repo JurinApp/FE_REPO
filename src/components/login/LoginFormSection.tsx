@@ -1,5 +1,6 @@
 import { LOGIN_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
+import { setCookie } from "@/utils/cookies";
 import ErrorMsg from "@components/common/errorMsg/ErrorMsg";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
@@ -67,6 +68,7 @@ const LoginFormSection = () => {
 			const status = response.status;
 
 			if (status === 200) {
+				setCookie("accessToken", response.data.data.accessToken);
 				navigate("/mypage");
 			}
 
