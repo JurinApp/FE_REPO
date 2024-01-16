@@ -20,6 +20,11 @@
 	::-webkit-scrollbar-track {
 		background: rgba(33, 122, 244, 0.1);
 	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+	}
 }
 
 @font-face {

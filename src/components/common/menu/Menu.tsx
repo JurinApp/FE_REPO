@@ -55,7 +55,7 @@ const Menu = () => {
 				{menuArr.map((menu: IMenu) => (
 					<div
 						key={menu.key}
-						className="flex flex-col items-center"
+						className="flex cursor-pointer flex-col items-center"
 						onClick={() => onClickMenuHandler(menu)}
 					>
 						{menu.key === "manageLearner" && (

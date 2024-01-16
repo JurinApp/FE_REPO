@@ -50,13 +50,13 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 					ref={checkBoxRef}
 					type="checkbox"
 					id="checkAll"
-					className="custom-checkBox"
+					className="custom-checkBox cursor-pointer"
 					checked={isAllCheckStock}
 					onChange={clickAllCheckStockHandler}
 				/>
 				<label
 					htmlFor="checkAll"
-					className="ml-2 flex h-full items-center text-sm"
+					className="ml-2 flex h-full cursor-pointer items-center text-sm"
 				>
 					전체 선택
 				</label>

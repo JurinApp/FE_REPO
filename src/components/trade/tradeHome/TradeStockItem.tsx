@@ -34,12 +34,12 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					onChange={clickStockHandler}
 					type="checkbox"
 					id="checkLearner"
-					className="custom-checkBox"
+					className="custom-checkBox cursor-pointer"
 					checked={selectedStocks.includes(stockItem.stockId) ? true : false}
 				/>
 			</div>
 			<div
-				className={`mx-auto flex h-full w-full items-center justify-between rounded border border-black-100 bg-white sm:w-item-width`}
+				className={`mx-auto flex h-full w-full cursor-pointer items-center justify-between rounded border border-black-100 bg-white sm:w-item-width`}
 			>
 				<div className="flex h-full grow items-center justify-between pl-4 text-sm text-black-800">
 					<p>{stockItem.stockName}</p>

@@ -34,7 +34,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 					onChange={onClickLearnerHandler}
 					type="checkbox"
 					id="checkLearner"
-					className="custom-checkBox"
+					className="custom-checkBox cursor-pointer"
 					checked={
 						selectedLearners.includes(learnerInfo.learnerId) ? true : false
 					}
@@ -43,7 +43,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 			<div
 				className={`mx-auto flex h-full w-full items-center justify-between rounded border border-black-100 bg-white sm:w-item-width`}
 			>
-				<div className="flex h-full grow items-center pl-4 text-sm text-black-800">
+				<div className="flex h-full grow cursor-pointer items-center pl-4 text-sm text-black-800">
 					<p>
 						{learnerInfo.learnerName}
 						<span> ({learnerInfo.learnerId}) </span>

@@ -40,7 +40,7 @@ const ItemCard = ({ item }: IItemCardProps) => {
 			</Link>
 			<input
 				type="checkbox"
-				className="custom-checkBox absolute left-2 top-2"
+				className="custom-checkBox absolute left-2 top-2 cursor-pointer"
 				onChange={onClickItemHandler}
 				checked={selectedItems.includes(item.itemId) ? true : false}
 			/>
