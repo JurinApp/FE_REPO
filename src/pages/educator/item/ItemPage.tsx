@@ -1,4 +1,4 @@
-import ItemContainer from "@/components/item/queryItem/ItemContainer";
+import ItemContainer from "@components/item/inquiryItem/ItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
