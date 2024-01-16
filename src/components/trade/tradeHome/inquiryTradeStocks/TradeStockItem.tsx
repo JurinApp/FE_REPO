@@ -2,6 +2,7 @@ import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/tradeStock";
 import IcLow from "@assets/svg/icLow.svg?react";
 import { useRecoilState } from "recoil";
+import { Link } from "react-router-dom";
 
 interface TradeStockItemProps {
 	readonly stockItem: IStockItem;
@@ -25,7 +26,10 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	};
 
 	return (
-		<div className="mt-2 flex h-[2.875rem] items-center">
+		<Link
+			to={`/trade/stock/detail/${stockItem.stockId}`}
+			className="mt-2 flex h-[2.875rem] items-center"
+		>
 			<div className="mr-3 flex h-full items-center">
 				<label className="hidden" htmlFor="checkLearner">
 					학생선택
@@ -54,7 +58,7 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

@@ -1,14 +1,14 @@
-import PostContainer from "@components/post/inquiryPost/PostContainer";
+import DetailTradeStockContainer from "@components/trade/tradeHome/DetailTradeStock/DetailTradeStockContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import { useLayoutEffect } from "react";
 
-const PostPage = () => {
+const DetailTradeStockPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
-			isUseHeader: true,
+			isUseHeader: false,
 			isUseMenu: true,
 			isUseTab: false,
 		});
@@ -16,9 +16,9 @@ const PostPage = () => {
 
 	return (
 		<>
-			<PostContainer />
+			<DetailTradeStockContainer />
 		</>
 	);
 };
 
-export default PostPage;
+export default DetailTradeStockPage;

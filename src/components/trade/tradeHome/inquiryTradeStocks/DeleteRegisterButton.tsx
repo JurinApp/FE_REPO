@@ -1,6 +1,7 @@
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { Link } from "react-router-dom";
 
 const DeleteRegisterButton = () => {
 	const selectedStocks = useRecoilValue(selectedStock);
@@ -20,12 +21,13 @@ const DeleteRegisterButton = () => {
 			>
 				삭제
 			</button>
-			<button
+			<Link
+				to="/trade/stock/register"
 				type="button"
-				className="ml-1 h-box-height grow rounded bg-tekhelet font-bold text-white"
+				className="ml-1 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>
 				등록
-			</button>
+			</Link>
 		</div>
 	);
 };

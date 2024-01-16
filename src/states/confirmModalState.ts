@@ -15,6 +15,16 @@ export const deleteStocksModalState = atom<boolean>({
 	key: "deleteStocksModalState",
 });
 
+export const registerTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "registerTradeStockModalState",
+});
+
+export const deleteDetailTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "editTradeStockModalState",
+});
+
 export const deleteItemsModalState = atom<boolean>({
 	default: false,
 	key: "deleteItemsModalState",
