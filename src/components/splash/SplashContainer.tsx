@@ -8,7 +8,6 @@ const SplashContainer = () => {
 
 	useEffect(() => {
 		const navigateTimer = setTimeout(() => {
-			// TODO : 로그인 여부에 따라 로그인이 되어 있으면 채널 선택 페이지로 아니면 로그인 페이지로 API 추가되면 코드 작성 예정
 			navigate("/login");
 		}, 2000);
 

@@ -2,7 +2,11 @@ import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 
-const SignUpConfirmModal = () => {
+interface ISignUpConfirmModalProps {
+	readonly setIsSignUp: (type: boolean) => void;
+}
+
+const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
@@ -17,11 +21,12 @@ const SignUpConfirmModal = () => {
 		}));
 	};
 
-	const confirmBtnModalHandler = () => {
+	const confirmBtnModalHandler = async () => {
 		setConfirmModalState((prevState) => ({
 			...prevState,
 			isModalOpen: false,
 		}));
+		setIsSignUp(true);
 	};
 
 	useEffect(() => {
@@ -41,8 +46,14 @@ const SignUpConfirmModal = () => {
 		};
 	}, [modalRef]);
 
+	useEffect(() => {
+		return () => {
+			setConfirmModalState({ selectedAuth: "teacher", isModalOpen: false });
+		};
+	}, []);
+
 	return (
-		<div className="fixed top-0 flex h-full w-full items-center justify-center bg-black-800">
+		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-[333px] flex-col rounded bg-white"

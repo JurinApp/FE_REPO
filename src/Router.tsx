@@ -8,34 +8,35 @@ import { headerMenuUseState } from "./states/headerMenuUseState";
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
 const TradeTab = lazy(() => import("@components/trade/TradeTab"));
-const SplashPage = lazy(() => import("@/pages/common/SplashPage"));
-const LoginPage = lazy(() => import("@/pages/common/LoginPage"));
-const SignUpPage = lazy(() => import("@/pages/common/SignUpPage"));
+const SplashPage = lazy(() => import("@pages/common/SplashPage"));
+const LoginPage = lazy(() => import("@pages/common/LoginPage"));
+const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
+const SuccessSignUpPage = lazy(() => import("@pages/common/SuccessSignUpPage"));
 const MyPage = lazy(() => import("@pages/MyPage"));
 const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
 const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
 const ManageLearnerPage = lazy(
-	() => import("@/pages/educator/manageLearner/ManageLearnerPage"),
+	() => import("@pages/educator/manageLearner/ManageLearnerPage"),
 );
-const TradeHomePage = lazy(() => import("@/pages/educator/trade/TradePage"));
-const TodayTradePage = lazy(() => import("@/pages/common/TodayTradePage"));
+const TradeHomePage = lazy(() => import("@pages/educator/trade/TradePage"));
+const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
-const ItemPage = lazy(() => import("@/pages/educator/item/ItemPage"));
+const ItemPage = lazy(() => import("@pages/educator/item/ItemPage"));
 const RegisterItemPage = lazy(
-	() => import("@/pages/educator/item/RegisterItemPage"),
+	() => import("@pages/educator/item/RegisterItemPage"),
 );
 const DetailItemPage = lazy(
-	() => import("@/pages/educator/item/DetailItemPage"),
+	() => import("@pages/educator/item/DetailItemPage"),
 );
-const EditItemPage = lazy(() => import("@/pages/educator/item/EditItemPage"));
-const PostPage = lazy(() => import("@/pages/educator/post/PostPage"));
+const EditItemPage = lazy(() => import("@pages/educator/item/EditItemPage"));
+const PostPage = lazy(() => import("@pages/educator/post/PostPage"));
 const RegisterPostPage = lazy(
-	() => import("@/pages/educator/post/RegisterPostPage"),
+	() => import("@pages/educator/post/RegisterPostPage"),
 );
 const DetailPostPage = lazy(
-	() => import("@/pages/educator/post/DetailPostPage"),
+	() => import("@pages/educator/post/DetailPostPage"),
 );
-const EditPostPage = lazy(() => import("@/pages/educator/post/EditPostPage"));
+const EditPostPage = lazy(() => import("@pages/educator/post/EditPostPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const Router = () => {
 					<Route path="/" element={<SplashPage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
+					<Route path="/successSignUp" element={<SuccessSignUpPage />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/setting" element={<SettingPage />} />
 					<Route path="/createChannel" element={<CreateChannelPage />} />
