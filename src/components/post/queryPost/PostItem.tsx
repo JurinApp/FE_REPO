@@ -30,7 +30,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 				<label className="hidden">선택</label>
 				<input
 					type="checkbox"
-					className="custom-checkBox"
+					className="custom-checkBox cursor-pointer"
 					onChange={onClickPostHandler}
 					checked={selectedPosts.includes(post.postId) ? true : false}
 				/>

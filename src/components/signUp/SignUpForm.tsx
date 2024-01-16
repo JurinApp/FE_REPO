@@ -376,28 +376,28 @@ const SignUpForm = () => {
 										id="teacher"
 										type="radio"
 										value="teacher"
-										className="h-6 w-6"
+										className="h-6 w-6 cursor-pointer"
 										defaultChecked
 										{...register("auth")}
 									/>
 									<label
 										htmlFor="teacher"
-										className="ml-2 flex h-[3.25rem] items-center"
+										className="ml-2 flex h-[3.25rem] cursor-pointer items-center"
 									>
 										선생님
 									</label>
 								</div>
-								<div className="ml-[3.75rem] flex items-center ">
+								<div className="ml-[3.75rem] flex items-center">
 									<input
 										id="student"
 										type="radio"
 										value="student"
-										className="h-6 w-6"
+										className="h-6 w-6 cursor-pointer"
 										{...register("auth")}
 									/>
 									<label
 										htmlFor="student"
-										className="ml-2 flex h-[3.25rem] items-center"
+										className="ml-2 flex h-[3.25rem] cursor-pointer items-center"
 									>
 										학생
 									</label>
