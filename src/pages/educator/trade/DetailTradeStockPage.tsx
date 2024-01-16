@@ -1,9 +1,9 @@
+import DetailTradeStockContainer from "@components/trade/tradeHome/DetailTradeStock/DetailTradeStockContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import RegisterTradeStockContainer from "@components/trade/tradeHome/registerTradeStock/RegisterTradeStockContainer";
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
 
-const RegisterTradeStockPage = () => {
+const DetailTradeStockPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
@@ -16,9 +16,9 @@ const RegisterTradeStockPage = () => {
 
 	return (
 		<>
-			<RegisterTradeStockContainer />
+			<DetailTradeStockContainer />
 		</>
 	);
 };
 
-export default RegisterTradeStockPage;
+export default DetailTradeStockPage;
