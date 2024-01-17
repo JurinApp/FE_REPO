@@ -1,5 +1,4 @@
-import StockSpecContainer from "@/components/Stock/StockSpecContainer";
-import StockHeader from "@/components/common/header/StockHeader";
+import StockSpecContainer from "@/components/stock/detail/StockSpecContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
