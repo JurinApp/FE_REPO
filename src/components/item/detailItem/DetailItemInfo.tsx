@@ -8,7 +8,7 @@ const DetailItemInfo = () => {
 					의자 우선권
 				</p>
 				<div className="mt-[0.875rem] flex h-[9.375rem] items-center justify-center rounded-[0.25rem] bg-sub2-selected">
-					<Logo width={67} height={80} />
+					<Logo className="h-20 w-[4.188rem]" />
 				</div>
 				<div className="mt-[0.875rem] flex">
 					<div className="flex flex-col">
@@ -27,7 +27,7 @@ const DetailItemInfo = () => {
 						<p className="ml-[0.625rem] font-medium">/image/window.jpg</p>
 						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">8</p>
 						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">3,000</p>
-						<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
+						<p className="ml-[0.625rem] mt-[0.375rem]">
 							의자 우선권으로 원하는 자 asds adas da sdasdasdasdasd
 						</p>
 					</div>

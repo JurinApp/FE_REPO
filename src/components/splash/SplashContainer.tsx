@@ -8,7 +8,6 @@ const SplashContainer = () => {
 
 	useEffect(() => {
 		const navigateTimer = setTimeout(() => {
-			// TODO : 로그인 여부에 따라 로그인이 되어 있으면 채널 선택 페이지로 아니면 로그인 페이지로 API 추가되면 코드 작성 예정
 			navigate("/login");
 		}, 2000);
 
@@ -29,12 +28,12 @@ const SplashContainer = () => {
 			}`}
 		>
 			<figure className="flex grow flex-col items-center justify-center">
-				<Logo width={122} height={142} />
+				<Logo className="h-[8.875rem] w-[7.625rem]" />
 				<figcaption className="mt-[1.875rem] font-Title text-3xl font-light text-white">
 					주린이를 부탁해
 				</figcaption>
 			</figure>
-			<p className="font-Roboto mb-[3.188rem] text-center font-light text-white">
+			<p className="mb-[3.188rem] text-center font-Roboto font-light text-white">
 				project. zero
 			</p>
 		</div>

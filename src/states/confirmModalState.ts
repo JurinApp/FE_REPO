@@ -15,7 +15,52 @@ export const deleteStocksModalState = atom<boolean>({
 	key: "deleteStocksModalState",
 });
 
+export const registerTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "registerTradeStockModalState",
+});
+
+export const editTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "editTradeStockModalState",
+});
+
+export const deleteDetailTradeStockModalState = atom<boolean>({
+	default: false,
+	key: "editTradeStockModalState",
+});
+
 export const deleteItemsModalState = atom<boolean>({
 	default: false,
 	key: "deleteItemsModalState",
+});
+
+export const editItemModalState = atom<boolean>({
+	default: false,
+	key: "editItemModalState",
+});
+
+export const deleteDetailItemModalState = atom<boolean>({
+	default: false,
+	key: "deleteDetailItemModalState",
+});
+
+export const deletePostsModalState = atom<boolean>({
+	default: false,
+	key: "deletePostsModalState",
+});
+
+export const registerConfirmModalState = atom<boolean>({
+	default: false,
+	key: "registerConfirmModalState",
+});
+
+export const deleteDetailPostModalState = atom<boolean>({
+	default: false,
+	key: "deleteDetailPostModalState",
+});
+
+export const editPostModalState = atom<boolean>({
+	default: false,
+	key: "editPostModalState",
 });

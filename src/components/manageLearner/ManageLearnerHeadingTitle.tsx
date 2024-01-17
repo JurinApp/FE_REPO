@@ -1,6 +1,6 @@
 import { ILearnerItem } from "@/interface/learnerItem";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IManageLearnerHeadingTitleProps {
@@ -28,20 +28,28 @@ const ManageLearnerHeadingTitle = ({
 		}
 	};
 
+	useEffect(() => {
+		return () => {
+			if (isAllCheck) {
+				setIsAllCheck(false);
+			}
+		};
+	}, []);
+
 	return (
-		<div className="flex w-full justify-between text-black-800">
+		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">
 			<div className="flex items-center">
 				<input
 					ref={checkBoxRef}
 					type="checkbox"
 					id="checkAll"
-					className="h-6 w-6"
+					className="custom-checkBox cursor-pointer"
 					checked={isAllCheck}
 					onChange={clickAllCheckHandler}
 				/>
 				<label
 					htmlFor="checkAll"
-					className="ml-2 flex h-full items-center text-sm"
+					className="ml-2 flex h-full cursor-pointer items-center text-sm"
 				>
 					전체 선택
 				</label>

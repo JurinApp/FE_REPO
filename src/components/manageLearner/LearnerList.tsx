@@ -1,15 +1,16 @@
 import { ILearnerItem } from "@/interface/learnerItem";
-import LearnerItem from "./LearnerItem";
-import { useEffect } from "react";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import LearnerItem from "./LearnerItem";
 
 interface ILearnerListProps {
 	readonly learnerList: ILearnerItem[];
 }
 
 const LearnerList = ({ learnerList }: ILearnerListProps) => {
-	const selectedLearners = useRecoilValue(selectedLearner);
+	const [selectedLearners, setSelectedLearners] =
+		useRecoilState(selectedLearner);
 	const setIsAllCheck = useSetRecoilState(allCheckState);
 
 	useEffect(() => {
@@ -19,6 +20,12 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 			setIsAllCheck(false);
 		}
 	}, [selectedLearners]);
+
+	useEffect(() => {
+		return () => {
+			setSelectedLearners([]);
+		};
+	}, []);
 
 	return (
 		<div className="mt-6 h-manage-height overflow-y-auto">

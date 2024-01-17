@@ -1,10 +1,12 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import AddImage from "@assets/svg/addImage.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
+import { useSetRecoilState } from "recoil";
+import { editItemModalState } from "@/states/confirmModalState";
 
 interface IFormValue {
 	readonly itemName: string;
@@ -20,6 +22,7 @@ interface IThumbNailImg {
 }
 
 const EditItemForm = () => {
+	const setIsOpenEditItemModal = useSetRecoilState(editItemModalState);
 	const labelRef = useRef<HTMLLabelElement>(null);
 	const [formValue, setFormValue] = useState<IFormValue>({
 		itemName: "",
@@ -97,6 +100,11 @@ const EditItemForm = () => {
 		}
 	};
 
+	const submitEditItemFormHandler = (e: FormEvent) => {
+		e.preventDefault();
+		setIsOpenEditItemModal(true);
+	};
+
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
 			<form>
@@ -115,7 +123,7 @@ const EditItemForm = () => {
 					</div>
 					{thumbNail.thumbNailImg === "" ? (
 						<div className="mt-[0.875rem] flex h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-							<Logo width={67} height={80} />
+							<Logo className="h-20 w-[4.188rem]" />
 						</div>
 					) : (
 						<img
@@ -223,6 +231,7 @@ const EditItemForm = () => {
 				<button
 					type="submit"
 					className="mx-auto mt-28 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
+					onClick={submitEditItemFormHandler}
 				>
 					수정
 				</button>

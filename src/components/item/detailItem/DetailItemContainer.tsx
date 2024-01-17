@@ -3,8 +3,15 @@ import Edit from "@assets/svg/btn_edit.svg?react";
 import DetailItemInfo from "./DetailItemInfo";
 import { Link } from "react-router-dom";
 import DeleteButton from "./DeleteButton";
+import { useRecoilValue } from "recoil";
+import { deleteDetailItemModalState } from "@/states/confirmModalState";
+import DeleteDetailItemModal from "./DeleteDetailItemModal";
 
 const DetailItemContainer = () => {
+	const isOpenDeleteDetailItemModal = useRecoilValue(
+		deleteDetailItemModalState,
+	);
+
 	return (
 		<div className="relative mx-auto w-full bg-btn-cancel-tekhelet sm:w-[24.563rem]">
 			<GoBackButton />
@@ -17,6 +24,7 @@ const DetailItemContainer = () => {
 				<DetailItemInfo />
 				<DeleteButton />
 			</div>
+			{isOpenDeleteDetailItemModal && <DeleteDetailItemModal />}
 		</div>
 	);
 };

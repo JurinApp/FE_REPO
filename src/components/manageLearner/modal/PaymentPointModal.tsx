@@ -1,12 +1,14 @@
 import { paymentPointModalState } from "@/states/confirmModalState";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const setIsOpenPaymentPointModal = useSetRecoilState(paymentPointModalState);
+	const [isOpenPaymentPointModal, setIsOpenPaymentPointModal] = useRecoilState(
+		paymentPointModalState,
+	);
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
 
@@ -59,11 +61,19 @@ const PaymentPointModal = () => {
 		};
 	}, [modalRef]);
 
+	useEffect(() => {
+		return () => {
+			if (isOpenPaymentPointModal) {
+				setIsOpenPaymentPointModal(false);
+			}
+		};
+	}, []);
+
 	return (
 		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
 			<div
 				ref={modalRef}
-				className="w-modal-width flex flex-col rounded bg-white"
+				className="flex w-modal-width flex-col rounded bg-white"
 			>
 				<div className="mb-6 mt-12 flex grow items-center justify-center">
 					<p className="my-auto text-lg">포인트를 지급하시겠습니까?</p>
@@ -102,7 +112,7 @@ const PaymentPointModal = () => {
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
 						onClick={paymentPointHandler}
 					>
-						지급
+						확인
 					</button>
 				</div>
 			</div>
