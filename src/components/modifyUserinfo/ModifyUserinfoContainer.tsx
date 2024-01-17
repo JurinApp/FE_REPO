@@ -37,7 +37,7 @@ export const ModifyUserinfoContainer = () => {
 	};
 
 	return (
-		<div className="mx-auto h-[50.312rem]  bg-[#ffffff] ">
+		<div className="mx-auto h-[50.312rem] bg-[#ffffff] sm:w-[23.563rem] ">
 			<div className="flex h-[50.312rem] flex-col justify-end gap-4">
 				<h1 className=" ml-4 text-[1.625rem] font-bold">프로필</h1>
 				<div
