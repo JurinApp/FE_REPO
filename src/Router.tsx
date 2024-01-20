@@ -30,10 +30,7 @@ const EditTradeStockPage = lazy(
 );
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
-const StockSpecPage = lazy(() => import("@pages/StockSpecPage"));
-const StockBuyPage = lazy(() => import("@pages/StockBuyPage"));
-const StockSellPage = lazy(() => import("@pages/StockSellPage"));
-const StockOrderPage = lazy(() => import("@pages/StockOrderPage"));
+const StockPage = lazy(() => import("@pages/student/stock/StockPage"));
 const ItemPage = lazy(() => import("@pages/educator/item/ItemPage"));
 const RegisterItemPage = lazy(
 	() => import("@pages/educator/item/RegisterItemPage"),
@@ -71,10 +68,7 @@ const Router = () => {
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
-					<Route path="/stock/spec" element={<StockSpecPage />} />
-					<Route path="/stock/buy" element={<StockBuyPage />} />
-					<Route path="/stock/sell" element={<StockSellPage />} />
-					<Route path="/stock/order" element={<StockOrderPage />} />
+					<Route path="/stock" element={<StockPage />} />
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route
 						path="/trade/stock/register"
