@@ -283,7 +283,7 @@ const SignUpForm = () => {
 									errors.id
 										? "border-danger focus:border-danger"
 										: "border-black-100 focus:border-black-800"
-								} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+								} grow rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 								placeholder="아이디"
 								{...register("id")}
 							/>
@@ -315,7 +315,7 @@ const SignUpForm = () => {
 								errors.password
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.password ? "mb-3" : "mb-1"
 							}`}
 							placeholder="비밀번호"
@@ -335,7 +335,7 @@ const SignUpForm = () => {
 								errors.checkPassword
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.checkPassword && "mb-3"
 							}`}
 							placeholder="비밀번호 확인"
@@ -357,7 +357,7 @@ const SignUpForm = () => {
 								errors.name
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.name && "mb-3"
 							}`}
 							placeholder="이름"
@@ -427,7 +427,7 @@ const SignUpForm = () => {
 										codeError.isError
 											? "border-danger focus:border-danger"
 											: "border-black-100 focus:border-black-800"
-									} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+									} grow rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 									placeholder="인증 코드 입력"
 								/>
 								<button

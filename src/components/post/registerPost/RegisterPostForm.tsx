@@ -61,7 +61,7 @@ const RegisterPostForm = () => {
 							type="text"
 							placeholder="상품명을 입력해주세요"
 							id="itemName"
-							className="w-full border-b border-black-100 pb-[0.625rem] font-bold text-black-300 outline-none focus:border-black-800"
+							className="w-full rounded-none border-b border-black-100 pb-[0.625rem] font-bold text-black-300 outline-none focus:border-black-800"
 							onChange={itemNameHandler}
 						/>
 					</div>
@@ -74,7 +74,7 @@ const RegisterPostForm = () => {
 						</label>
 						<input
 							type="text"
-							className="grow border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
+							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
 							id="registerDate"
 							onChange={dateHandler}
 						/>
@@ -88,7 +88,7 @@ const RegisterPostForm = () => {
 						</label>
 						<input
 							type="text"
-							className="grow border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
+							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
 							id="title"
 							onChange={titleHandler}
 						/>
@@ -101,7 +101,7 @@ const RegisterPostForm = () => {
 							내용
 						</label>
 						<textarea
-							className="grow resize-none border-b border-black-100 outline-none focus:border-black-800"
+							className="grow resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800"
 							id="content"
 							onChange={contentHandler}
 						/>

@@ -108,7 +108,7 @@ const RegisterItemForm = () => {
 						<input
 							type="text"
 							id="itemName"
-							className="w-full border-b border-black-100 pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem]"
+							className="w-full rounded-none border-b border-black-100 pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem]"
 							placeholder="아이템명을 입력해주세요"
 							onChange={onChangeItemNameHandler}
 						/>
@@ -180,7 +180,7 @@ const RegisterItemForm = () => {
 								type="number"
 								id="quantity"
 								value={formValue.quantity}
-								className="flex h-10 w-[3.375rem] items-center justify-center text-center font-medium outline-none"
+								className="flex h-10 w-[3.375rem] items-center justify-center rounded-none text-center font-medium outline-none"
 							/>
 							<button
 								type="button"
@@ -201,7 +201,7 @@ const RegisterItemForm = () => {
 						<input
 							type="text"
 							id="price"
-							className="grow border-b border-black-100 pb-[0.625rem] outline-none"
+							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none"
 							value={replacePrice}
 							onChange={onChangePriceHandler}
 						/>
@@ -215,7 +215,7 @@ const RegisterItemForm = () => {
 						</label>
 						<textarea
 							id="content"
-							className="grow resize-none border-b border-black-100 outline-none"
+							className="grow resize-none rounded-none border-b border-black-100 outline-none"
 							onChange={onChangeContentHandler}
 						/>
 					</div>

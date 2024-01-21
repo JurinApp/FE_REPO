@@ -64,7 +64,7 @@ const EditTradeStockForm = () => {
 								type="text"
 								placeholder="상품명을 입력해주세요"
 								id="stockName"
-								className={`w-full border-b border-black-100 pb-[0.625rem] font-bold outline-none placeholder:text-black-300 focus:border-black-800 ${
+								className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] font-bold outline-none placeholder:text-black-300 focus:border-black-800 ${
 									errors.stockName && "border-danger"
 								} mb-2`}
 								{...register("stockName")}
@@ -83,7 +83,7 @@ const EditTradeStockForm = () => {
 								</label>
 								<input
 									type="number"
-									className={`grow border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.price && "border-danger"
 									}`}
 									id="price"
@@ -104,7 +104,7 @@ const EditTradeStockForm = () => {
 								</label>
 								<input
 									type="number"
-									className={`grow border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.tax && "border-danger"
 									}`}
 									id="tax"
@@ -125,7 +125,7 @@ const EditTradeStockForm = () => {
 								</label>
 								<input
 									type="text"
-									className={`grow border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.standard && "border-danger"
 									}`}
 									id="standard"
@@ -145,7 +145,7 @@ const EditTradeStockForm = () => {
 									내용
 								</label>
 								<textarea
-									className={`grow resize-none border-b border-black-100 outline-none focus:border-black-800 ${
+									className={`grow resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800 ${
 										errors.standard && "border-danger"
 									}`}
 									id="content"

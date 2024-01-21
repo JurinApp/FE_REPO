@@ -98,7 +98,7 @@ const LoginFormSection = () => {
 					id="id"
 					type="text"
 					autoComplete="id"
-					className={`${errors.id && "mb-2"} w-full border-b ${
+					className={`${errors.id && "mb-2"} w-full rounded-none border-b ${
 						(loginError.isError || errors.id) && "border-danger"
 					} py-[0.875rem] outline-none focus:border-b-black`}
 					placeholder="아이디를 입력해주세요"
@@ -111,7 +111,9 @@ const LoginFormSection = () => {
 					id="password"
 					type="password"
 					autoComplete="new-password"
-					className={`${errors.password && "mb-2"} w-full border-b ${
+					className={`${
+						errors.password && "mb-2"
+					} w-full rounded-none border-b ${
 						(loginError.isError || errors.password) && "border-danger"
 					} py-[0.875rem] outline-none focus:border-b-black`}
 					placeholder="비밀번호를 입력해주세요"
