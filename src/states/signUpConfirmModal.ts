@@ -6,7 +6,7 @@ interface ISignUpConfirmModalState {
 }
 
 const INITIAL_VALUE = {
-	selectedAuth: "teacher",
+	selectedAuth: "1",
 	isModalOpen: false,
 };
 
