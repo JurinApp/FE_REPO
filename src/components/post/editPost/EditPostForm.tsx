@@ -62,13 +62,13 @@ const EditPostForm = () => {
 					<div className="mb-[0.875rem] flex w-full">
 						<label
 							htmlFor="registerDate"
-							className="mr-[0.625rem] w-[1.875rem] text-black-800"
+							className="mr-[0.625rem] w-[3rem] text-black-800"
 						>
 							날짜
 						</label>
 						<input
 							type="text"
-							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
+							className="w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
 							id="registerDate"
 							onChange={dateHandler}
 						/>
@@ -76,13 +76,13 @@ const EditPostForm = () => {
 					<div className="mb-[0.875rem] flex w-full">
 						<label
 							htmlFor="title"
-							className="mr-[0.625rem] w-[1.875rem] text-black-800"
+							className="mr-[0.625rem] w-[3rem] text-black-800"
 						>
 							제목
 						</label>
 						<input
 							type="text"
-							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
+							className="w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800"
 							id="title"
 							onChange={titleHandler}
 						/>
@@ -90,12 +90,12 @@ const EditPostForm = () => {
 					<div className="flex w-full">
 						<label
 							htmlFor="content"
-							className="mr-[0.625rem] w-[1.875rem] text-black-800"
+							className="mr-[0.625rem] w-[3rem] text-black-800"
 						>
 							내용
 						</label>
 						<textarea
-							className="grow resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800"
+							className="w-full resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800"
 							id="content"
 							onChange={contentHandler}
 						/>

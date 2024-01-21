@@ -100,7 +100,7 @@ const RegisterItemForm = () => {
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
 			<form>
-				<div className="flex h-[calc(100vh-20rem)] flex-col items-center overflow-y-auto bg-white">
+				<div className="flex h-[calc(100vh-20rem)] flex-col items-center overflow-y-auto bg-white py-4 sm:py-0">
 					<div className="mt-6">
 						<label htmlFor="itemName" className="hidden">
 							아이템명
@@ -201,7 +201,7 @@ const RegisterItemForm = () => {
 						<input
 							type="text"
 							id="price"
-							className="grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none"
+							className="w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none"
 							value={replacePrice}
 							onChange={onChangePriceHandler}
 						/>

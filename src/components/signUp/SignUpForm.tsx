@@ -283,7 +283,7 @@ const SignUpForm = () => {
 									errors.id
 										? "border-danger focus:border-danger"
 										: "border-black-100 focus:border-black-800"
-								} grow rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+								} w-full rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 								placeholder="아이디"
 								{...register("id")}
 							/>
@@ -427,7 +427,7 @@ const SignUpForm = () => {
 										codeError.isError
 											? "border-danger focus:border-danger"
 											: "border-black-100 focus:border-black-800"
-									} grow rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+									} w-full rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 									placeholder="인증 코드 입력"
 								/>
 								<button

@@ -75,13 +75,13 @@ const RegisterTradeStockForm = () => {
 							<div className="mb-2 flex">
 								<label
 									htmlFor="price"
-									className="mr-[0.625rem] w-[1.875rem] text-black-800"
+									className="mr-[0.625rem] w-[3rem] text-black-800"
 								>
 									가격
 								</label>
 								<input
 									type="number"
-									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.price && "border-danger"
 									}`}
 									id="price"
@@ -96,13 +96,13 @@ const RegisterTradeStockForm = () => {
 							<div className="mb-2 flex">
 								<label
 									htmlFor="tax"
-									className="mr-[0.625rem] w-[1.875rem] text-black-800"
+									className="mr-[0.625rem] w-[3rem] text-black-800"
 								>
 									세금
 								</label>
 								<input
 									type="number"
-									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.tax && "border-danger"
 									}`}
 									id="tax"
@@ -117,13 +117,13 @@ const RegisterTradeStockForm = () => {
 							<div className="mb-2 flex">
 								<label
 									htmlFor="standard"
-									className="mr-[0.625rem] w-[1.875rem] text-black-800"
+									className="mr-[0.625rem] w-[3rem] text-black-800"
 								>
 									기준
 								</label>
 								<input
 									type="text"
-									className={`grow rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
+									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
 										errors.standard && "border-danger"
 									}`}
 									id="standard"
@@ -138,12 +138,12 @@ const RegisterTradeStockForm = () => {
 							<div className="mb-2 flex">
 								<label
 									htmlFor="content"
-									className="mr-[0.625rem] w-[1.875rem] text-black-800"
+									className="mr-[0.625rem] w-[3rem] text-black-800"
 								>
 									내용
 								</label>
 								<textarea
-									className={`grow resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800 ${
+									className={`w-full resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800 ${
 										errors.standard && "border-danger"
 									}`}
 									id="content"
