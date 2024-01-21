@@ -58,7 +58,7 @@ const LoginFormSection = () => {
 
 		const response = await axiosData("default", {
 			method: "POST",
-			url: "/api/api/v1/auth/signin",
+			url: "/api/v1/auth/signin",
 			data: {
 				username: getValues().id,
 				password: getValues().password,

@@ -6,11 +6,11 @@ const useAxios = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const defaultAxios: AxiosInstance = axios.create({
-		baseURL: import.meta.env.VITE_SERVER_URI,
+		baseURL: import.meta.env.VITE_DEV_SERVER_PATH,
 	});
 
 	const useTokenAxios: AxiosInstance = axios.create({
-		baseURL: import.meta.env.VITE_SERVER_URI,
+		baseURL: import.meta.env.VITE_DEV_SERVER_PATH,
 		headers: {
 			Authorization: `Bearer ${getCookie("accessToken")}`,
 		},
