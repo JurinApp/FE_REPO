@@ -27,7 +27,7 @@ export const editTradeStockModalState = atom<boolean>({
 
 export const deleteDetailTradeStockModalState = atom<boolean>({
 	default: false,
-	key: "editTradeStockModalState",
+	key: "deleteDetailTradeStockModalState",
 });
 
 export const deleteItemsModalState = atom<boolean>({

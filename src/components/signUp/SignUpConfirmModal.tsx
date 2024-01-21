@@ -12,7 +12,7 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 	);
 	const modalRef = useRef<HTMLDivElement>(null);
 	const selectedAuthName =
-		confirmModalState.selectedAuth === "teacher" ? "선생님" : "학생";
+		confirmModalState.selectedAuth === "1" ? "선생님" : "학생";
 
 	const closeBtnModalHandler = () => {
 		setConfirmModalState((prevState) => ({
@@ -48,7 +48,7 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 
 	useEffect(() => {
 		return () => {
-			setConfirmModalState({ selectedAuth: "teacher", isModalOpen: false });
+			setConfirmModalState({ selectedAuth: "1", isModalOpen: false });
 		};
 	}, []);
 

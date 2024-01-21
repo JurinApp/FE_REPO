@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import ErrorMsg from "../common/errorMsg/ErrorMsg";
 import SuccessMsg from "../common/successMsg/SuccessMsg";
 import SignUpConfirmModal from "./SignUpConfirmModal";
+import Spinner from "../common/spinner/Spinner";
 
 interface IIdDuplicateCheck {
 	readonly isIdDuplicateCheck: boolean;
@@ -32,7 +33,7 @@ const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
-	const { axiosData } = useAxios();
+	const { isLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const {
 		register,
@@ -40,6 +41,7 @@ const SignUpForm = () => {
 		setError,
 		watch,
 		getValues,
+		clearErrors,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -47,7 +49,7 @@ const SignUpForm = () => {
 			password: "",
 			checkPassword: "",
 			name: "",
-			auth: "teacher",
+			auth: "1",
 		},
 		resolver: yupResolver(SIGN_UP_SCHEMA),
 		mode: "onChange",
@@ -72,6 +74,8 @@ const SignUpForm = () => {
 	const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
 	const signUpSubmitHandler = async () => {
+		if (!isSignUp) return;
+
 		const response = await axiosData("default", {
 			method: "POST",
 			url: "/api/api/v1/auth/signup",
@@ -79,7 +83,7 @@ const SignUpForm = () => {
 				username: getValues().id,
 				nickname: getValues().name,
 				password: getValues().password,
-				userRole: getValues().auth,
+				userRole: Number(getValues().auth),
 				verificationCode: code,
 			},
 		});
@@ -114,19 +118,38 @@ const SignUpForm = () => {
 
 		if (response) {
 			const status = response.status;
+			const isValidId = response.data.data.isValid;
+
+			if (status === 200) {
+				if (isValidId) {
+					clearErrors("id");
+					setIdDuplicateCheck({
+						isIdDuplicateCheck: true,
+						idDuplicateMsg: "사용 가능한 아이디입니다.",
+						isIdBtnDisabled: true,
+					});
+				} else {
+					setError("id", {
+						message: "사용할 수 없는 아이디입니다.",
+						type: "onChange",
+					});
+					setIdDuplicateCheck({
+						isIdDuplicateCheck: false,
+						idDuplicateMsg: "",
+						isIdBtnDisabled: false,
+					});
+				}
+			}
 
 			if (status === 400) {
+				setError("id", {
+					message: "사용할 수 없는 아이디입니다.",
+					type: "onChange",
+				});
 				setIdDuplicateCheck({
 					isIdDuplicateCheck: false,
-					idDuplicateMsg: "사용 불가능한 아이디입니다.",
+					idDuplicateMsg: "",
 					isIdBtnDisabled: false,
-				});
-			}
-			if (status === 200) {
-				setIdDuplicateCheck({
-					isIdDuplicateCheck: true,
-					idDuplicateMsg: "사용 가능한 아이디입니다.",
-					isIdBtnDisabled: true,
 				});
 			}
 
@@ -148,13 +171,30 @@ const SignUpForm = () => {
 
 		if (response) {
 			const status = response.status;
+			const isValidCode = response.data.data.isValid;
 
 			if (status === 200) {
-				setCodeDuplicateCheck({
-					isCodeDuplicateCheck: true,
-					codeDuplicateMsg: "인증이 완료되었습니다.",
-					isCodeBtnDisabled: true,
-				});
+				if (isValidCode) {
+					setCodeError({
+						isError: false,
+						codeErrorMsg: "",
+					});
+					setCodeDuplicateCheck({
+						isCodeDuplicateCheck: true,
+						codeDuplicateMsg: "인증이 완료되었습니다.",
+						isCodeBtnDisabled: true,
+					});
+				} else {
+					setCodeError({
+						isError: true,
+						codeErrorMsg: "인증코드가 일치하지 않습니다.",
+					});
+					setCodeDuplicateCheck({
+						isCodeDuplicateCheck: false,
+						codeDuplicateMsg: "인증코드가 일치하지 않습니다.",
+						isCodeBtnDisabled: false,
+					});
+				}
 			}
 			if (status === 400) {
 				setCodeDuplicateCheck({
@@ -176,7 +216,7 @@ const SignUpForm = () => {
 	useEffect(() => {
 		const auth = watch().auth;
 
-		if (auth === "student") {
+		if (auth === "2") {
 			setCodeError({
 				isError: false,
 				codeErrorMsg: "",
@@ -192,7 +232,7 @@ const SignUpForm = () => {
 			}
 		}
 
-		if (auth === "teacher") {
+		if (auth === "1") {
 			setCodeDuplicateCheck((prevState) => ({
 				...prevState,
 				isCodeDuplicateCheck: false,
@@ -209,37 +249,29 @@ const SignUpForm = () => {
 		const id = watch().id;
 
 		if (idDuplicateCheck.isIdBtnDisabled && id.length >= 8) {
-			setIdDuplicateCheck((prevState) => ({
-				...prevState,
+			setIdDuplicateCheck({
+				isIdDuplicateCheck: false,
+				idDuplicateMsg: "",
 				isIdBtnDisabled: false,
-			}));
+			});
 			setError("id", {
 				message: "아이디 중복확인을 하세요.",
 				type: "onChange",
 			});
 		}
 
-		if (!idDuplicateCheck.isIdBtnDisabled && id.length < 8) {
-			setIdDuplicateCheck((prevState) => ({
-				...prevState,
-				isIdBtnDisabled: true,
-			}));
-		}
-
-		if (idDuplicateCheck.isIdDuplicateCheck) {
-			const isDisabled = id.length >= 8;
-
+		if (id.length < 8) {
 			setIdDuplicateCheck({
 				isIdDuplicateCheck: false,
 				idDuplicateMsg: "",
-				isIdBtnDisabled: isDisabled,
+				isIdBtnDisabled: true,
 			});
 		}
 	}, [watch().id]);
 
 	useEffect(() => {
 		if (
-			watch().auth === "teacher" &&
+			watch().auth === "1" &&
 			codeDuplicateCheck.isCodeBtnDisabled &&
 			code.length === 8
 		) {
@@ -265,7 +297,10 @@ const SignUpForm = () => {
 		<>
 			<div className="mt-6">
 				<h1 className="text-[1.625rem] font-bold">회원가입</h1>
-				<form onSubmit={handleSubmit(signUpSubmitHandler)} className="mt-6 ">
+				<form
+					onSubmit={handleSubmit(onClickSignUpBtnHandler)}
+					className="mt-6 "
+				>
 					<div className="flex flex-col">
 						<label htmlFor="id" className="mb-1 font-bold text-black-800">
 							아이디
@@ -283,7 +318,7 @@ const SignUpForm = () => {
 									errors.id
 										? "border-danger focus:border-danger"
 										: "border-black-100 focus:border-black-800"
-								} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+								} w-full rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300`}
 								placeholder="아이디"
 								{...register("id")}
 							/>
@@ -315,7 +350,7 @@ const SignUpForm = () => {
 								errors.password
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.password ? "mb-3" : "mb-1"
 							}`}
 							placeholder="비밀번호"
@@ -335,7 +370,7 @@ const SignUpForm = () => {
 								errors.checkPassword
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.checkPassword && "mb-3"
 							}`}
 							placeholder="비밀번호 확인"
@@ -357,7 +392,7 @@ const SignUpForm = () => {
 								errors.name
 									? "border-danger focus:border-danger"
 									: "border-black-100 focus:border-black-800"
-							} border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
+							} rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 ${
 								errors.name && "mb-3"
 							}`}
 							placeholder="이름"
@@ -375,7 +410,7 @@ const SignUpForm = () => {
 									<input
 										id="teacher"
 										type="radio"
-										value="teacher"
+										value="1"
 										className="h-6 w-6 cursor-pointer"
 										defaultChecked
 										{...register("auth")}
@@ -391,7 +426,7 @@ const SignUpForm = () => {
 									<input
 										id="student"
 										type="radio"
-										value="student"
+										value="2"
 										className="h-6 w-6 cursor-pointer"
 										{...register("auth")}
 									/>
@@ -410,7 +445,7 @@ const SignUpForm = () => {
 						<div>
 							<div
 								className={`${
-									watch().auth === "student" ? "hidden" : "flex items-center"
+									watch().auth === "2" ? "hidden" : "flex items-center"
 								} ${
 									(codeError.isError ||
 										codeDuplicateCheck.isCodeDuplicateCheck) &&
@@ -422,12 +457,13 @@ const SignUpForm = () => {
 									type="text"
 									ref={codeRef}
 									maxLength={8}
+									disabled={codeDuplicateCheck.isCodeDuplicateCheck}
 									onChange={onChangeCodeHandler}
 									className={`${
 										codeError.isError
 											? "border-danger focus:border-danger"
 											: "border-black-100 focus:border-black-800"
-									} grow border-b py-[0.875rem] outline-none placeholder:text-black-300`}
+									} w-full rounded-none border-b py-[0.875rem] outline-none placeholder:text-black-300 disabled:text-black-300`}
 									placeholder="인증 코드 입력"
 								/>
 								<button
@@ -442,14 +478,14 @@ const SignUpForm = () => {
 							{codeError.isError && codeError.codeErrorMsg && (
 								<ErrorMsg message={codeError.codeErrorMsg} />
 							)}
-							{codeDuplicateCheck.isCodeDuplicateCheck && (
-								<SuccessMsg message={codeDuplicateCheck.codeDuplicateMsg} />
-							)}
+							{!codeError.isError &&
+								codeDuplicateCheck.isCodeDuplicateCheck && (
+									<SuccessMsg message={codeDuplicateCheck.codeDuplicateMsg} />
+								)}
 						</div>
 					</div>
 					<button
 						type="submit"
-						onClick={onClickSignUpBtnHandler}
 						disabled={
 							!isValid ||
 							!idDuplicateCheck.isIdDuplicateCheck ||
@@ -464,6 +500,7 @@ const SignUpForm = () => {
 			{confirmModalState.isModalOpen && (
 				<SignUpConfirmModal setIsSignUp={setIsSignUp} />
 			)}
+			{isLoading && <Spinner />}
 		</>
 	);
 };
