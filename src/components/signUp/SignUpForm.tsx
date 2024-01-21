@@ -78,7 +78,7 @@ const SignUpForm = () => {
 
 		const response = await axiosData("default", {
 			method: "POST",
-			url: "/api/api/v1/auth/signup",
+			url: "/api/v1/auth/signup",
 			data: {
 				username: getValues().id,
 				nickname: getValues().name,
@@ -109,7 +109,7 @@ const SignUpForm = () => {
 	const idDuplicateCheckHandler = async () => {
 		const response = await axiosData("default", {
 			method: "POST",
-			url: "/api/api/v1/auth/validate",
+			url: "/api/v1/auth/validate",
 			data: {
 				validateValue: getValues().id,
 				validateType: "username",
@@ -162,7 +162,7 @@ const SignUpForm = () => {
 	const codeDuplicateCheckHandler = async () => {
 		const response = await axiosData("default", {
 			method: "POST",
-			url: "/api/api/v1/auth/validate",
+			url: "/api/v1/auth/validate",
 			data: {
 				validateValue: code,
 				validateType: "verification_code",
