@@ -1,4 +1,4 @@
-import GoBackButton from "../../common/GoBackButton/GoBackButton";
+import GoBackButton from "../../../common/GoBackButton/GoBackButton";
 import RegisterItemForm from "./RegisterItemForm";
 
 const RegisterItemContainer = () => {

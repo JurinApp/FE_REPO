@@ -7,7 +7,7 @@ import { headerMenuUseState } from "./states/headerMenuUseState";
 
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
-const TradeTab = lazy(() => import("@components/trade/TradeTab"));
+const TradeTab = lazy(() => import("@components/educator/trade/TradeTab"));
 const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));

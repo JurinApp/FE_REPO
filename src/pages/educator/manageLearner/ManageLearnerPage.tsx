@@ -1,4 +1,4 @@
-import ManageLearnerContainer from "@/components/manageLearner/ManageLearnerContainer";
+import ManageLearnerContainer from "@/components/educator/manageLearner/ManageLearnerContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
