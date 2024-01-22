@@ -25,7 +25,10 @@ export default {
 				"stock-red": "rgba(224,23,23,0.3)",
 				"stock-buy": "rgba(224,23,23,1)",
 				"stock-sell": "rgba(0,117,255, 1)",
+				"blur-red": "rgba(224,23,23,0.5)",
+				"blur-blue": "rgba(0, 117,255, 0.5)",
 				"sub2-selected": "rgba(118,120,237,0.3)",
+				"calender-back": "rgba(213, 213, 221, 1)",
 			},
 			width: {
 				"box-width": "22.563rem",
