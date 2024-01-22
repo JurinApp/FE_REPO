@@ -1,29 +1,43 @@
 import { IStockBSHistory } from "@/interface/stock";
+import { useState } from "react";
+import Calandar from "@assets/svg/calendar.svg?react";
+import { divide } from "lodash";
+import CalendarModal from "./CalendarModal";
 
 const StockOrderContainer = () => {
-	const stockBSHistory: IStockBSHistory = {
-		buy: [
-			{ price: 1400, quantity: 1 },
-			{ price: 1300, quantity: 3 },
-			{ price: 1200, quantity: 2 },
-			{ price: 1100, quantity: 3 },
-			{ price: 1000, quantity: 5 },
-			{ price: 900, quantity: 4 },
-			{ price: 800, quantity: 3 },
-		],
-		sell: [
-			{ price: 700, quantity: 1 },
-			{ price: 600, quantity: 3 },
-			{ price: 500, quantity: 2 },
-			{ price: 450, quantity: 3 },
-			{ price: 400, quantity: 5 },
-			{ price: 300, quantity: 4 },
-			{ price: 200, quantity: 3 },
-		],
+	const today = new Date();
+	const year = today.getFullYear();
+	const month = String(today.getMonth() + 1).padStart(2, "0");
+	const date = String(today.getDate()).padStart(2, "0");
+	const fullDate = `${year}. ${month}. ${date}`;
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const fetchOrder = () => {
+		// TODO: 날짜에 해당하는 주식 거래 내역을 불러오는 API
 	};
+
+	const onCancle = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<>
-			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]"></div>
+			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+				<div className="flex justify-center">
+					<button
+						id="calendar-modal-btn"
+						onClick={() => setIsModalOpen(true)}
+						className="mt-6 flex  h-[38px] w-[131px] flex-row items-center justify-center gap-2 rounded border border-black-300 bg-white"
+					>
+						<Calandar />
+						<p className="text-sm font-bold">{fullDate}</p>
+					</button>
+				</div>
+			</div>
+			{isModalOpen && (
+				<CalendarModal fetchOrder={fetchOrder} onCancel={onCancle} />
+			)}
 		</>
 	);
 };
