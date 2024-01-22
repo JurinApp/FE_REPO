@@ -1,4 +1,4 @@
-import EditPostContainer from "@/components/post/editPost/EditPostContainer";
+import EditPostContainer from "@/components/educator/post/editPost/EditPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

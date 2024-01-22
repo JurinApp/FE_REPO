@@ -1,4 +1,4 @@
-import EditItemContainer from "@/components/item/editItem/EditItemContainer";
+import EditItemContainer from "@/components/educator/item/editItem/EditItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

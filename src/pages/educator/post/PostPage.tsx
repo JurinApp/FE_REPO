@@ -1,4 +1,4 @@
-import PostContainer from "@components/post/inquiryPost/PostContainer";
+import PostContainer from "@/components/educator/post/inquiryPost/PostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

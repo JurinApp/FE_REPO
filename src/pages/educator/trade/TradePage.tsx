@@ -1,4 +1,4 @@
-import TradeHomeContainer from "@components/trade/tradeHome/inquiryTradeStocks/TradeHomeContainer";
+import TradeHomeContainer from "@/components/educator/trade/tradeHome/inquiryTradeStocks/TradeHomeContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
