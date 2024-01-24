@@ -4,7 +4,7 @@ import {
 	selectedPostsState,
 } from "@/states/selectedPostState";
 import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import PostItem from "./PostItem";
 
 interface IPostListProps {
@@ -12,7 +12,8 @@ interface IPostListProps {
 }
 
 const PostList = ({ postList }: IPostListProps) => {
-	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
+	const selectedPosts = useRecoilValue(selectedPostsState);
+	const resetSelectedPosts = useResetRecoilState(selectedPostsState);
 	const setIsAllCheck = useSetRecoilState(allCheckPostsState);
 
 	useEffect(() => {
@@ -26,7 +27,7 @@ const PostList = ({ postList }: IPostListProps) => {
 	useEffect(() => {
 		return () => {
 			if (selectedPosts) {
-				setSelectedPosts([]);
+				resetSelectedPosts();
 			}
 		};
 	}, []);

@@ -1,10 +1,11 @@
 import { editPostModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const EditConfirmModal = () => {
 	const [isOpenEditModal, setIsOpenEditModal] =
 		useRecoilState(editPostModalState);
+	const resetIsOpenEditModal = useResetRecoilState(editPostModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -32,7 +33,7 @@ const EditConfirmModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenEditModal) {
-				setIsOpenEditModal(false);
+				resetIsOpenEditModal();
 			}
 		};
 	}, []);

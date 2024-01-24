@@ -1,11 +1,14 @@
 import { deletePostsModalState } from "@/states/confirmModalState";
 import { selectedPostsState } from "@/states/selectedPostState";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeletePostsModal = () => {
 	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
 	const [isOpenDeletePostsModal, setIsOpenDeletePostsModal] = useRecoilState(
+		deletePostsModalState,
+	);
+	const resetIsOpenDeletePostsModal = useResetRecoilState(
 		deletePostsModalState,
 	);
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -36,7 +39,7 @@ const DeletePostsModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenDeletePostsModal) {
-				setIsOpenDeletePostsModal(false);
+				resetIsOpenDeletePostsModal();
 			}
 		};
 	}, []);

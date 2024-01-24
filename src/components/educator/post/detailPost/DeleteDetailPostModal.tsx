@@ -1,10 +1,13 @@
 import { deleteDetailPostModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteDetailPostModal = () => {
 	const [isOpenDeleteDetailPostModal, setIsOpenDeleteDetailPostModal] =
 		useRecoilState(deleteDetailPostModalState);
+	const resetIsOpenDeleteDetailPostModal = useResetRecoilState(
+		deleteDetailPostModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -32,7 +35,7 @@ const DeleteDetailPostModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenDeleteDetailPostModal) {
-				setIsOpenDeleteDetailPostModal(false);
+				resetIsOpenDeleteDetailPostModal();
 			}
 		};
 	}, []);

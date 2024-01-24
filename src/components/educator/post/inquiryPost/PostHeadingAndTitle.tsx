@@ -4,7 +4,7 @@ import {
 	selectedPostsState,
 } from "@/states/selectedPostState";
 import { ChangeEvent, useEffect, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IPostHeadingAndTitleProps {
 	readonly postList: IPost[];
@@ -13,6 +13,7 @@ interface IPostHeadingAndTitleProps {
 const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 	const setSelectedPosts = useSetRecoilState(selectedPostsState);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckPostsState);
+	const resetIsAllCheck = useResetRecoilState(allCheckPostsState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
 	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,7 @@ const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 	useEffect(() => {
 		return () => {
 			if (isAllCheck) {
-				setIsAllCheck(false);
+				resetIsAllCheck();
 			}
 		};
 	}, []);
