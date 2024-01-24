@@ -1,7 +1,7 @@
 import { ILearnerItem } from "@/interface/learnerItem";
 import { allCheckState, selectedLearner } from "@/states/manageLearner";
 import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import LearnerItem from "./LearnerItem";
 
 interface ILearnerListProps {
@@ -9,8 +9,8 @@ interface ILearnerListProps {
 }
 
 const LearnerList = ({ learnerList }: ILearnerListProps) => {
-	const [selectedLearners, setSelectedLearners] =
-		useRecoilState(selectedLearner);
+	const selectedLearners = useRecoilValue(selectedLearner);
+	const resetSelectedLearners = useResetRecoilState(selectedLearner);
 	const setIsAllCheck = useSetRecoilState(allCheckState);
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 
 	useEffect(() => {
 		return () => {
-			setSelectedLearners([]);
+			resetSelectedLearners();
 		};
 	}, []);
 
