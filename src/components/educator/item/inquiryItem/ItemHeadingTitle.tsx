@@ -4,7 +4,7 @@ import {
 	selectedItemState,
 } from "@/states/selectedItemState";
 import { ChangeEvent, useEffect, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IItemHeadingTitleProps {
 	readonly itemList: IItem[];
@@ -13,6 +13,7 @@ interface IItemHeadingTitleProps {
 const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 	const setSelectedItems = useSetRecoilState(selectedItemState);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckItemsState);
+	const resetIsAllCheck = useResetRecoilState(allCheckItemsState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
 	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,7 @@ const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 	useEffect(() => {
 		return () => {
 			if (isAllCheck) {
-				setIsAllCheck(false);
+				resetIsAllCheck();
 			}
 		};
 	}, []);
