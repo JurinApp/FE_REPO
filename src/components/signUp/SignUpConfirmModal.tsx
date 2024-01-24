@@ -1,6 +1,6 @@
 import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface ISignUpConfirmModalProps {
 	readonly setIsSignUp: (type: boolean) => void;
@@ -10,6 +10,7 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
+	const resetConfirmModalState = useResetRecoilState(signUpConfirmModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 	const selectedAuthName =
 		confirmModalState.selectedAuth === "1" ? "선생님" : "학생";
@@ -48,7 +49,7 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 
 	useEffect(() => {
 		return () => {
-			setConfirmModalState({ selectedAuth: "1", isModalOpen: false });
+			resetConfirmModalState();
 		};
 	}, []);
 
