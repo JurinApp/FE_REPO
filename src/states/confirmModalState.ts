@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 
+// -------- 선생님 권한 학생 관리 --------
 export const deleteConfirmModalState = atom<boolean>({
 	default: false,
 	key: "deleteConfirmModalState",
@@ -10,6 +11,7 @@ export const paymentPointModalState = atom<boolean>({
 	key: "paymentPointModalState",
 });
 
+// -------- 선생님 권한 주식 거래  --------
 export const deleteStocksModalState = atom<boolean>({
 	default: false,
 	key: "deleteStocksModalState",
@@ -30,6 +32,7 @@ export const deleteDetailTradeStockModalState = atom<boolean>({
 	key: "deleteDetailTradeStockModalState",
 });
 
+// -------- 선생님 권한 아이템 관리 --------
 export const deleteItemsModalState = atom<boolean>({
 	default: false,
 	key: "deleteItemsModalState",
@@ -45,6 +48,7 @@ export const deleteDetailItemModalState = atom<boolean>({
 	key: "deleteDetailItemModalState",
 });
 
+// -------- 선생님 권한 게시판 관리 --------
 export const deletePostsModalState = atom<boolean>({
 	default: false,
 	key: "deletePostsModalState",
