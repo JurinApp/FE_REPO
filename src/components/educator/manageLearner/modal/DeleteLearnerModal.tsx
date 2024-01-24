@@ -1,7 +1,7 @@
 import { deleteConfirmModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteLearnerModal = () => {
 	const [selectedLearners, setSelectedLearners] =
@@ -9,6 +9,7 @@ const DeleteLearnerModal = () => {
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useRecoilState(
 		deleteConfirmModalState,
 	);
+	const resetIsOpenDeleteModal = useResetRecoilState(deleteConfirmModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -23,7 +24,7 @@ const DeleteLearnerModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenDeleteModal) {
-				setIsOpenDeleteModal(false);
+				resetIsOpenDeleteModal();
 			}
 		};
 	}, []);

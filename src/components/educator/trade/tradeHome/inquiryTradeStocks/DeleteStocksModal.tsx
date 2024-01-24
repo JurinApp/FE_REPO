@@ -1,10 +1,13 @@
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
 import { useEffect, useRef } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const DeleteStocksModal = () => {
 	const [isOpenDeleteStocksModal, setIsOpenDeleteStocksModal] = useRecoilState(
+		deleteStocksModalState,
+	);
+	const resetIsOpenDeleteStocksModal = useResetRecoilState(
 		deleteStocksModalState,
 	);
 	const selectedStocks = useRecoilValue(selectedStock);
@@ -35,7 +38,7 @@ const DeleteStocksModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenDeleteStocksModal) {
-				setIsOpenDeleteStocksModal(false);
+				resetIsOpenDeleteStocksModal();
 			}
 		};
 	}, []);

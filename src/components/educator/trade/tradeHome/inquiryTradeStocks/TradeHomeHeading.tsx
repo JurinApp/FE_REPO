@@ -1,7 +1,7 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { allCheckStockState, selectedStock } from "@/states/tradeStock";
 import { ChangeEvent, useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface ITradeHomeHeadingProps {
 	readonly stockList: IStockItem[];
@@ -11,6 +11,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 	const [isAllCheckStock, setIsAllCheckStock] =
 		useRecoilState(allCheckStockState);
+	const resetIsAllCheckStock = useResetRecoilState(allCheckStockState);
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
 
 	const clickAllCheckStockHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +39,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	useEffect(() => {
 		return () => {
 			if (isAllCheckStock) {
-				setIsAllCheckStock(false);
+				resetIsAllCheckStock();
 			}
 		};
 	}, []);

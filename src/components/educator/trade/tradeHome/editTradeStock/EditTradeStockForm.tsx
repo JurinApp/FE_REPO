@@ -43,14 +43,6 @@ const EditTradeStockForm = () => {
 		}
 	}, [isEdit]);
 
-	useEffect(() => {
-		return () => {
-			if (isOpenEditTradeStockModal) {
-				setIsOpenEditTradeStockModal(false);
-			}
-		};
-	}, []);
-
 	return (
 		<>
 			<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">

@@ -2,11 +2,14 @@ import { paymentPointModalState } from "@/states/confirmModalState";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
 	const [isOpenPaymentPointModal, setIsOpenPaymentPointModal] = useRecoilState(
+		paymentPointModalState,
+	);
+	const resetIsOpenPaymentPointModal = useResetRecoilState(
 		paymentPointModalState,
 	);
 	const [point, setPoint] = useState<number>(0);
@@ -64,7 +67,7 @@ const PaymentPointModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenPaymentPointModal) {
-				setIsOpenPaymentPointModal(false);
+				resetIsOpenPaymentPointModal();
 			}
 		};
 	}, []);

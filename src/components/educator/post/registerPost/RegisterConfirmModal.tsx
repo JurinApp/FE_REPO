@@ -1,9 +1,12 @@
 import { registerConfirmModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const RegisterConfirmModal = () => {
 	const [isOpenRegisterModal, setIsOpenRegisterModal] = useRecoilState(
+		registerConfirmModalState,
+	);
+	const resetIsOpenRegisterModal = useResetRecoilState(
 		registerConfirmModalState,
 	);
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -33,7 +36,7 @@ const RegisterConfirmModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenRegisterModal) {
-				setIsOpenRegisterModal(false);
+				resetIsOpenRegisterModal();
 			}
 		};
 	}, []);

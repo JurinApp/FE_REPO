@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { useRef, useEffect } from "react";
 import { editTradeStockModalState } from "@/states/confirmModalState";
 
@@ -11,6 +11,9 @@ const EditConfirmTradeStockModal = ({
 }: IEditConfirmTradeStockModalProps) => {
 	const [isOpenEditTradeStockModal, setIsOpenEditTradeStockModal] =
 		useRecoilState(editTradeStockModalState);
+	const resetIsOpenEditTradeStockModal = useResetRecoilState(
+		editTradeStockModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
@@ -39,7 +42,7 @@ const EditConfirmTradeStockModal = ({
 	useEffect(() => {
 		return () => {
 			if (isOpenEditTradeStockModal) {
-				setIsOpenEditTradeStockModal(false);
+				resetIsOpenEditTradeStockModal();
 			}
 		};
 	}, []);

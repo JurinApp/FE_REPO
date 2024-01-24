@@ -1,12 +1,15 @@
 import { deleteDetailTradeStockModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteTradeStockModal = () => {
 	const [
 		isOpenDeleteDetailTradeStockModal,
 		setIsOpenDeleteDetailTradeStockModal,
 	] = useRecoilState(deleteDetailTradeStockModalState);
+	const resetIsOpenDeleteDetailTradeStockModal = useResetRecoilState(
+		deleteDetailTradeStockModalState,
+	);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const cancelHandler = () => {
@@ -34,7 +37,7 @@ const DeleteTradeStockModal = () => {
 	useEffect(() => {
 		return () => {
 			if (isOpenDeleteDetailTradeStockModal) {
-				setIsOpenDeleteDetailTradeStockModal(false);
+				resetIsOpenDeleteDetailTradeStockModal();
 			}
 		};
 	}, []);
