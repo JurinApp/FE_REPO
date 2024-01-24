@@ -1,7 +1,7 @@
 import { selectedTabState } from "@/states/selectedTabState";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface ITabs {
 	readonly key: string;
@@ -17,6 +17,7 @@ const TABS = [
 
 const TradeTab = () => {
 	const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
+	const resetSelectedTab = useResetRecoilState(selectedTabState);
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -41,7 +42,7 @@ const TradeTab = () => {
 
 	useEffect(() => {
 		return () => {
-			setSelectedTab(TABS[0].key);
+			resetSelectedTab();
 		};
 	}, []);
 

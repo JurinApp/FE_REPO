@@ -1,6 +1,6 @@
 import { registerTradeStockModalState } from "@/states/confirmModalState";
-import { useRef, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useEffect, useRef } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface IRegisterConfirmTradeStockModalProps {
 	readonly setIsRegister: (isRegister: boolean) => void;
@@ -10,7 +10,9 @@ const RegisterConfirmTradeStockModal = ({
 	setIsRegister,
 }: IRegisterConfirmTradeStockModalProps) => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const setIsOpenRegisterTradeStockModal = useSetRecoilState(
+	const [isOpenRegisterTradeStockModal, setIsOpenRegisterTradeStockModal] =
+		useRecoilState(registerTradeStockModalState);
+	const resetIsOpenRegisterTradeStockModal = useResetRecoilState(
 		registerTradeStockModalState,
 	);
 
@@ -36,6 +38,14 @@ const RegisterConfirmTradeStockModal = ({
 			document.removeEventListener("mousedown", outSideClickHandler);
 		};
 	}, [modalRef]);
+
+	useEffect(() => {
+		return () => {
+			if (isOpenRegisterTradeStockModal) {
+				resetIsOpenRegisterTradeStockModal();
+			}
+		};
+	}, []);
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">

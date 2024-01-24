@@ -43,12 +43,6 @@ const RegisterTradeStockForm = () => {
 		}
 	}, [isRegister]);
 
-	useEffect(() => {
-		return () => {
-			setIsOpenRegisterTradeStockModal(false);
-		};
-	}, []);
-
 	return (
 		<>
 			<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">

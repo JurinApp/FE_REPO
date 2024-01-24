@@ -1,19 +1,19 @@
 import { IStockItem } from "@/interface/tradeHome";
-import TradeStockItem from "./TradeStockItem";
 import { selectedStock } from "@/states/tradeStock";
-import { useSetRecoilState } from "recoil";
 import { useEffect } from "react";
+import { useResetRecoilState } from "recoil";
+import TradeStockItem from "./TradeStockItem";
 
 interface ITradeStockListProps {
 	readonly stockList: IStockItem[];
 }
 
 const TradeStockList = ({ stockList }: ITradeStockListProps) => {
-	const setSelectedStocks = useSetRecoilState(selectedStock);
+	const resetSelectedStocks = useResetRecoilState(selectedStock);
 
 	useEffect(() => {
 		return () => {
-			setSelectedStocks([]);
+			resetSelectedStocks();
 		};
 	}, []);
 
