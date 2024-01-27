@@ -30,6 +30,7 @@ const EditTradeStockPage = lazy(
 );
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
+const StockPage = lazy(() => import("@pages/student/stock/StockPage"));
 const ItemPage = lazy(() => import("@pages/educator/item/ItemPage"));
 const RegisterItemPage = lazy(
 	() => import("@pages/educator/item/RegisterItemPage"),
@@ -46,6 +47,10 @@ const DetailPostPage = lazy(
 	() => import("@pages/educator/post/DetailPostPage"),
 );
 const EditPostPage = lazy(() => import("@pages/educator/post/EditPostPage"));
+const ArticleBoardPage = lazy(
+	() => import("@pages/student/post/ArticleBoardPage"),
+);
+const ArticlePage = lazy(() => import("@pages/student/post/ArticlePage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -67,6 +72,7 @@ const Router = () => {
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route path="/stock" element={<StockPage />} />
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route
 						path="/trade/stock/register"
@@ -89,6 +95,8 @@ const Router = () => {
 					<Route path="/post/register" element={<RegisterPostPage />} />
 					<Route path="/post/detail/:postId" element={<DetailPostPage />} />
 					<Route path="/post/edit/:postId" element={<EditPostPage />} />
+					<Route path="/articleBoard" element={<ArticleBoardPage />} />
+					<Route path="/articleBoard/:articleId" element={<ArticlePage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

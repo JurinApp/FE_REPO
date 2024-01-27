@@ -18,6 +18,11 @@ const menuArr = [
 	{ key: "post", name: "게시판", path: "/post" },
 ];
 
+const studentMenuArr = [
+	{ key: "trade", name: "주식거래", path: "/trade/home" },
+	{ key: "item", name: "아이템", path: "/item" },
+	{ key: "post", name: "게시판", path: "/post" },
+];
 const Menu = () => {
 	const navigate = useNavigate();
 	const location = useLocation();

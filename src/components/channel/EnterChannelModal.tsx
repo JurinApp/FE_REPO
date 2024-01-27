@@ -2,12 +2,11 @@ import { debounce } from "lodash";
 import { useState } from "react";
 
 type TEnterChannelModalProps = {
-	isOpen: boolean;
 	onConfirm: () => void;
 	onCancel: () => void;
 };
 export const EnterChannelModal = (props: TEnterChannelModalProps) => {
-	const { isOpen, onCancel } = props;
+	const { onCancel, onConfirm } = props;
 	const [code, setCode] = useState<string>("");
 	const [validateCode, setValidateCode] = useState<boolean>(false);
 	const [verifiedCode, setVerifiedCode] = useState<boolean>(false);
@@ -21,7 +20,7 @@ export const EnterChannelModal = (props: TEnterChannelModalProps) => {
 	// 코드 유효성 검증 함수
 	// const verifyCode = () => {
 	// TODO: DB에 존재하는 채널 코드 확인 API 추가 예정.
-	setVerifiedCode(true);
+	// setVerifiedCode(true);
 	// };
 
 	const handleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +28,6 @@ export const EnterChannelModal = (props: TEnterChannelModalProps) => {
 		setCode(code);
 		debounceValidation(code);
 	};
-
-	if (!isOpen) return null;
 
 	return (
 		<>

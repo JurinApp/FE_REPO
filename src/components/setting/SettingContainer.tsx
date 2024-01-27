@@ -14,7 +14,7 @@ const SettingContainer = () => {
 	};
 
 	return (
-		<div className="mx-auto h-[50.312rem] w-[393px] bg-[#ffffff] bg-opacity-5">
+		<div className="mx-auto h-[50.312rem] bg-[#ffffff] bg-opacity-5 sm:w-[23.563rem]">
 			<div className="mx-4 flex h-[50.312rem] flex-col justify-between text-base">
 				<div>
 					<section
