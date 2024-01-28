@@ -29,6 +29,7 @@ export default {
 				"blur-blue": "rgba(0, 117,255, 0.5)",
 				"sub2-selected": "rgba(118,120,237,0.3)",
 				"calender-back": "rgba(213, 213, 221, 1)",
+				"main-disabled": "rgba(197, 195, 221, 1)",
 			},
 			width: {
 				"box-width": "22.563rem",
