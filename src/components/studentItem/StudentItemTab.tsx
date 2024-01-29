@@ -10,13 +10,11 @@ interface ITabs {
 }
 
 const TABS = [
-	{ key: "stockSpec", name: "설명", path: "/stock/spec" },
-	{ key: "stockBuy", name: "매수", path: "/stock/buy" },
-	{ key: "stockSell", name: "매도", path: "/stock/sell" },
-	{ key: "stockOrder", name: "주문체결", path: "/stock/order" },
+	{ key: "studentItemHome", name: "홈", path: "/studentItem" },
+	{ key: "studentMyItem", name: "나의 아이템", path: "/studentItem/myItem" },
 ];
 
-const StockTab = () => {
+const StudentItemTab = () => {
 	const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -29,17 +27,11 @@ const StockTab = () => {
 	useEffect(() => {
 		const path = location.pathname;
 
-		if (path === "/stock/home") {
-			setSelectedTab("stockSpec");
+		if (path === "/studentItem") {
+			setSelectedTab("studentItemHome");
 		}
-		if (path === "/stock/buy") {
-			setSelectedTab("stockBuy");
-		}
-		if (path === "/stock/sell") {
-			setSelectedTab("stockSell");
-		}
-		if (path === "/stock/order") {
-			setSelectedTab("stockOrder");
+		if (path === "/studentItem/myItem") {
+			setSelectedTab("studentMyItem");
 		}
 	}, [location]);
 
@@ -50,7 +42,7 @@ const StockTab = () => {
 	}, []);
 
 	return (
-		<div className="mx-auto grid w-full grid-cols-4 bg-white sm:w-[24.536rem]">
+		<div className="mx-auto grid w-full grid-cols-2 bg-white sm:w-[24.536rem]">
 			{TABS.map((tab) => (
 				<div
 					key={tab.key}
@@ -68,4 +60,4 @@ const StockTab = () => {
 	);
 };
 
-export default StockTab;
+export default StudentItemTab;

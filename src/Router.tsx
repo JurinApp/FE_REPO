@@ -31,6 +31,12 @@ const EditTradeStockPage = lazy(
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/SettingPage"));
 const StockPage = lazy(() => import("@pages/student/stock/StockPage"));
+const StudentItemPage = lazy(
+	() => import("@pages/student/item/StudentItemPage"),
+);
+const StudentMyItemPage = lazy(
+	() => import("@pages/student/item/StudentMyItemPage"),
+);
 const ItemPage = lazy(() => import("@pages/educator/item/ItemPage"));
 const RegisterItemPage = lazy(
 	() => import("@pages/educator/item/RegisterItemPage"),
@@ -73,6 +79,8 @@ const Router = () => {
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
 					<Route path="/manageLearner" element={<ManageLearnerPage />} />
 					<Route path="/stock" element={<StockPage />} />
+					<Route path="/studentItem" element={<StudentItemPage />} />
+					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
 					<Route path="/trade/home" element={<TradeHomePage />} />
 					<Route
 						path="/trade/stock/register"
