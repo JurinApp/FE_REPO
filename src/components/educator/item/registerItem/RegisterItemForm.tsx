@@ -115,7 +115,7 @@ const RegisterItemForm = () => {
 					</div>
 					{thumbNail.thumbNailImg === "" ? (
 						<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-							<Logo className="min-h-20 w-[4.188rem]" />
+							<Logo className="h-20 w-[4.188rem]" />
 						</div>
 					) : (
 						<img

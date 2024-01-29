@@ -18,7 +18,7 @@ const DetailPostContainer = () => {
 			<div className="h-[calc(100vh-8rem)]">
 				<Link
 					to={`/post/edit/1`}
-					className="my-[0.875rem] flex flex-row-reverse px-4"
+					className="my-1 flex flex-row-reverse px-4 sm:my-[0.875rem]"
 				>
 					<Edit />
 				</Link>
