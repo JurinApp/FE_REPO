@@ -73,7 +73,11 @@ const MyItemContainer = () => {
 						if (filterState === "used") return item.quantity === 0;
 					}).map((item) => (
 						<>
-							<div onClick={() => handleModalOpen(item)}>
+							<div
+								onClick={
+									item.quantity !== 0 ? () => handleModalOpen(item) : undefined
+								}
+							>
 								<MyItem
 									itemId={item.itemId}
 									itemName={item.itemName}
