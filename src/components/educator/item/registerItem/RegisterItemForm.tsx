@@ -100,8 +100,8 @@ const RegisterItemForm = () => {
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
 			<form>
-				<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto bg-white py-4 sm:py-0">
-					<div className="mt-6">
+				<div className="flex h-[calc(100vh-18rem)] w-full flex-col items-center overflow-y-auto bg-white px-4 py-4 sm:w-[19.563rem] sm:px-0">
+					<div className="mt-6 w-full sm:w-[19.563rem]">
 						<label htmlFor="itemName" className="hidden">
 							아이템명
 						</label>
@@ -114,8 +114,8 @@ const RegisterItemForm = () => {
 						/>
 					</div>
 					{thumbNail.thumbNailImg === "" ? (
-						<div className="mt-[0.875rem] flex h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-							<Logo className="h-20 w-[4.188rem]" />
+						<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
+							<Logo className="min-h-20 w-[4.188rem]" />
 						</div>
 					) : (
 						<img
@@ -222,7 +222,7 @@ const RegisterItemForm = () => {
 				</div>
 				<button
 					type="submit"
-					className="mx-auto mt-28 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
+					className="mx-auto mt-20 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
 				>
 					등록
 				</button>
