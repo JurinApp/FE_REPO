@@ -52,7 +52,7 @@ const RegisterPostForm = () => {
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
 			<form>
-				<div className="flex h-[calc(100vh-30rem)] flex-col items-center overflow-y-auto bg-white px-6">
+				<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto bg-white px-6">
 					<div className="mb-[0.875rem] mt-6 w-full">
 						<label htmlFor="title" hidden>
 							게시글 제목

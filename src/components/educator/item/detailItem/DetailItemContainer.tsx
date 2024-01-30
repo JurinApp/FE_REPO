@@ -16,7 +16,7 @@ const DetailItemContainer = () => {
 		<div className="relative mx-auto w-full bg-btn-cancel-tekhelet sm:w-[24.563rem]">
 			<GoBackButton />
 			<div className="h-[calc(100vh-8rem)]">
-				<div className="my-[0.875rem] flex flex-row-reverse px-4">
+				<div className="my-1 flex flex-row-reverse px-4 sm:my-[0.875rem]">
 					<Link to={"/item/edit/1"}>
 						<Edit />
 					</Link>
