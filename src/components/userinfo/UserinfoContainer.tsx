@@ -15,18 +15,21 @@ interface IChannelInfo {
 	name: string;
 	code: string;
 }
+
+const SAMPLE_DATA: IUser = {
+	name: "홍길동",
+	school: "홍길초등학교",
+	authority: "선생님",
+};
+
+const SAMPLE_CHANNEL: IChannelInfo = {
+	name: "1-A반",
+	code: "1A2B3C4D",
+};
 export const UserinfoContainer = () => {
 	const authState = useRecoilValue(userinfoState);
 	const curAuthName = authState.curAuth === "teacher" ? "선생님" : "학생";
-	let sampleData: IUser = {
-		name: "홍길동",
-		school: "홍길초등학교",
-		authority: "선생님",
-	};
-	let channelInfo: IChannelInfo = {
-		name: "1-A반",
-		code: "1A2B3C4D",
-	};
+
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const handleConfirm = () => {
 		setIsModalOpen(false);
@@ -57,16 +60,16 @@ export const UserinfoContainer = () => {
 						<label className="text-black text-opacity-80" htmlFor="school">
 							학교
 						</label>
-						<p className="font-medium">{sampleData.school}</p>
+						<p className="font-medium">{SAMPLE_DATA.school}</p>
 					</div>
 					<div className="my-2 ml-4 flex gap-4">
 						<label className="text-black text-opacity-80" htmlFor="authority">
 							권한
 						</label>
-						<p className="font-medium">{sampleData.authority}</p>
+						<p className="font-medium">{SAMPLE_DATA.authority}</p>
 					</div>
 				</div>
-				{channelInfo ? (
+				{SAMPLE_CHANNEL ? (
 					<div
 						className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
 						id="channelSection"
@@ -75,13 +78,13 @@ export const UserinfoContainer = () => {
 							<label className="text-black text-opacity-80" htmlFor="school">
 								학교
 							</label>
-							<p className="font-medium">{sampleData.school}</p>
+							<p className="font-medium">{SAMPLE_DATA.school}</p>
 						</div>
 						<div className="my-2 ml-4 flex gap-4">
 							<label className="text-black text-opacity-80" htmlFor="authority">
 								권한
 							</label>
-							<p className="font-medium">{sampleData.authority}</p>
+							<p className="font-medium">{SAMPLE_DATA.authority}</p>
 						</div>
 					</div>
 				) : (
