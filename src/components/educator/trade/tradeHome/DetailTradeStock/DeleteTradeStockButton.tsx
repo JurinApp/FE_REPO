@@ -2,12 +2,10 @@ import { deleteDetailTradeStockModalState } from "@/states/confirmModalState";
 import { useSetRecoilState } from "recoil";
 
 const DeleteTradeStockButton = () => {
-	const setIsOpenDeleteDetailTradeStockModal = useSetRecoilState(
-		deleteDetailTradeStockModalState,
-	);
+	const setIsOpenModal = useSetRecoilState(deleteDetailTradeStockModalState);
 
 	const openDeleteDetailTradeStockModalHandler = () => {
-		setIsOpenDeleteDetailTradeStockModal(true);
+		setIsOpenModal(true);
 	};
 
 	return (

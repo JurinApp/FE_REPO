@@ -1,30 +1,30 @@
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
+import {
+	cancelLockBodyScroll,
+	lockBodyScroll,
+} from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const DeleteStocksModal = () => {
-	const [isOpenDeleteStocksModal, setIsOpenDeleteStocksModal] = useRecoilState(
-		deleteStocksModalState,
-	);
-	const resetIsOpenDeleteStocksModal = useResetRecoilState(
-		deleteStocksModalState,
-	);
+	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteStocksModalState);
+	const resetIsOpenModal = useResetRecoilState(deleteStocksModalState);
 	const selectedStocks = useRecoilValue(selectedStock);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const cancelModalHandler = () => {
-		setIsOpenDeleteStocksModal(false);
+		setIsOpenModal(false);
 	};
 
 	const deleteStocksHandler = () => {
-		setIsOpenDeleteStocksModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenDeleteStocksModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -36,15 +36,21 @@ const DeleteStocksModal = () => {
 	}, [modalRef]);
 
 	useEffect(() => {
+		isOpenModal ? lockBodyScroll() : cancelLockBodyScroll();
+
 		return () => {
-			if (isOpenDeleteStocksModal) {
-				resetIsOpenDeleteStocksModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
-	}, []);
+	}, [isOpenModal]);
 
 	return (
-		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "fixed" : "hidden"
+			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
