@@ -7,10 +7,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
 
 const DeleteLearnerButton = () => {
+	const selectedLearners = useRecoilValue(selectedLearner);
 	const setIsOpenDeleteLearnerModal = useSetRecoilState(
 		deleteConfirmModalState,
 	);
-	const selectedLearners = useRecoilValue(selectedLearner);
 	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
 	const isExistSelectedLearners = selectedLearners.length !== 0;
 

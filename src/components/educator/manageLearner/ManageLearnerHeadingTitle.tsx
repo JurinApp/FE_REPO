@@ -10,8 +10,8 @@ interface IManageLearnerHeadingTitleProps {
 const ManageLearnerHeadingTitle = ({
 	learnerList,
 }: IManageLearnerHeadingTitleProps) => {
-	const setSelectedLearners = useSetRecoilState(selectedLearner);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckState);
+	const setSelectedLearners = useSetRecoilState(selectedLearner);
 	const resetIsAllCheck = useResetRecoilState(allCheckState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
@@ -20,7 +20,6 @@ const ManageLearnerHeadingTitle = ({
 
 		if (isCheck) {
 			const learnerIdArr = learnerList.map((learner) => learner.learnerId);
-
 			setSelectedLearners(learnerIdArr);
 			setIsAllCheck(true);
 		} else {

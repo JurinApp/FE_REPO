@@ -1,4 +1,8 @@
 import { paymentPointModalState } from "@/states/confirmModalState";
+import {
+	cancelLockBodyScroll,
+	lockBodyScroll,
+} from "@/utils/controlBodyScroll";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -6,21 +10,17 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const [isOpenPaymentPointModal, setIsOpenPaymentPointModal] = useRecoilState(
-		paymentPointModalState,
-	);
-	const resetIsOpenPaymentPointModal = useResetRecoilState(
-		paymentPointModalState,
-	);
+	const [isOpenModal, setIsOpenModal] = useRecoilState(paymentPointModalState);
+	const resetIsOpenModal = useResetRecoilState(paymentPointModalState);
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
 
 	const closeModalHandler = () => {
-		setIsOpenPaymentPointModal(false);
+		setIsOpenModal(false);
 	};
 
 	const paymentPointHandler = () => {
-		setIsOpenPaymentPointModal(false);
+		setIsOpenModal(false);
 	};
 
 	const onClickSwitchBtnHandler = (type: string) => {
@@ -53,7 +53,7 @@ const PaymentPointModal = () => {
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenPaymentPointModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -65,15 +65,21 @@ const PaymentPointModal = () => {
 	}, [modalRef]);
 
 	useEffect(() => {
+		isOpenModal ? lockBodyScroll() : cancelLockBodyScroll();
+
 		return () => {
-			if (isOpenPaymentPointModal) {
-				resetIsOpenPaymentPointModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
-	}, []);
+	}, [isOpenModal]);
 
 	return (
-		<div className="fixed top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "fixed" : "hidden"
+			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex w-modal-width flex-col rounded bg-white"

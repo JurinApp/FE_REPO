@@ -1,38 +1,42 @@
 import { deleteConfirmModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
+import {
+	cancelLockBodyScroll,
+	lockBodyScroll,
+} from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteLearnerModal = () => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
-	const [isOpenDeleteModal, setIsOpenDeleteModal] = useRecoilState(
-		deleteConfirmModalState,
-	);
-	const resetIsOpenDeleteModal = useResetRecoilState(deleteConfirmModalState);
+	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteConfirmModalState);
+	const resetIsOpenModal = useResetRecoilState(deleteConfirmModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
-		setIsOpenDeleteModal(false);
+		setIsOpenModal(false);
 	};
 
 	const deleteBtnHandler = () => {
 		setSelectedLearners([]);
-		setIsOpenDeleteModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
+		isOpenModal ? lockBodyScroll() : cancelLockBodyScroll();
+
 		return () => {
-			if (isOpenDeleteModal) {
-				resetIsOpenDeleteModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
-	}, []);
+	}, [isOpenModal]);
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenDeleteModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -44,7 +48,11 @@ const DeleteLearnerModal = () => {
 	}, [modalRef]);
 
 	return (
-		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "fixed" : "hidden"
+			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"

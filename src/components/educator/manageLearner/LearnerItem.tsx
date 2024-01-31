@@ -18,9 +18,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 		if (index === -1) {
 			setSelectedLearners([...selectedLearners, learnerInfo.learnerId]);
 		} else {
-			const deepCopySelectedLearners = [...selectedLearners];
-			deepCopySelectedLearners.splice(index, 1);
-			setSelectedLearners(deepCopySelectedLearners);
+			setSelectedLearners([...selectedLearners].splice(index, 1));
 		}
 	};
 
