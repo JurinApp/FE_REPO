@@ -1,31 +1,31 @@
 import { deletePostsModalState } from "@/states/confirmModalState";
 import { selectedPostsState } from "@/states/selectedPostState";
+import {
+	cancelLockBodyScroll,
+	lockBodyScroll,
+} from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeletePostsModal = () => {
 	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
-	const [isOpenDeletePostsModal, setIsOpenDeletePostsModal] = useRecoilState(
-		deletePostsModalState,
-	);
-	const resetIsOpenDeletePostsModal = useResetRecoilState(
-		deletePostsModalState,
-	);
+	const [isOpenModal, setIsOpenModal] = useRecoilState(deletePostsModalState);
+	const resetIsOpenModal = useResetRecoilState(deletePostsModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
-		setIsOpenDeletePostsModal(false);
+		setIsOpenModal(false);
 	};
 
 	const deletePostsHandler = () => {
 		setSelectedPosts([]);
-		setIsOpenDeletePostsModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenDeletePostsModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -37,15 +37,21 @@ const DeletePostsModal = () => {
 	}, [modalRef]);
 
 	useEffect(() => {
+		isOpenModal ? lockBodyScroll() : cancelLockBodyScroll();
+
 		return () => {
-			if (isOpenDeletePostsModal) {
-				resetIsOpenDeletePostsModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
-	}, []);
+	}, [isOpenModal]);
 
 	return (
-		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "fixed" : "hidden"
+			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"

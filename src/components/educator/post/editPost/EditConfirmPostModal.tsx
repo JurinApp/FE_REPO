@@ -1,25 +1,28 @@
 import { editPostModalState } from "@/states/confirmModalState";
+import {
+	cancelLockBodyScroll,
+	lockBodyScroll,
+} from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const EditConfirmModal = () => {
-	const [isOpenEditModal, setIsOpenEditModal] =
-		useRecoilState(editPostModalState);
-	const resetIsOpenEditModal = useResetRecoilState(editPostModalState);
+	const [isOpenModal, setIsOpenModal] = useRecoilState(editPostModalState);
+	const resetIsOpenModal = useResetRecoilState(editPostModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const closeModalHandler = () => {
-		setIsOpenEditModal(false);
+		setIsOpenModal(false);
 	};
 
 	const editHandler = () => {
-		setIsOpenEditModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenEditModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -31,12 +34,14 @@ const EditConfirmModal = () => {
 	}, [modalRef]);
 
 	useEffect(() => {
+		isOpenModal ? lockBodyScroll() : cancelLockBodyScroll();
+
 		return () => {
-			if (isOpenEditModal) {
-				resetIsOpenEditModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
-	}, []);
+	}, [isOpenModal]);
 
 	return (
 		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
