@@ -18,22 +18,21 @@ const CalendarModal = (props: ICalendarModalProps) => {
 	};
 	const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
 
-	let footer = <p>날짜를 선택해주세요.</p>;
+	let footer = "날짜를 선택해주세요.";
 	if (range?.from) {
 		if (!range.to) {
-			footer = <p>{format(range.from, "yyyy. MM. dd")}</p>;
+			footer = `${format(range.from, "yyyy. MM. dd")}`;
 		} else if (range.to) {
-			footer = (
-				<p>
-					{format(range.from, "yyyy. MM. dd")}–{format(range.to, "MM. dd")}
-				</p>
-			);
+			footer = `${format(range.from, "yyyy. MM. dd")} – ${format(
+				range.to,
+				"MM. dd",
+			)}`;
 		}
 	}
 
 	return (
 		<>
-			<div className="bg-calender-back absolute left-0 right-0 top-[6.512rem] z-[1000] mx-auto ml-auto mr-auto h-inTrade-height w-full sm:w-[24.536rem]">
+			<div className="absolute left-0 right-0 top-[6.512rem] z-[1000] mx-auto ml-auto mr-auto h-inTrade-height w-full bg-calender-back sm:w-[24.536rem]">
 				<div className="flex flex-row items-center justify-center">
 					<div
 						id="calendar-modal-btn"
@@ -41,7 +40,7 @@ const CalendarModal = (props: ICalendarModalProps) => {
 					>
 						<Calandar />
 						<p id="range" className="text-sm font-bold">
-							{footer.props.children}
+							{footer}
 						</p>
 					</div>
 				</div>
