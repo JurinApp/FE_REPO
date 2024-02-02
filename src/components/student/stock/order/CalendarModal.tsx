@@ -4,17 +4,17 @@ import { DateRange, DayPicker } from "react-day-picker";
 import { addDays, format } from "date-fns";
 import { useState } from "react";
 import "react-day-picker/src/style.css";
-import "./dayPicker.css";
+import "@/dayPicker.css";
 import { ko } from "date-fns/locale";
 interface ICalendarModalProps {
-	onCancel: () => void;
-	fetchOrder: () => void;
+	readonly onCancel: () => void;
+	readonly fetchOrder: () => void;
 }
-const pastMonth = new Date(2024, 1, 1);
-const CalendarModal = (props: ICalendarModalProps) => {
+const START_DATE = new Date();
+const CalendarModal = ({ onCancel, fetchOrder }: ICalendarModalProps) => {
 	const defaultSelected: DateRange = {
-		from: pastMonth,
-		to: addDays(pastMonth, 4),
+		from: START_DATE,
+		to: addDays(START_DATE, 4),
 	};
 	const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
 
@@ -46,7 +46,7 @@ const CalendarModal = (props: ICalendarModalProps) => {
 				</div>
 				<div
 					className="absolute right-4 top-[1.512rem] flex h-[38px] w-[38px]  items-center justify-center"
-					onClick={props.onCancel}
+					onClick={onCancel}
 				>
 					<Cancel />
 				</div>
@@ -54,13 +54,16 @@ const CalendarModal = (props: ICalendarModalProps) => {
 					<DayPicker
 						id="test"
 						mode="range"
-						defaultMonth={pastMonth}
+						defaultMonth={START_DATE}
 						selected={range}
 						onSelect={setRange}
 						locale={ko}
 					/>
 				</div>
-				<button className="mx-4 mt-6 h-[52px] w-[361px] rounded bg-tekhelet text-center text-base font-bold text-white">
+				<button
+					className="mx-4 mt-6 h-[52px] w-[361px] rounded bg-tekhelet text-center text-base font-bold text-white"
+					onClick={fetchOrder}
+				>
 					적용하기
 				</button>
 			</div>

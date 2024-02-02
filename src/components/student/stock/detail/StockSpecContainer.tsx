@@ -10,17 +10,15 @@ export interface IStockSpecProps {
 		readonly detail: string;
 	};
 	stock_price_history: {
-		day: string;
-		date: number;
-		price: number;
+		readonly day: string;
+		readonly date: number;
+		readonly price: number;
 	}[];
 }
 const StockSpecContainer = ({
 	stockInfo,
 	stock_price_history,
 }: IStockSpecProps) => {
-	console.log(stockInfo, stock_price_history);
-
 	// const setStockName = useSetRecoilState(stockNameState);
 
 	// useEffect(() => {

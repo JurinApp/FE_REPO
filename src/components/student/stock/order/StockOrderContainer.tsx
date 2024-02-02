@@ -1,7 +1,5 @@
-import { IStockBSHistory } from "@/interface/stock";
 import { useState } from "react";
 import Calandar from "@assets/svg/calendar.svg?react";
-import { divide } from "lodash";
 import CalendarModal from "./CalendarModal";
 
 const StockOrderContainer = () => {
@@ -15,9 +13,10 @@ const StockOrderContainer = () => {
 
 	const fetchOrder = () => {
 		// TODO: 날짜에 해당하는 주식 거래 내역을 불러오는 API
+		console.log("완료");
 	};
 
-	const onCancle = () => {
+	const onCancel = () => {
 		setIsModalOpen(false);
 	};
 
@@ -36,7 +35,7 @@ const StockOrderContainer = () => {
 				</div>
 			</div>
 			{isModalOpen && (
-				<CalendarModal fetchOrder={fetchOrder} onCancel={onCancle} />
+				<CalendarModal fetchOrder={fetchOrder} onCancel={onCancel} />
 			)}
 		</>
 	);
