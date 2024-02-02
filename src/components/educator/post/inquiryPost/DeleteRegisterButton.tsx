@@ -5,10 +5,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const DeleteRegisterButton = () => {
 	const selectedPosts = useRecoilValue(selectedPostsState);
-	const setIsOpenDeletePostsModal = useSetRecoilState(deletePostsModalState);
+	const setIsOpenModal = useSetRecoilState(deletePostsModalState);
 
-	const deletePostsHandler = () => {
-		setIsOpenDeletePostsModal(true);
+	const handleDeletePosts = () => {
+		setIsOpenModal(true);
 	};
 
 	return (
@@ -17,7 +17,7 @@ const DeleteRegisterButton = () => {
 				type="button"
 				disabled={selectedPosts.length === 0 ? true : false}
 				className="mr-1 h-box-height grow rounded border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300 "
-				onClick={deletePostsHandler}
+				onClick={handleDeletePosts}
 			>
 				삭제
 			</button>

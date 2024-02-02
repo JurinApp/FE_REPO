@@ -1,13 +1,16 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
 import { editTradeStockModalState } from "@/states/confirmModalState";
-import EditConfirmTradeStockModal from "./EditConfirmTradeStockModal";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 
-const EditTradeStockForm = () => {
+interface IEditTradeStockFormProps {
+	readonly isEdit: boolean;
+}
+
+const EditTradeStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -23,30 +26,28 @@ const EditTradeStockForm = () => {
 		resolver: yupResolver(REGISTER_TRADE_STOCK_SCHEMA),
 		mode: "onChange",
 	});
-	const [isOpenEditTradeStockModal, setIsOpenEditTradeStockModal] =
-		useRecoilState(editTradeStockModalState);
-	const [isEdit, setIsEdit] = useState<boolean>(false);
+	const setIsOpenModal = useSetRecoilState(editTradeStockModalState);
 
-	const editTradeStockHandler = () => {
+	const handleSubmitEditTradeStockForm = () => {
 		// TODO : API 개발 되면 코드 작성 예정, API Status Code 200이면 setIsRegister = false로 해주기
 	};
 
-	const onClickRegisterBtnHandler = () => {
+	const handleClickRegisterBtn = () => {
 		if (isValid) {
-			setIsOpenEditTradeStockModal(true);
+			setIsOpenModal(true);
 		}
 	};
 
 	useEffect(() => {
 		if (isEdit) {
-			editTradeStockHandler();
+			handleSubmitEditTradeStockForm();
 		}
 	}, [isEdit]);
 
 	return (
 		<>
 			<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-				<form onSubmit={handleSubmit(editTradeStockHandler)}>
+				<form onSubmit={handleSubmit(handleClickRegisterBtn)}>
 					<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white px-6">
 						<div className="mb-[0.875rem] mt-6 w-full">
 							<label htmlFor="stockName" hidden>
@@ -152,15 +153,11 @@ const EditTradeStockForm = () => {
 					<button
 						type="submit"
 						className="absolute bottom-8 mx-auto h-box-height w-[91.5%] rounded-[0.25rem] bg-tekhelet font-bold text-white"
-						onClick={onClickRegisterBtnHandler}
 					>
 						수정
 					</button>
 				</form>
 			</div>
-			{isOpenEditTradeStockModal && (
-				<EditConfirmTradeStockModal setIsEdit={setIsEdit} />
-			)}
 		</>
 	);
 };

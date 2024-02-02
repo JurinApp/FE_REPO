@@ -21,7 +21,7 @@ const TradeTab = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const clickTabHandler = (tab: ITabs) => {
+	const handleClickTab = (tab: ITabs) => {
 		setSelectedTab(tab.key);
 		navigate(tab.path);
 	};
@@ -56,7 +56,7 @@ const TradeTab = () => {
 							? "border-b-2 border-black-800 font-bold"
 							: "text-black-700"
 					}`}
-					onClick={() => clickTabHandler(tab)}
+					onClick={() => handleClickTab(tab)}
 				>
 					{tab.name}
 				</div>

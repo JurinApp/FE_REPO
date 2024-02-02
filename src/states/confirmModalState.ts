@@ -33,6 +33,11 @@ export const deleteDetailTradeStockModalState = atom<boolean>({
 });
 
 // -------- 선생님 권한 아이템 관리 --------
+export const registerItemModalState = atom<boolean>({
+	default: false,
+	key: "registerItemModalState",
+});
+
 export const deleteItemsModalState = atom<boolean>({
 	default: false,
 	key: "deleteItemsModalState",
@@ -54,7 +59,7 @@ export const deletePostsModalState = atom<boolean>({
 	key: "deletePostsModalState",
 });
 
-export const registerConfirmModalState = atom<boolean>({
+export const registerPostModalState = atom<boolean>({
 	default: false,
 	key: "registerConfirmModalState",
 });

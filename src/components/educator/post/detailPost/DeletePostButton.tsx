@@ -2,12 +2,10 @@ import { deleteDetailPostModalState } from "@/states/confirmModalState";
 import { useSetRecoilState } from "recoil";
 
 const DeletePostButton = () => {
-	const setIsOpenDeleteDetailPost = useSetRecoilState(
-		deleteDetailPostModalState,
-	);
+	const setIsOpenModal = useSetRecoilState(deleteDetailPostModalState);
 
 	const openDeleteDetailPostHandler = () => {
-		setIsOpenDeleteDetailPost(true);
+		setIsOpenModal(true);
 	};
 
 	return (

@@ -1,9 +1,7 @@
-import { useRecoilValue } from "recoil";
+import DeletePostsModal from "./DeletePostsModal";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import PostHeadingAndTitle from "./PostHeadingAndTitle";
 import PostList from "./PostList";
-import { deletePostsModalState } from "@/states/confirmModalState";
-import DeletePostsModal from "./DeletePostsModal";
 
 const POST_LIST = [
 	{
@@ -33,14 +31,12 @@ const POST_LIST = [
 ];
 
 const PostContainer = () => {
-	const isOpenDeletePostsModal = useRecoilValue(deletePostsModalState);
-
 	return (
 		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
 			<PostHeadingAndTitle postList={POST_LIST} />
 			<PostList postList={POST_LIST} />
 			<DeleteRegisterButton />
-			{isOpenDeletePostsModal && <DeletePostsModal />}
+			<DeletePostsModal />
 		</div>
 	);
 };

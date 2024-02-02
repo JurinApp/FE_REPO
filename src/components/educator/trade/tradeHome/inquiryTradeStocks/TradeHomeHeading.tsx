@@ -14,7 +14,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	const resetIsAllCheckStock = useResetRecoilState(allCheckStockState);
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
 
-	const clickAllCheckStockHandler = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleAllCheckStock = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
@@ -53,7 +53,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 					id="checkAll"
 					className="custom-checkBox cursor-pointer"
 					checked={isAllCheckStock}
-					onChange={clickAllCheckStockHandler}
+					onChange={handleAllCheckStock}
 				/>
 				<label
 					htmlFor="checkAll"

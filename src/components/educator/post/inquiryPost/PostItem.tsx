@@ -10,7 +10,7 @@ interface IPostItemProps {
 const PostItem = ({ post }: IPostItemProps) => {
 	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
 
-	const onClickPostHandler = () => {
+	const handleCheckPost = () => {
 		const index = selectedPosts.findIndex((postId) => {
 			return postId === post.postId;
 		});
@@ -18,9 +18,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 		if (index === -1) {
 			setSelectedPosts([...selectedPosts, post.postId]);
 		} else {
-			const deepCopySelectedPosts = [...selectedPosts];
-			deepCopySelectedPosts.splice(index, 1);
-			setSelectedPosts(deepCopySelectedPosts);
+			setSelectedPosts([...selectedPosts].splice(index, 1));
 		}
 	};
 
@@ -31,7 +29,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 				<input
 					type="checkbox"
 					className="custom-checkBox cursor-pointer"
-					onChange={onClickPostHandler}
+					onChange={handleCheckPost}
 					checked={selectedPosts.includes(post.postId) ? true : false}
 				/>
 			</div>

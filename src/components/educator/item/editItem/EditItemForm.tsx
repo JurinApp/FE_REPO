@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import AddImage from "@assets/svg/addImage.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
@@ -7,6 +7,7 @@ import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
 import { useSetRecoilState } from "recoil";
 import { editItemModalState } from "@/states/confirmModalState";
+import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 
 interface IFormValue {
 	readonly itemName: string;
@@ -16,13 +17,32 @@ interface IFormValue {
 	readonly content: string;
 }
 
+interface IErrors {
+	readonly itemNameError: {
+		isError: boolean;
+		errorMessage: string;
+	};
+	readonly priceError: {
+		isError: boolean;
+		errorMessage: string;
+	};
+	readonly contentError: {
+		isError: boolean;
+		errorMessage: string;
+	};
+}
+
 interface IThumbNailImg {
 	readonly fileName: string;
 	readonly thumbNailImg: string;
 }
 
-const EditItemForm = () => {
-	const setIsOpenEditItemModal = useSetRecoilState(editItemModalState);
+interface IEditItemFormProps {
+	readonly isEdit: boolean;
+}
+
+const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
+	const setIsOpenModal = useSetRecoilState(editItemModalState);
 	const labelRef = useRef<HTMLLabelElement>(null);
 	const [formValue, setFormValue] = useState<IFormValue>({
 		itemName: "",
@@ -31,56 +51,37 @@ const EditItemForm = () => {
 		price: 0,
 		content: "",
 	});
+	const [errors, setErrors] = useState<IErrors>({
+		itemNameError: {
+			isError: false,
+			errorMessage: "",
+		},
+		priceError: {
+			isError: false,
+			errorMessage: "",
+		},
+		contentError: {
+			isError: false,
+			errorMessage: "",
+		},
+	});
 	const [replacePrice, setReplacePrice] = useState<string>("");
 	const [thumbNail, setThumbNail] = useState<IThumbNailImg>({
 		fileName: "",
 		thumbNailImg: "",
 	});
 
-	const addImageHandler = () => {
+	const handleAddImage = () => {
 		if (labelRef.current) {
 			labelRef.current.click();
 		}
 	};
 
-	const deleteImageHandler = () => {
+	const handleDeleteImage = () => {
 		setThumbNail({ fileName: "", thumbNailImg: "" });
 	};
 
-	const onChangeItemNameHandler = _.throttle((e) => {
-		setFormValue({ ...formValue, itemName: e.target.value });
-	}, 1000);
-
-	const onChangeQuantityHandler = (type: string) => {
-		if (type === "decrease") {
-			if (formValue.quantity === 1) return;
-
-			setFormValue({ ...formValue, quantity: formValue.quantity - 1 });
-		}
-
-		if (type === "increase") {
-			setFormValue({ ...formValue, quantity: formValue.quantity + 1 });
-		}
-	};
-
-	const onChangePriceHandler = _.throttle((e) => {
-		const value = e.target.value;
-		const numericValue = parseFloat(value.replace(/,/g, ""));
-
-		if (!isNaN(numericValue)) {
-			setFormValue({ ...formValue, price: numericValue });
-			setReplacePrice(numericValue.toLocaleString());
-		} else {
-			setFormValue({ ...formValue, price: 0 });
-			setReplacePrice("");
-		}
-	}, 1000);
-
-	const onChangeContentHandler = _.throttle((e) => {
-		setFormValue({ ...formValue, content: e.target.value });
-	}, 1000);
-
-	const changeThumbNailImgHandler = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
 			if (!e.currentTarget.files[0]) return;
 
@@ -100,14 +101,171 @@ const EditItemForm = () => {
 		}
 	};
 
-	const submitEditItemFormHandler = (e: FormEvent) => {
-		e.preventDefault();
-		setIsOpenEditItemModal(true);
+	const handleChangeQuantity = (type: string) => {
+		if (type === "decrease") {
+			if (formValue.quantity === 1) return;
+
+			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity - 1 }));
+		}
+
+		if (type === "increase") {
+			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity + 1 }));
+		}
 	};
+
+	const handleChangePrice = (value: string) => {
+		const numericValue = parseFloat(value.replace(/,/g, ""));
+
+		if (!isNaN(numericValue)) {
+			setFormValue({ ...formValue, price: numericValue });
+			setReplacePrice(numericValue.toLocaleString());
+		} else {
+			setFormValue({ ...formValue, price: 0 });
+			setReplacePrice("");
+		}
+	};
+
+	const handleChangeFormCheckValidation = (id: string, value: string) => {
+		if (id === "itemName") {
+			if (value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: true,
+						errorMessage: "아이템명 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "price") {
+			if (value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: true,
+						errorMessage: "가격 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "content") {
+			if (value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: true,
+						errorMessage: "내용 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+	};
+
+	const handleChangeFormValue = _.throttle((e) => {
+		const id = e.target.id;
+		const value = e.target.value;
+
+		if (id === "price") {
+			handleChangePrice(value);
+		} else {
+			setFormValue((prev) => ({ ...prev, [id]: value }));
+		}
+		handleChangeFormCheckValidation(id, value);
+	}, 1000);
+
+	const handleSubmitFormCheckValidation = () => {
+		let isValidation: boolean = true;
+
+		if (
+			errors.itemNameError.isError ||
+			errors.priceError.isError ||
+			errors.contentError.isError
+		) {
+			isValidation = false;
+		}
+
+		if (formValue.itemName.length === 0) {
+			setErrors((prev) => ({
+				...prev,
+				itemNameError: {
+					isError: true,
+					errorMessage: "아이템명 입력은 필수입니다.",
+				},
+			}));
+			isValidation = false;
+		}
+
+		if (formValue.price === 0) {
+			setErrors((prev) => ({
+				...prev,
+				priceError: {
+					isError: true,
+					errorMessage: "가격 입력은 필수입니다.",
+				},
+			}));
+			isValidation = false;
+		}
+
+		if (formValue.content.length === 0) {
+			setErrors((prev) => ({
+				...prev,
+				contentError: {
+					isError: true,
+					errorMessage: "내용 입력은 필수입니다.",
+				},
+			}));
+			isValidation = false;
+		}
+
+		return isValidation;
+	};
+
+	const handleClickEditBtn = (e: FormEvent) => {
+		e.preventDefault();
+
+		if (!handleSubmitFormCheckValidation()) return;
+		setIsOpenModal(true);
+	};
+
+	const handleSubmit = () => {
+		// API 개발 되면 코드 작성 예정
+	};
+
+	useEffect(() => {
+		if (isEdit) {
+			handleSubmit();
+		}
+	}, [isEdit]);
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-			<form>
+			<form onSubmit={handleClickEditBtn}>
 				<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto bg-white px-4 py-4">
 					<div className="w-full sm:w-[19.563rem]">
 						<label htmlFor="itemName" className="hidden">
@@ -116,10 +274,17 @@ const EditItemForm = () => {
 						<input
 							type="text"
 							id="itemName"
-							className="w-full rounded-none border-b border-black-100 pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem]"
+							className={`mb-2 w-full rounded-none border-b pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem] ${
+								errors.itemNameError.isError
+									? "border-danger"
+									: "border-black-100 focus:border-black-300"
+							}`}
 							placeholder="아이템명을 입력해주세요"
-							onChange={onChangeItemNameHandler}
+							onChange={handleChangeFormValue}
 						/>
+						{errors.itemNameError.isError && (
+							<ErrorMsg message={errors.itemNameError.errorMessage} />
+						)}
 					</div>
 					{thumbNail.thumbNailImg === "" ? (
 						<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
@@ -147,7 +312,7 @@ const EditItemForm = () => {
 						{thumbNail.thumbNailImg === "" ? (
 							<button
 								type="button"
-								onClick={addImageHandler}
+								onClick={handleAddImage}
 								className="ml-2 flex justify-start"
 							>
 								<AddImage />
@@ -155,7 +320,7 @@ const EditItemForm = () => {
 						) : (
 							<button
 								type="button"
-								onClick={deleteImageHandler}
+								onClick={handleDeleteImage}
 								className="ml-2 flex justify-start"
 							>
 								<DeleteImage />
@@ -166,7 +331,7 @@ const EditItemForm = () => {
 							type="file"
 							accept=".jpg, .png"
 							className="hidden"
-							onChange={changeThumbNailImgHandler}
+							onChange={handleChangeThumbNailImage}
 						/>
 					</div>
 					<div className="mt-[0.875rem] flex w-full items-center sm:w-[19.563rem]">
@@ -179,7 +344,7 @@ const EditItemForm = () => {
 						<div className="flex border border-black-100">
 							<button
 								type="button"
-								onClick={() => onChangeQuantityHandler("decrease")}
+								onClick={() => handleChangeQuantity("decrease")}
 								className="flex h-10 w-10 items-center justify-center border-r border-black-100"
 							>
 								<Decrease />
@@ -192,46 +357,64 @@ const EditItemForm = () => {
 							/>
 							<button
 								type="button"
-								onClick={() => onChangeQuantityHandler("increase")}
+								onClick={() => handleChangeQuantity("increase")}
 								className="flex h-10 w-10 items-center justify-center border-l border-black-100"
 							>
 								<Increase />
 							</button>
 						</div>
 					</div>
-					<div className="mt-[0.875rem] flex w-full sm:w-[19.563rem]">
-						<label
-							htmlFor="price"
-							className="mr-[0.625rem] w-[2.813rem] text-black-800"
-						>
-							가격
-						</label>
-						<input
-							type="text"
-							id="price"
-							className="w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none"
-							value={replacePrice}
-							onChange={onChangePriceHandler}
-						/>
+					<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
+						<div className="mb-2 flex">
+							<label
+								htmlFor="price"
+								className="mr-[0.625rem] w-[2.813rem] text-black-800"
+							>
+								가격
+							</label>
+							<input
+								type="text"
+								id="price"
+								className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+									errors.priceError.isError
+										? "border-danger"
+										: "border-black-100 focus:border-black-300"
+								}`}
+								value={replacePrice}
+								onChange={handleChangeFormValue}
+							/>
+						</div>
+						{errors.priceError.isError && (
+							<ErrorMsg message={errors.priceError.errorMessage} />
+						)}
 					</div>
-					<div className="mt-[0.875rem] flex w-full sm:w-[19.563rem]">
-						<label
-							htmlFor="content"
-							className="mr-[0.625rem] w-[2.813rem] text-black-800"
-						>
-							내용
-						</label>
-						<textarea
-							id="content"
-							className="grow resize-none rounded-none border-b border-black-100 outline-none"
-							onChange={onChangeContentHandler}
-						/>
+					<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
+						<div className="mb-2 flex">
+							<label
+								htmlFor="content"
+								className="mr-[0.625rem] w-[2.813rem] text-black-800"
+							>
+								내용
+							</label>
+							<textarea
+								id="content"
+								className={`grow resize-none rounded-none border-b outline-none ${
+									errors.contentError.isError
+										? "border-danger"
+										: "border-black-100 focus:border-black-300"
+								}`}
+								onChange={handleChangeFormValue}
+							/>
+						</div>
+						{errors.contentError.isError && (
+							<ErrorMsg message={errors.contentError.errorMessage} />
+						)}
 					</div>
 				</div>
 				<button
 					type="submit"
 					className="mx-auto mt-20 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
-					onClick={submitEditItemFormHandler}
+					onClick={handleClickEditBtn}
 				>
 					수정
 				</button>

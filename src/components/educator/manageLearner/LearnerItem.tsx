@@ -10,7 +10,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
 
-	const onClickLearnerHandler = () => {
+	const handleCheckLearner = () => {
 		const index = selectedLearners.findIndex((learnerId) => {
 			return learnerId === learnerInfo.learnerId;
 		});
@@ -18,9 +18,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 		if (index === -1) {
 			setSelectedLearners([...selectedLearners, learnerInfo.learnerId]);
 		} else {
-			const deepCopySelectedLearners = [...selectedLearners];
-			deepCopySelectedLearners.splice(index, 1);
-			setSelectedLearners(deepCopySelectedLearners);
+			setSelectedLearners([...selectedLearners].splice(index, 1));
 		}
 	};
 
@@ -31,7 +29,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 					학생선택
 				</label>
 				<input
-					onChange={onClickLearnerHandler}
+					onChange={handleCheckLearner}
 					type="checkbox"
 					id="checkLearner"
 					className="custom-checkBox cursor-pointer"

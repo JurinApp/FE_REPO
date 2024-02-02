@@ -11,7 +11,7 @@ interface IItemCardProps {
 const ItemCard = ({ item }: IItemCardProps) => {
 	const [selectedItems, setSelectedItems] = useRecoilState(selectedItemState);
 
-	const onClickItemHandler = () => {
+	const handleCheckItem = () => {
 		const index = selectedItems.findIndex((learnerId) => {
 			return learnerId === item.itemId;
 		});
@@ -41,7 +41,7 @@ const ItemCard = ({ item }: IItemCardProps) => {
 			<input
 				type="checkbox"
 				className="custom-checkBox absolute left-2 top-2 cursor-pointer"
-				onChange={onClickItemHandler}
+				onChange={handleCheckItem}
 				checked={selectedItems.includes(item.itemId) ? true : false}
 			/>
 		</div>

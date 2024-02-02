@@ -41,7 +41,7 @@ const LoginFormSection = () => {
 		errorMsg: "",
 	});
 
-	const validate = (data: ILoginFormValues) => {
+	const handleCheckValidate = (data: ILoginFormValues) => {
 		if (data.id.length === 0) {
 			return false;
 		}
@@ -53,8 +53,8 @@ const LoginFormSection = () => {
 		return true;
 	};
 
-	const submitHandler = async (data: ILoginFormValues) => {
-		if (!validate(data)) return;
+	const handleSubmitLogin = async (data: ILoginFormValues) => {
+		if (!handleCheckValidate(data)) return;
 
 		const response = await axiosData("default", {
 			method: "POST",
@@ -102,7 +102,10 @@ const LoginFormSection = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit(submitHandler)} className="mt-[5.625rem]">
+			<form
+				onSubmit={handleSubmit(handleSubmitLogin)}
+				className="mt-[5.625rem]"
+			>
 				<div className="mx-auto flex h-[8.875rem] flex-col px-4 sm:w-[23.563rem]">
 					<input
 						id="id"

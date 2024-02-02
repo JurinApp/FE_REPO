@@ -21,7 +21,6 @@ const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 
 		if (isCheck) {
 			const itemIdArr = itemList.map((item) => item.itemId);
-
 			setSelectedItems(itemIdArr);
 			setIsAllCheck(true);
 		} else {
