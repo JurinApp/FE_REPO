@@ -2,12 +2,17 @@ import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
 import { registerTradeStockModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import RegisterConfirmTradeStockModal from "./RegisterConfirmTradeStockModal";
-import { useState, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
-const RegisterTradeStockForm = () => {
+interface IRegisterTradeStockFormProps {
+	readonly isRegister: boolean;
+}
+
+const RegisterTradeStockForm = ({
+	isRegister,
+}: IRegisterTradeStockFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -23,30 +28,28 @@ const RegisterTradeStockForm = () => {
 		resolver: yupResolver(REGISTER_TRADE_STOCK_SCHEMA),
 		mode: "onChange",
 	});
-	const [isOpenRegisterTradeStockModal, setIsOpenRegisterTradeStockModal] =
-		useRecoilState(registerTradeStockModalState);
-	const [isRegister, setIsRegister] = useState<boolean>(false);
+	const setIsOpenModal = useSetRecoilState(registerTradeStockModalState);
 
-	const registerTradeStockHandler = () => {
+	const handleSubmitRegisterTradeStockForm = () => {
 		// TODO : API 개발 되면 코드 작성 예정, API Status Code 200이면 setIsRegister = false로 해주기
 	};
 
-	const onClickRegisterBtnHandler = () => {
+	const handleClickRegisterBtn = () => {
 		if (isValid) {
-			setIsOpenRegisterTradeStockModal(true);
+			setIsOpenModal(true);
 		}
 	};
 
 	useEffect(() => {
 		if (isRegister) {
-			registerTradeStockHandler();
+			handleSubmitRegisterTradeStockForm();
 		}
 	}, [isRegister]);
 
 	return (
 		<>
 			<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-				<form onSubmit={handleSubmit(registerTradeStockHandler)}>
+				<form onSubmit={handleSubmit(handleClickRegisterBtn)}>
 					<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white px-6">
 						<div className="mb-[0.875rem] mt-6 w-full">
 							<label htmlFor="stockName" hidden>
@@ -152,15 +155,11 @@ const RegisterTradeStockForm = () => {
 					<button
 						type="submit"
 						className="absolute bottom-8 mx-auto h-box-height w-[91.5%] rounded-[0.25rem] bg-tekhelet font-bold text-white"
-						onClick={onClickRegisterBtnHandler}
 					>
 						등록
 					</button>
 				</form>
 			</div>
-			{isOpenRegisterTradeStockModal && (
-				<RegisterConfirmTradeStockModal setIsRegister={setIsRegister} />
-			)}
 		</>
 	);
 };

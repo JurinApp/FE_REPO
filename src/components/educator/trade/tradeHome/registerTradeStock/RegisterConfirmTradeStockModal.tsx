@@ -10,25 +10,24 @@ const RegisterConfirmTradeStockModal = ({
 	setIsRegister,
 }: IRegisterConfirmTradeStockModalProps) => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const [isOpenRegisterTradeStockModal, setIsOpenRegisterTradeStockModal] =
-		useRecoilState(registerTradeStockModalState);
-	const resetIsOpenRegisterTradeStockModal = useResetRecoilState(
+	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		registerTradeStockModalState,
 	);
+	const resetIsOpenModal = useResetRecoilState(registerTradeStockModalState);
 
 	const cancelHandler = () => {
-		setIsOpenRegisterTradeStockModal(false);
+		setIsOpenModal(false);
 	};
 
 	const registerHandler = () => {
 		setIsRegister(true);
-		setIsOpenRegisterTradeStockModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
 		const outSideClickHandler = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenRegisterTradeStockModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
@@ -41,14 +40,18 @@ const RegisterConfirmTradeStockModal = ({
 
 	useEffect(() => {
 		return () => {
-			if (isOpenRegisterTradeStockModal) {
-				resetIsOpenRegisterTradeStockModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
 	}, []);
 
 	return (
-		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "fixed" : "hidden"
+			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
