@@ -28,7 +28,7 @@ const Menu = () => {
 	const location = useLocation();
 	const [selectedMenu, setSelectedMenu] = useState<string>(menuArr[0].key);
 
-	const onClickMenuHandler = (menu: IMenu) => {
+	const handleClickMenu = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
 		navigate(menu.path);
 	};
@@ -61,7 +61,7 @@ const Menu = () => {
 					<div
 						key={menu.key}
 						className="flex cursor-pointer flex-col items-center"
-						onClick={() => onClickMenuHandler(menu)}
+						onClick={() => handleClickMenu(menu)}
 					>
 						{menu.key === "manageLearner" && (
 							<UserIcon

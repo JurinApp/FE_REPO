@@ -15,14 +15,14 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 	const selectedAuthName =
 		confirmModalState.selectedAuth === "1" ? "선생님" : "학생";
 
-	const closeBtnModalHandler = () => {
+	const handleClickCancelBtn = () => {
 		setConfirmModalState((prevState) => ({
 			...prevState,
 			isModalOpen: false,
 		}));
 	};
 
-	const confirmBtnModalHandler = async () => {
+	const handleClickSignUpBtn = async () => {
 		setConfirmModalState((prevState) => ({
 			...prevState,
 			isModalOpen: false,
@@ -71,14 +71,14 @@ const SignUpConfirmModal = ({ setIsSignUp }: ISignUpConfirmModalProps) => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={closeBtnModalHandler}
+						onClick={handleClickCancelBtn}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={confirmBtnModalHandler}
+						onClick={handleClickSignUpBtn}
 					>
 						확인
 					</button>
