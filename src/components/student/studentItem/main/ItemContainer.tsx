@@ -70,7 +70,7 @@ const ItemContainer = () => {
 	return (
 		<>
 			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				<div className="mx-4 mt-6 grid h-[34.563rem] grid-cols-1 gap-x-2 gap-y-[4.563rem] overflow-scroll sm:grid-cols-3 xs:grid-cols-2">
+				<div className="mx-4 mt-6 grid h-[34.563rem] grid-cols-1 gap-x-2 gap-y-[0.875rem] overflow-scroll sm:grid-cols-3 xs:grid-cols-2">
 					{ITEM_LIST.map((item) => (
 						<div key={item.itemId}>
 							<div onClick={() => handleModalOpen(item)}>
