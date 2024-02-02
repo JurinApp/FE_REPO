@@ -68,3 +68,20 @@ export const editPostModalState = atom<boolean>({
 	default: false,
 	key: "editPostModalState",
 });
+
+// -------- 설정 페이지 관리 --------
+export const withdrawalModalState = atom<boolean>({
+	default: false,
+	key: "withdrawalModalState",
+});
+
+// -------- 마이 페이지 관리 --------
+export const enterChannelModalState = atom<boolean>({
+	default: false,
+	key: "enterChannelModalState",
+});
+
+export const modifyUserinfoModalState = atom<boolean>({
+	default: false,
+	key: "modifyUserinfoModalState",
+});
