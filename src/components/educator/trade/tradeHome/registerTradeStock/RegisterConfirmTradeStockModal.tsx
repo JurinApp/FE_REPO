@@ -15,26 +15,26 @@ const RegisterConfirmTradeStockModal = ({
 	);
 	const resetIsOpenModal = useResetRecoilState(registerTradeStockModalState);
 
-	const cancelHandler = () => {
+	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
-	const registerHandler = () => {
+	const handleClickRegisterBtn = () => {
 		setIsRegister(true);
 		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
 				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 
@@ -63,14 +63,14 @@ const RegisterConfirmTradeStockModal = ({
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={cancelHandler}
+						onClick={handleClickCancelBtn}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={registerHandler}
+						onClick={handleClickRegisterBtn}
 					>
 						확인
 					</button>

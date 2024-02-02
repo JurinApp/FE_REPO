@@ -14,11 +14,11 @@ const DeleteLearnerButton = () => {
 	const setIsOpenPaymentPoint = useSetRecoilState(paymentPointModalState);
 	const isExistSelectedLearners = selectedLearners.length !== 0;
 
-	const onClickDeleteBtnHandler = () => {
+	const handleClickDeleteLearners = () => {
 		setIsOpenDeleteLearnerModal(true);
 	};
 
-	const openPaymentPointModalHandler = () => {
+	const handlePaymentPoint = () => {
 		setIsOpenPaymentPoint(true);
 	};
 
@@ -28,7 +28,7 @@ const DeleteLearnerButton = () => {
 				type="button"
 				disabled={!isExistSelectedLearners}
 				className="mr-2 h-box-height w-full rounded border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
-				onClick={onClickDeleteBtnHandler}
+				onClick={handleClickDeleteLearners}
 			>
 				삭제
 			</button>
@@ -36,7 +36,7 @@ const DeleteLearnerButton = () => {
 				type="button"
 				disabled={!isExistSelectedLearners}
 				className="flex h-box-height w-full items-center justify-center rounded bg-tekhelet font-bold text-white disabled:border disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
-				onClick={openPaymentPointModalHandler}
+				onClick={handlePaymentPoint}
 			>
 				<div className="mr-[0.375rem] flex h-6 w-6 items-center justify-center rounded-full bg-tangerine">
 					<PointIcon className="h-3 w-[0.563rem]" />

@@ -6,10 +6,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 const DeleteRegisterButton = () => {
 	const selectedItems = useRecoilValue(selectedItemState);
 	const isExistSelectedItems = selectedItems.length !== 0;
-	const setIsOpenDeleteItemsModal = useSetRecoilState(deleteItemsModalState);
+	const setIsOpenModal = useSetRecoilState(deleteItemsModalState);
 
-	const clickOpenDeleteItemsModalHandler = () => {
-		setIsOpenDeleteItemsModal(true);
+	const handleDeleteItems = () => {
+		setIsOpenModal(true);
 	};
 
 	return (
@@ -18,7 +18,7 @@ const DeleteRegisterButton = () => {
 				type="button"
 				className="h-box-height grow rounded-[0.25rem] border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300"
 				disabled={!isExistSelectedItems}
-				onClick={clickOpenDeleteItemsModalHandler}
+				onClick={handleDeleteItems}
 			>
 				삭제
 			</button>

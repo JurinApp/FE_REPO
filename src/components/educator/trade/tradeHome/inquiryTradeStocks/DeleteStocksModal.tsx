@@ -13,25 +13,25 @@ const DeleteStocksModal = () => {
 	const selectedStocks = useRecoilValue(selectedStock);
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const cancelModalHandler = () => {
+	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
-	const deleteStocksHandler = () => {
+	const handleClickDeleteBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
 				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 
@@ -66,14 +66,14 @@ const DeleteStocksModal = () => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={cancelModalHandler}
+						onClick={handleClickCancelBtn}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={deleteStocksHandler}
+						onClick={handleClickDeleteBtn}
 					>
 						확인
 					</button>

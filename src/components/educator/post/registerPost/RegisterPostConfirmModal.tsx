@@ -1,22 +1,24 @@
-import { editItemModalState } from "@/states/confirmModalState";
+import { registerPostModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
-interface IEditConfirmItemModalProps {
-	readonly setIsEdit: (isEdit: boolean) => void;
+interface IRegisterConfirmModalProps {
+	readonly setIsRegister: (isRegister: boolean) => void;
 }
 
-const EditConfirmItemModal = ({ setIsEdit }: IEditConfirmItemModalProps) => {
-	const [isOpenModal, setIsOpenModal] = useRecoilState(editItemModalState);
-	const resetIsOpenModal = useResetRecoilState(editItemModalState);
+const RegisterPostConfirmModal = ({
+	setIsRegister,
+}: IRegisterConfirmModalProps) => {
+	const [isOpenModal, setIsOpenModal] = useRecoilState(registerPostModalState);
+	const resetIsOpenModal = useResetRecoilState(registerPostModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
-	const handleClickEditBtn = () => {
-		setIsEdit(true);
+	const handleClickRegisterBtn = () => {
+		setIsRegister(true);
 		setIsOpenModal(false);
 	};
 
@@ -53,7 +55,7 @@ const EditConfirmItemModal = ({ setIsEdit }: IEditConfirmItemModalProps) => {
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
 			>
 				<div className="flex grow items-center justify-center">
-					<p className="my-auto">수정하시겠습니까?</p>
+					<p className="my-auto">등록하시겠습니까?</p>
 				</div>
 				<div className="flex">
 					<button
@@ -66,7 +68,7 @@ const EditConfirmItemModal = ({ setIsEdit }: IEditConfirmItemModalProps) => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={handleClickEditBtn}
+						onClick={handleClickRegisterBtn}
 					>
 						확인
 					</button>
@@ -76,4 +78,4 @@ const EditConfirmItemModal = ({ setIsEdit }: IEditConfirmItemModalProps) => {
 	);
 };
 
-export default EditConfirmItemModal;
+export default RegisterPostConfirmModal;

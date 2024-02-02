@@ -59,8 +59,10 @@ const RegisterTradeStockForm = ({
 								type="text"
 								placeholder="상품명을 입력해주세요"
 								id="stockName"
-								className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] font-bold outline-none placeholder:text-black-300 focus:border-black-800 ${
-									errors.stockName && "border-danger"
+								className={`w-full rounded-none border-b pb-[0.625rem] font-bold outline-none placeholder:text-black-300 ${
+									errors.stockName
+										? "border-danger"
+										: "border-black-100 focus:border-black-800"
 								} mb-2`}
 								{...register("stockName")}
 							/>
@@ -78,8 +80,10 @@ const RegisterTradeStockForm = ({
 								</label>
 								<input
 									type="number"
-									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
-										errors.price && "border-danger"
+									className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+										errors.price
+											? "border-danger"
+											: "border-black-100 focus:border-black-800"
 									}`}
 									id="price"
 									{...register("price")}
@@ -99,8 +103,10 @@ const RegisterTradeStockForm = ({
 								</label>
 								<input
 									type="number"
-									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
-										errors.tax && "border-danger"
+									className={`w-full rounded-none border-b  pb-[0.625rem] outline-none ${
+										errors.tax
+											? "border-danger"
+											: "border-black-100 focus:border-black-800"
 									}`}
 									id="tax"
 									{...register("tax")}
@@ -120,8 +126,10 @@ const RegisterTradeStockForm = ({
 								</label>
 								<input
 									type="text"
-									className={`w-full rounded-none border-b border-black-100 pb-[0.625rem] outline-none focus:border-black-800 ${
-										errors.standard && "border-danger"
+									className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+										errors.standard
+											? "border-danger"
+											: "border-black-100 focus:border-black-800"
 									}`}
 									id="standard"
 									{...register("standard")}
@@ -140,8 +148,10 @@ const RegisterTradeStockForm = ({
 									내용
 								</label>
 								<textarea
-									className={`w-full resize-none rounded-none border-b border-black-100 outline-none focus:border-black-800 ${
-										errors.standard && "border-danger"
+									className={`w-full resize-none rounded-none border-b outline-none ${
+										errors.standard
+											? "border-danger"
+											: "border-black-100 focus:border-black-800"
 									}`}
 									id="content"
 									{...register("content")}

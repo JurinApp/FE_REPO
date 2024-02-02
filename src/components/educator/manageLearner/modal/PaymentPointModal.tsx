@@ -15,15 +15,15 @@ const PaymentPointModal = () => {
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
 
-	const closeModalHandler = () => {
+	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
-	const paymentPointHandler = () => {
+	const handleClickPaymentPoint = () => {
 		setIsOpenModal(false);
 	};
 
-	const onClickSwitchBtnHandler = (type: string) => {
+	const handleChangePoint = (type: string) => {
 		const numericValue = parseFloat(replacePoint.replace(/,/g, ""));
 
 		if (type === "decrease" && point !== 0) {
@@ -37,7 +37,7 @@ const PaymentPointModal = () => {
 		}
 	};
 
-	const onChangePointHandler = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleReplacePoint = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		const numericValue = parseFloat(value.replace(/,/g, ""));
 
@@ -51,16 +51,16 @@ const PaymentPointModal = () => {
 	};
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
 				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 
@@ -90,20 +90,20 @@ const PaymentPointModal = () => {
 				<div className="mx-auto mb-12 mt-6 flex">
 					<button
 						className="flex h-10 w-10 items-center justify-center border border-black-100"
-						onClick={() => onClickSwitchBtnHandler("decrease")}
+						onClick={() => handleChangePoint("decrease")}
 					>
 						<Decrease />
 					</button>
 					<input
 						type="text"
 						className="flex w-[4.5rem] items-center justify-center border-b border-t border-black-100 text-center font-medium outline-none"
-						onChange={onChangePointHandler}
+						onChange={handleReplacePoint}
 						value={replacePoint}
 						maxLength={6}
 					/>
 					<button
 						className="flex h-10 w-10 items-center justify-center border border-black-100"
-						onClick={() => onClickSwitchBtnHandler("increase")}
+						onClick={() => handleChangePoint("increase")}
 					>
 						<Increase />
 					</button>
@@ -112,14 +112,14 @@ const PaymentPointModal = () => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={closeModalHandler}
+						onClick={handleClickCancelBtn}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={paymentPointHandler}
+						onClick={handleClickPaymentPoint}
 					>
 						확인
 					</button>

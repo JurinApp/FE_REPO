@@ -5,14 +5,14 @@ import { useEffect } from "react";
 const LearnerSearch = () => {
 	const [keyword, setKeyword] = useInput("");
 
-	const searchLearnerHandler = () => {
+	const handleSearchLearner = () => {
 		// TODO : keyword에 입력이 있을 경우에만 검색되게 API 구현되면 추가 예정
 		console.log(keyword);
 	};
 
 	useEffect(() => {
 		if (keyword.length !== 0) {
-			searchLearnerHandler();
+			handleSearchLearner();
 		}
 	}, [keyword]);
 

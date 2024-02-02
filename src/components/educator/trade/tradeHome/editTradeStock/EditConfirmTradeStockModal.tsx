@@ -25,16 +25,16 @@ const EditConfirmTradeStockModal = ({
 	};
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
 				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 

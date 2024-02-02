@@ -14,11 +14,11 @@ const DeleteLearnerModal = () => {
 	const resetIsOpenModal = useResetRecoilState(deleteConfirmModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const closeModalHandler = () => {
+	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
-	const deleteBtnHandler = () => {
+	const handleClickDeleteBtn = () => {
 		setSelectedLearners([]);
 		setIsOpenModal(false);
 	};
@@ -34,16 +34,16 @@ const DeleteLearnerModal = () => {
 	}, [isOpenModal]);
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
 				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 
@@ -68,14 +68,14 @@ const DeleteLearnerModal = () => {
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={closeModalHandler}
+						onClick={handleClickCancelBtn}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={deleteBtnHandler}
+						onClick={handleClickDeleteBtn}
 					>
 						확인
 					</button>
