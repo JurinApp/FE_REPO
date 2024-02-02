@@ -1,6 +1,4 @@
 import { IStockBSHistory } from "@/interface/stock";
-
-import { useState } from "react";
 import TradingChart from "../common/TradingChart";
 import StockBuyInterface from "./StockBuyInterface";
 

@@ -85,3 +85,9 @@ export const modifyUserinfoModalState = atom<boolean>({
 	default: false,
 	key: "modifyUserinfoModalState",
 });
+
+// -------- 주문 내역 관리 --------
+export const calendarModalState = atom<boolean>({
+	default: false,
+	key: "calendarModalState",
+});

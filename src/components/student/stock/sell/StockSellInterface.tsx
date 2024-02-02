@@ -54,7 +54,7 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 					>
 						<div
 							id="count-stock"
-							className="ml-[0.875rem] mt-[14px] flex h-10 w-[210px] flex-row items-center"
+							className="ml-[0.875rem] mt-[0.875rem] flex h-10 w-[13.125rem] flex-row items-center"
 						>
 							<p className="text-center text-sm font-normal">주식 개수</p>
 							<button
@@ -63,7 +63,7 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 							>
 								<Minus />
 							</button>
-							<p className="flex h-10 w-[54px] items-center justify-center border border-b-black-300 border-t-black-300">
+							<p className="flex h-10 w-[3.375rem] items-center justify-center border border-b-black-300 border-t-black-300">
 								{stockCount} 주
 							</p>
 							<button
@@ -75,21 +75,21 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 						</div>
 						<div
 							id="price"
-							className="mx-[0.875rem] mt-3 flex h-10 w-[210px] flex-row items-center"
+							className="mx-[0.875rem] mt-3 flex h-10 w-[13.125rem] flex-row items-center"
 						>
 							<p className="text-center text-sm font-normal">금액</p>
-							<div className="ml-12 flex h-10 w-[132px] flex-row items-center justify-end border-b border-b-black-300">
+							<div className="ml-12 flex h-10 w-[8.25rem] flex-row items-center justify-end border-b border-b-black-300">
 								<p className="text-base font-bold">{stockPrice * stockCount}</p>
-								<p className="ml-[10px] text-base font-bold">원</p>
+								<p className="ml-[0.625rem] text-base font-bold">원</p>
 							</div>
 						</div>
 						<div
 							id="tax"
-							className="mx-[0.875rem] mt-3 flex h-10 w-[210px] flex-row items-center"
+							className="mx-[0.875rem] mt-3 flex h-10 w-[13.125rem] flex-row items-center"
 						>
 							<p className="text-center text-sm font-normal">세금</p>
-							<div className="ml-12 flex h-10 w-[132px] flex-row items-center border-b border-b-black-300">
-								<p className="ml-[83px] mr-[0.625rem] text-base font-bold">
+							<div className="ml-12 flex h-10 w-[8.25rem] flex-row items-center border-b border-b-black-300">
+								<p className="ml-[5.188rem] mr-[0.625rem] text-base font-bold">
 									0.3
 								</p>
 								<p className="text-base font-bold">%</p>
@@ -102,12 +102,14 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 						id="my-stock"
 						className=" flex w-[14.875rem] flex-row items-center "
 					>
-						<p className="ml-[14px] text-center text-sm font-normal">금액</p>
-						<div className="ml-12 flex h-10 w-[132px] flex-row items-center justify-end border-b border-b-black-300">
+						<p className="ml-[0.875rem] text-center text-sm font-normal">
+							금액
+						</p>
+						<div className="ml-12 flex h-10 w-[8.25rem] flex-row items-center justify-end border-b border-b-black-300">
 							<p className="text-base font-bold">
 								{stockPrice * stockCount * (97 / 100)}
 							</p>
-							<p className="ml-[10px] text-base font-bold">원</p>
+							<p className="ml-[0.625rem] text-base font-bold">원</p>
 						</div>
 					</div>
 					<button
