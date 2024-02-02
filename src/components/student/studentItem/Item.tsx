@@ -1,11 +1,10 @@
 interface IItemProps {
-	itemId: string;
-	itemName: string;
-	price: number;
+	readonly itemId: string;
+	readonly itemName: string;
+	readonly price: number;
 }
 
-const Item = (props: IItemProps) => {
-	const { itemId, itemName, price } = props;
+const Item = ({ itemId, itemName, price }: IItemProps) => {
 	// 상품을 누르면 모달의 상태 변화가 발생해서 구매 모달창이 표시.
 	return (
 		<>

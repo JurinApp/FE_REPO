@@ -10,8 +10,12 @@ type TItemBuyModalProps = {
 	item: IItem;
 };
 
-const ItemBuyModal = (props: TItemBuyModalProps) => {
-	const { isModalOpen, onCancel, onConfirm, item } = props;
+const ItemBuyModal = ({
+	isModalOpen,
+	onCancel,
+	onConfirm,
+	item,
+}: TItemBuyModalProps) => {
 	const [itemQuantity, setItemQuantity] = useState(1);
 
 	const increaseItemQuantity = () => {
@@ -88,7 +92,10 @@ const ItemBuyModal = (props: TItemBuyModalProps) => {
 					<button className="w-1/2 bg-btn-cancel" onClick={onCancel}>
 						취소
 					</button>
-					<button className="w-1/2 bg-medium-slate-blue text-[#ffffff]">
+					<button
+						className="w-1/2 bg-medium-slate-blue text-[#ffffff]"
+						onClick={onConfirm}
+					>
 						구매
 					</button>
 				</div>

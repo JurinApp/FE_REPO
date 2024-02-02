@@ -1,4 +1,4 @@
-import ArticleBoardContainer from "@/components/studentPost/ArticleBoardContainer";
+import ArticleBoardContainer from "@/components/student/studentPost/ArticleBoardContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import React, { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

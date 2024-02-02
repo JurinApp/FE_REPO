@@ -1,13 +1,14 @@
 import { useParams } from "react-router";
-import GoBackButton from "../common/GoBackButton/GoBackButton";
+import GoBackButton from "../../common/GoBackButton/GoBackButton";
 
 const ArticleContainer = () => {
 	const { articleId } = useParams<{ articleId: string }>();
 	console.log(articleId);
 
-	const fetchArticle = (articleId: string) => {
-		// TODO: articleId로 게시글 조회 API 호출
-	};
+	// const fetchArticle = (articleId: string) => {
+	// 	// TODO: articleId로 게시글 조회 API 호출
+	// 	console.log("조회 완료");
+	// };
 	return (
 		<>
 			<GoBackButton />
