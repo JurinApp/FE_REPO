@@ -91,3 +91,19 @@ export const calendarModalState = atom<boolean>({
 	default: false,
 	key: "calendarModalState",
 });
+
+// -------- 학생 아이템 관리 --------
+export const itemHistoryModalState = atom<boolean>({
+	default: false,
+	key: "itemHistoryModalState",
+});
+
+export const itemBuyModalState = atom<boolean>({
+	default: false,
+	key: "itemBuyModalState",
+});
+
+export const itemUseModalState = atom<boolean>({
+	default: false,
+	key: "itemUseModalState",
+});

@@ -1,27 +1,26 @@
-import PointLogo from "@assets/svg/point.svg?react";
-import Plus from "@assets/svg/plus.svg?react";
-import Minus from "@assets/svg/minus.svg?react";
-import { useState } from "react";
 import { IMyItem } from "./MyItemContainer";
+import { useRecoilState } from "recoil";
+import { itemUseModalState } from "@/states/confirmModalState";
 type TItemBuyModalProps = {
-	isModalOpen: boolean;
-	onCancel: () => void;
-	onConfirm: () => void;
-	item: IMyItem;
+	readonly onConfirm: () => void;
+	readonly item: IMyItem;
 };
 
-const ItemUseModal = (props: TItemBuyModalProps) => {
-	const { isModalOpen, onCancel, onConfirm, item } = props;
-	const [itemQuantity, setItemQuantity] = useState(1);
+const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
+	// const [itemQuantity, setItemQuantity] = useState(1);
+	const [isItemUseModalOpen, setIsItemUseModalOpen] =
+		useRecoilState(itemUseModalState);
 
-	if (!isModalOpen) return null;
+	const handleModalClose = () => {
+		setIsItemUseModalOpen(false);
+	};
 	return (
 		<>
 			<div
-				className="fixed left-1/2 top-0 h-[100vh] w-[24.563rem] -translate-x-1/2  transform bg-black-800"
-				onClick={onCancel}
-			></div>
-			<div className="fixed left-1/2 top-1/2 flex h-[25.563rem] w-[20.813rem] -translate-x-1/2 -translate-y-1/2 transform flex-col">
+				className={`${
+					isItemUseModalOpen ? "fixed" : "hidden"
+				} left-1/2 top-1/2 flex h-[25.563rem] w-[20.813rem] -translate-x-1/2 -translate-y-1/2 transform flex-col`}
+			>
 				<div className="bg-opacity-2 flex h-[21.813rem] justify-center bg-[#ffffff]">
 					<div className="flex flex-col">
 						<div className="border-b-main-disabled mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b">
@@ -45,10 +44,13 @@ const ItemUseModal = (props: TItemBuyModalProps) => {
 					</div>
 				</div>
 				<div className="flex h-[3.75rem] flex-row">
-					<button className="w-1/2 bg-btn-cancel" onClick={onCancel}>
+					<button className="w-1/2 bg-btn-cancel" onClick={handleModalClose}>
 						취소
 					</button>
-					<button className="w-1/2 bg-medium-slate-blue text-[#ffffff]">
+					<button
+						className="w-1/2 bg-medium-slate-blue text-[#ffffff]"
+						onClick={onConfirm}
+					>
 						구매
 					</button>
 				</div>

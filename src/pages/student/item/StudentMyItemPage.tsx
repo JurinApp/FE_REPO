@@ -1,5 +1,5 @@
 import StudentItemTab from "@/components/student/studentItem/StudentItemTab";
-import MyItemContainer from "@/components/student/studentItem/MyItemContainer";
+import MyItemContainer from "@/components/student/studentItem/myItem/MyItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import React, { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
