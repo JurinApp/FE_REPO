@@ -1,6 +1,11 @@
+import { userRoleState } from "@/states/userRoleState";
+import { useRecoilValue } from "recoil";
+
 const DetailPostInfo = () => {
+	const userRole = useRecoilValue(userRoleState);
+
 	return (
-		<div className="px-4 sm:px-0">
+		<div className={`${userRole === "student" && "pt-6"} px-4 sm:px-0`}>
 			<div className="mx-auto w-full overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white pb-6 sm:w-[22.653rem]">
 				<div className="max-h-[10rem] px-4 sm:max-h-56">
 					<p className="mt-6 border-b border-black-100 pb-4 font-bold">

@@ -1,7 +1,10 @@
+import { userRoleState } from "@/states/userRoleState";
 import DeletePostsModal from "./DeletePostsModal";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import PostHeadingAndTitle from "./PostHeadingAndTitle";
 import PostList from "./PostList";
+import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
 
 const POST_LIST = [
 	{
@@ -31,6 +34,12 @@ const POST_LIST = [
 ];
 
 const PostContainer = () => {
+	const userRole = useRecoilValue(userRoleState);
+
+	useEffect(() => {
+		console.log(userRole);
+	}, [userRole]);
+
 	return (
 		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
 			<PostHeadingAndTitle postList={POST_LIST} />
