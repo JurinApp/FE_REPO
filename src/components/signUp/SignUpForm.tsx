@@ -29,6 +29,14 @@ interface ICodeError {
 	readonly codeErrorMsg: string;
 }
 
+interface IFormData {
+	readonly username: string;
+	readonly nickname: string;
+	readonly password: string;
+	readonly userRole: number;
+	verificationCode?: string;
+}
+
 const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
@@ -76,16 +84,21 @@ const SignUpForm = () => {
 	const handleSubmitSignUp = async () => {
 		if (!isSignUp) return;
 
+		let formData: IFormData = {
+			username: getValues().id,
+			nickname: getValues().name,
+			password: getValues().password,
+			userRole: Number(getValues().auth),
+		};
+
+		if (Number(getValues().auth) === 1) {
+			formData.verificationCode = code;
+		}
+
 		const response = await axiosData("default", {
 			method: "POST",
 			url: "/api/v1/auth/signup",
-			data: {
-				username: getValues().id,
-				nickname: getValues().name,
-				password: getValues().password,
-				userRole: Number(getValues().auth),
-				verificationCode: code,
-			},
+			data: formData,
 		});
 
 		if (response) {
