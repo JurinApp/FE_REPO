@@ -1,4 +1,4 @@
-import DetailPostContainer from "@/components/educator/post/detailPost/DetailPostContainer";
+import DetailPostContainer from "@/components/post/detailPost/DetailPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

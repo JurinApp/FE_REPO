@@ -1,4 +1,4 @@
-import RegisterPostContainer from "@/components/educator/post/registerPost/RegisterPostContainer";
+import RegisterPostContainer from "@/components/post/registerPost/RegisterPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
