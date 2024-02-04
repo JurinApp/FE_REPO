@@ -76,6 +76,7 @@ const LoginFormSection = () => {
 				const role = decodeToken(response.data.data.accessToken);
 				setUserRole(role);
 				setCookie("accessToken", response.data.data.accessToken);
+				setCookie("refreshToken", response.data.data.refreshToken);
 				navigate("/mypage");
 			}
 
