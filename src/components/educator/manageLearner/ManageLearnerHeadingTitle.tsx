@@ -10,17 +10,16 @@ interface IManageLearnerHeadingTitleProps {
 const ManageLearnerHeadingTitle = ({
 	learnerList,
 }: IManageLearnerHeadingTitleProps) => {
-	const setSelectedLearners = useSetRecoilState(selectedLearner);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckState);
+	const setSelectedLearners = useSetRecoilState(selectedLearner);
 	const resetIsAllCheck = useResetRecoilState(allCheckState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
-	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleAllCheckLearners = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
 			const learnerIdArr = learnerList.map((learner) => learner.learnerId);
-
 			setSelectedLearners(learnerIdArr);
 			setIsAllCheck(true);
 		} else {
@@ -46,7 +45,7 @@ const ManageLearnerHeadingTitle = ({
 					id="checkAll"
 					className="custom-checkBox cursor-pointer"
 					checked={isAllCheck}
-					onChange={clickAllCheckHandler}
+					onChange={handleAllCheckLearners}
 				/>
 				<label
 					htmlFor="checkAll"

@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 const DeleteRegisterButton = () => {
 	const selectedStocks = useRecoilValue(selectedStock);
-	const setIsOpenDeleteStocksModal = useSetRecoilState(deleteStocksModalState);
+	const setIsOpenModal = useSetRecoilState(deleteStocksModalState);
 
-	const deleteStocksHandler = () => {
-		setIsOpenDeleteStocksModal(true);
+	const handleDeleteStocks = () => {
+		setIsOpenModal;
 	};
 
 	return (
@@ -17,7 +17,7 @@ const DeleteRegisterButton = () => {
 				type="button"
 				disabled={selectedStocks.length === 0 ? true : false}
 				className="mr-1 h-box-height grow rounded border border-danger bg-white font-bold text-danger disabled:border-black-300 disabled:bg-black-100 disabled:text-black-300 "
-				onClick={deleteStocksHandler}
+				onClick={handleDeleteStocks}
 			>
 				삭제
 			</button>

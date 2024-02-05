@@ -11,7 +11,7 @@ interface TradeStockItemProps {
 const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
 
-	const clickStockHandler = () => {
+	const handleCheckStock = () => {
 		const index = selectedStocks.findIndex((stockId) => {
 			return stockId === stockItem.stockId;
 		});
@@ -32,10 +32,10 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 		>
 			<div className="mr-3 flex h-full items-center">
 				<label className="hidden" htmlFor="checkLearner">
-					학생선택
+					주식선택
 				</label>
 				<input
-					onChange={clickStockHandler}
+					onChange={handleCheckStock}
 					type="checkbox"
 					id="checkLearner"
 					className="custom-checkBox cursor-pointer"

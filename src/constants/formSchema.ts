@@ -56,3 +56,10 @@ export const REGISTER_TRADE_STOCK_SCHEMA = yup.object().shape({
 	standard: yup.string().required("기준 입력은 필수입니다."),
 	content: yup.string().required("내용 입력은 필수입니다."),
 });
+
+export const POST_SCHEMA = yup.object().shape({
+	itemName: yup.string().required("아이템명 입력은 필수입니다."),
+	registerDate: yup.string().required("날짜 입력은 필수입니다."),
+	title: yup.string().required("제목 입력은 필수입니다."),
+	content: yup.string().required("내용 입력은 필수입니다."),
+});

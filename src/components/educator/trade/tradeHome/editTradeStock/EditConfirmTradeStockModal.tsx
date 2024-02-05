@@ -9,40 +9,39 @@ interface IEditConfirmTradeStockModalProps {
 const EditConfirmTradeStockModal = ({
 	setIsEdit,
 }: IEditConfirmTradeStockModalProps) => {
-	const [isOpenEditTradeStockModal, setIsOpenEditTradeStockModal] =
-		useRecoilState(editTradeStockModalState);
-	const resetIsOpenEditTradeStockModal = useResetRecoilState(
+	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		editTradeStockModalState,
 	);
+	const resetIsOpenModal = useResetRecoilState(editTradeStockModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const closeModalHandler = () => {
-		setIsOpenEditTradeStockModal(false);
+	const handleCancel = () => {
+		setIsOpenModal(false);
 	};
 
-	const editHandler = () => {
+	const handleEdit = () => {
 		setIsEdit(true);
-		setIsOpenEditTradeStockModal(false);
+		setIsOpenModal(false);
 	};
 
 	useEffect(() => {
-		const outSideClickHandler = (e: Event) => {
+		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				setIsOpenEditTradeStockModal(false);
+				setIsOpenModal(false);
 			}
 		};
 
-		document.addEventListener("mousedown", outSideClickHandler);
+		document.addEventListener("mousedown", handleOutSideClick);
 
 		return () => {
-			document.removeEventListener("mousedown", outSideClickHandler);
+			document.removeEventListener("mousedown", handleOutSideClick);
 		};
 	}, [modalRef]);
 
 	useEffect(() => {
 		return () => {
-			if (isOpenEditTradeStockModal) {
-				resetIsOpenEditTradeStockModal();
+			if (isOpenModal) {
+				resetIsOpenModal();
 			}
 		};
 	}, []);
@@ -60,14 +59,14 @@ const EditConfirmTradeStockModal = ({
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={closeModalHandler}
+						onClick={handleCancel}
 					>
 						취소
 					</button>
 					<button
 						type="button"
 						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={editHandler}
+						onClick={handleEdit}
 					>
 						확인
 					</button>

@@ -29,6 +29,14 @@ interface ICodeError {
 	readonly codeErrorMsg: string;
 }
 
+interface IFormData {
+	readonly username: string;
+	readonly nickname: string;
+	readonly password: string;
+	readonly userRole: number;
+	verificationCode?: string;
+}
+
 const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
@@ -73,19 +81,24 @@ const SignUpForm = () => {
 	});
 	const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
-	const signUpSubmitHandler = async () => {
+	const handleSubmitSignUp = async () => {
 		if (!isSignUp) return;
+
+		let formData: IFormData = {
+			username: getValues().id,
+			nickname: getValues().name,
+			password: getValues().password,
+			userRole: Number(getValues().auth),
+		};
+
+		if (Number(getValues().auth) === 1) {
+			formData.verificationCode = code;
+		}
 
 		const response = await axiosData("default", {
 			method: "POST",
 			url: "/api/v1/auth/signup",
-			data: {
-				username: getValues().id,
-				nickname: getValues().name,
-				password: getValues().password,
-				userRole: Number(getValues().auth),
-				verificationCode: code,
-			},
+			data: formData,
 		});
 
 		if (response) {
@@ -106,7 +119,7 @@ const SignUpForm = () => {
 		}
 	};
 
-	const idDuplicateCheckHandler = async () => {
+	const handleIdDuplicate = async () => {
 		const response = await axiosData("default", {
 			method: "POST",
 			url: "/api/v1/auth/validate",
@@ -159,7 +172,7 @@ const SignUpForm = () => {
 		}
 	};
 
-	const codeDuplicateCheckHandler = async () => {
+	const handleCodeDuplicateCheck = async () => {
 		const response = await axiosData("default", {
 			method: "POST",
 			url: "/api/v1/auth/validate",
@@ -206,7 +219,7 @@ const SignUpForm = () => {
 		}
 	};
 
-	const onClickSignUpBtnHandler = () => {
+	const handleClickSignUpBtn = () => {
 		setConfirmModalState((prevState) => ({
 			...prevState,
 			isModalOpen: true,
@@ -289,7 +302,7 @@ const SignUpForm = () => {
 
 	useEffect(() => {
 		if (isSignUp) {
-			signUpSubmitHandler();
+			handleSubmitSignUp();
 		}
 	}, [isSignUp]);
 
@@ -297,10 +310,7 @@ const SignUpForm = () => {
 		<>
 			<div className="mt-6">
 				<h1 className="text-[1.625rem] font-bold">회원가입</h1>
-				<form
-					onSubmit={handleSubmit(onClickSignUpBtnHandler)}
-					className="mt-6 "
-				>
+				<form onSubmit={handleSubmit(handleClickSignUpBtn)} className="mt-6 ">
 					<div className="flex flex-col">
 						<label htmlFor="id" className="mb-1 font-bold text-black-800">
 							아이디
@@ -326,7 +336,7 @@ const SignUpForm = () => {
 								type="button"
 								disabled={idDuplicateCheck.isIdBtnDisabled}
 								className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
-								onClick={idDuplicateCheckHandler}
+								onClick={handleIdDuplicate}
 							>
 								중복확인
 							</button>
@@ -470,7 +480,7 @@ const SignUpForm = () => {
 									type="button"
 									disabled={codeDuplicateCheck.isCodeBtnDisabled}
 									className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
-									onClick={codeDuplicateCheckHandler}
+									onClick={handleCodeDuplicateCheck}
 								>
 									확인
 								</button>

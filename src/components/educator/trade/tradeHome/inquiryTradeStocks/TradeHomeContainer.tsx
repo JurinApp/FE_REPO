@@ -1,9 +1,7 @@
-import { deleteStocksModalState } from "@/states/confirmModalState";
 import DeleteRegisterButton from "./DeleteRegisterButton";
+import DeleteStocksModal from "./DeleteStocksModal";
 import TradeHomeHeading from "./TradeHomeHeading";
 import TradeStockList from "./TradeStockList";
-import { useRecoilValue } from "recoil";
-import DeleteStocksModal from "./DeleteStocksModal";
 
 const STOCK_LIST = [
 	{
@@ -37,14 +35,12 @@ const STOCK_LIST = [
 ];
 
 const TradeHomeContainer = () => {
-	const isOpenDeleteStocksModal = useRecoilValue(deleteStocksModalState);
-
 	return (
 		<div className="relative mx-auto h-[calc(100vh-10.7rem)] w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
 			<TradeHomeHeading stockList={STOCK_LIST} />
 			<TradeStockList stockList={STOCK_LIST} />
 			<DeleteRegisterButton />
-			{isOpenDeleteStocksModal && <DeleteStocksModal />}
+			<DeleteStocksModal />
 		</div>
 	);
 };

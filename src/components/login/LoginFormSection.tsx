@@ -1,11 +1,14 @@
 import { LOGIN_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
+import { userRoleState } from "@/states/userRoleState";
 import { setCookie } from "@/utils/cookies";
+import { decodeToken } from "@/utils/decodeToken";
 import ErrorMsg from "@components/common/errorMsg/ErrorMsg";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import Spinner from "../common/spinner/Spinner";
 
 interface ILoginFormValues {
@@ -21,6 +24,7 @@ interface IError {
 const LoginFormSection = () => {
 	const { isLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
+	const setUserRole = useSetRecoilState(userRoleState);
 	const {
 		register,
 		handleSubmit,
@@ -41,7 +45,7 @@ const LoginFormSection = () => {
 		errorMsg: "",
 	});
 
-	const validate = (data: ILoginFormValues) => {
+	const handleCheckValidate = (data: ILoginFormValues) => {
 		if (data.id.length === 0) {
 			return false;
 		}
@@ -53,8 +57,8 @@ const LoginFormSection = () => {
 		return true;
 	};
 
-	const submitHandler = async (data: ILoginFormValues) => {
-		if (!validate(data)) return;
+	const handleSubmitLogin = async (data: ILoginFormValues) => {
+		if (!handleCheckValidate(data)) return;
 
 		const response = await axiosData("default", {
 			method: "POST",
@@ -69,7 +73,10 @@ const LoginFormSection = () => {
 			const status = response.status;
 
 			if (status === 200) {
+				const role = decodeToken(response.data.data.accessToken);
+				setUserRole(role);
 				setCookie("accessToken", response.data.data.accessToken);
+				setCookie("refreshToken", response.data.data.refreshToken);
 				navigate("/mypage");
 			}
 
@@ -102,7 +109,10 @@ const LoginFormSection = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit(submitHandler)} className="mt-[5.625rem]">
+			<form
+				onSubmit={handleSubmit(handleSubmitLogin)}
+				className="mt-[5.625rem]"
+			>
 				<div className="mx-auto flex h-[8.875rem] flex-col px-4 sm:w-[23.563rem]">
 					<input
 						id="id"
