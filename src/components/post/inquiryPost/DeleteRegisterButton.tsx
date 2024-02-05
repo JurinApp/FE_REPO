@@ -1,18 +1,24 @@
 import { deletePostsModalState } from "@/states/confirmModalState";
 import { selectedPostsState } from "@/states/selectedPostState";
+import { userRoleState } from "@/states/userRoleState";
 import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const DeleteRegisterButton = () => {
 	const selectedPosts = useRecoilValue(selectedPostsState);
 	const setIsOpenModal = useSetRecoilState(deletePostsModalState);
+	const userRole = useRecoilValue(userRoleState);
 
 	const handleDeletePosts = () => {
 		setIsOpenModal(true);
 	};
 
 	return (
-		<div className="absolute bottom-6 left-0 flex w-full px-4">
+		<div
+			className={`${
+				userRole === "student" ? "hidden" : "flex"
+			} absolute bottom-6 left-0 w-full px-4`}
+		>
 			<button
 				type="button"
 				disabled={selectedPosts.length === 0 ? true : false}

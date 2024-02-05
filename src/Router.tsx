@@ -45,18 +45,10 @@ const DetailItemPage = lazy(
 	() => import("@pages/educator/item/DetailItemPage"),
 );
 const EditItemPage = lazy(() => import("@pages/educator/item/EditItemPage"));
-const PostPage = lazy(() => import("@pages/educator/post/PostPage"));
-const RegisterPostPage = lazy(
-	() => import("@pages/educator/post/RegisterPostPage"),
-);
-const DetailPostPage = lazy(
-	() => import("@pages/educator/post/DetailPostPage"),
-);
-const EditPostPage = lazy(() => import("@pages/educator/post/EditPostPage"));
-const ArticleBoardPage = lazy(
-	() => import("@pages/student/post/ArticleBoardPage"),
-);
-const ArticlePage = lazy(() => import("@pages/student/post/ArticlePage"));
+const PostPage = lazy(() => import("@pages/post/PostPage"));
+const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
+const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
+const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
 
 const Router = () => {
 	const queryClient = new QueryClient();
@@ -103,8 +95,6 @@ const Router = () => {
 					<Route path="/post/register" element={<RegisterPostPage />} />
 					<Route path="/post/detail/:postId" element={<DetailPostPage />} />
 					<Route path="/post/edit/:postId" element={<EditPostPage />} />
-					<Route path="/articleBoard" element={<ArticleBoardPage />} />
-					<Route path="/articleBoard/:articleId" element={<ArticlePage />} />
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

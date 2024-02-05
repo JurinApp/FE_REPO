@@ -1,9 +1,9 @@
-import ArticleContainer from "@/components/studentPost/ArticleContainer";
+import DetailPostContainer from "@/components/post/detailPost/DetailPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import React, { useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const ArticlePage = () => {
+const DetailPostPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
@@ -13,11 +13,12 @@ const ArticlePage = () => {
 			isUseTab: false,
 		});
 	}, []);
+
 	return (
-		<div>
-			<ArticleContainer />
-		</div>
+		<>
+			<DetailPostContainer />
+		</>
 	);
 };
 
-export default ArticlePage;
+export default DetailPostPage;

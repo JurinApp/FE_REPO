@@ -1,9 +1,9 @@
-import EditPostContainer from "@/components/educator/post/editPost/EditPostContainer";
+import RegisterPostContainer from "@/components/post/registerPost/RegisterPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const EditPostPage = () => {
+const RegisterPostPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
@@ -16,9 +16,9 @@ const EditPostPage = () => {
 
 	return (
 		<>
-			<EditPostContainer />
+			<RegisterPostContainer />
 		</>
 	);
 };
 
-export default EditPostPage;
+export default RegisterPostPage;

@@ -1,14 +1,14 @@
-import RegisterPostContainer from "@/components/educator/post/registerPost/RegisterPostContainer";
+import PostContainer from "@/components/post/inquiryPost/PostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const RegisterPostPage = () => {
+const PostPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
-			isUseHeader: false,
+			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: false,
 		});
@@ -16,9 +16,9 @@ const RegisterPostPage = () => {
 
 	return (
 		<>
-			<RegisterPostContainer />
+			<PostContainer />
 		</>
 	);
 };
 
-export default RegisterPostPage;
+export default PostPage;

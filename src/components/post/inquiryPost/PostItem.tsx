@@ -1,7 +1,8 @@
 import { IPost } from "@/interface/post";
 import { selectedPostsState } from "@/states/selectedPostState";
+import { userRoleState } from "@/states/userRoleState";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 interface IPostItemProps {
 	readonly post: IPost;
@@ -9,6 +10,7 @@ interface IPostItemProps {
 
 const PostItem = ({ post }: IPostItemProps) => {
 	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
+	const userRole = useRecoilValue(userRoleState);
 
 	const handleCheckPost = () => {
 		const index = selectedPosts.findIndex((postId) => {
@@ -24,7 +26,9 @@ const PostItem = ({ post }: IPostItemProps) => {
 
 	return (
 		<div className="mb-2 flex h-[4.5rem] w-full sm:w-[21.563rem]">
-			<div className="flex items-center">
+			<div
+				className={`${userRole === "student" ? "hidden" : "flex"} items-center`}
+			>
 				<label className="hidden">선택</label>
 				<input
 					type="checkbox"

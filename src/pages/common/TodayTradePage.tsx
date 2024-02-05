@@ -1,4 +1,4 @@
-import TodayTradeContainer from "@/components/trade/todayTrade/TodayTradeContainer";
+import TodayTradeContainer from "@/components/educator/trade/todayTrade/TodayTradeContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

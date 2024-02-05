@@ -1,23 +1,24 @@
-import ArticleBoardContainer from "@/components/studentPost/ArticleBoardContainer";
+import EditPostContainer from "@/components/post/editPost/EditPostContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import React, { useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const ArticleBoardPage = () => {
+const EditPostPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
-			isUseHeader: true,
+			isUseHeader: false,
 			isUseMenu: true,
 			isUseTab: false,
 		});
 	}, []);
+
 	return (
-		<div>
-			<ArticleBoardContainer />
-		</div>
+		<>
+			<EditPostContainer />
+		</>
 	);
 };
 
-export default ArticleBoardPage;
+export default EditPostPage;
