@@ -14,11 +14,11 @@ const PostItem = ({ post }: IPostItemProps) => {
 
 	const handleCheckPost = () => {
 		const index = selectedPosts.findIndex((postId) => {
-			return postId === post.postId;
+			return postId === post.id;
 		});
 
 		if (index === -1) {
-			setSelectedPosts([...selectedPosts, post.postId]);
+			setSelectedPosts([...selectedPosts, post.id]);
 		} else {
 			setSelectedPosts([...selectedPosts].splice(index, 1));
 		}
@@ -34,23 +34,23 @@ const PostItem = ({ post }: IPostItemProps) => {
 					type="checkbox"
 					className="custom-checkBox cursor-pointer"
 					onChange={handleCheckPost}
-					checked={selectedPosts.includes(post.postId) ? true : false}
+					checked={selectedPosts.includes(post.id) ? true : false}
 				/>
 			</div>
 			<Link
-				to={`/post/detail/${post.postId}`}
+				to={`/post/detail/${post.id}`}
 				className="ml-[0.75rem] flex w-full grow justify-between rounded-[0.25rem] border border-black-100 bg-white"
 			>
 				<div className="flex flex-col justify-center">
 					<p className="mb-[0.375rem] ml-[0.875rem] truncate font-bold text-black-800">
-						{post.postTitle}
+						{post.mainTitle}
 					</p>
 					<p className="ml-[0.875rem] truncate text-sm text-black-800">
-						{post.postContent}
+						{post.subTitle}
 					</p>
 				</div>
-				<p className="mb-[0.875rem] mr-[0.875rem] flex items-end text-sm text-black-300">
-					{post.postRegDate}
+				<p className="mb-[0.875rem] mr-[0.875rem] flex items-end truncate text-sm text-black-300">
+					{post.date}
 				</p>
 			</Link>
 		</div>

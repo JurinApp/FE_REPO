@@ -4,13 +4,13 @@ import useAxios from "@/hooks/useAxios";
 import { registerPostModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ICheckDay {
-	[key: number]: string;
+	readonly [key: number]: string;
 }
 
 interface IRegisterPostFormProps {
@@ -29,8 +29,10 @@ const CHECK_DAY: ICheckDay = {
 
 const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(registerPostModalState);
+	const navigate = useNavigate();
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	const [replaceDate, setReplaceDate] = useState<string>("");
 	const {
 		register,
@@ -55,7 +57,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 
 	const handleRegister = async () => {
 		if (!isValid) return;
-		//API 구현되면 코드 작성 예정
+
 		const response = await axiosData("useToken", {
 			method: "POST",
 			url: `/teachers/api/v1/channels/${channelId}/posts`,
@@ -72,6 +74,8 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 
 			if (status === 200) {
 				alert("게시글 등록이 완료 되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["posts"] });
+				navigate(`/${channelId}/post`);
 			}
 
 			if (status === 500) {
