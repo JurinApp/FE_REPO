@@ -20,7 +20,7 @@ const DeleteLearnerModal = () => {
 	const { channelId } = useParams();
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const handleDeleteLearners = async () => {
+	const deleteLearners = async () => {
 		const response = await axiosData("useToken", {
 			method: "DELETE",
 			url: `/teachers/api/v1/channels/${channelId}/management`,
@@ -35,7 +35,7 @@ const DeleteLearnerModal = () => {
 			if (status === 204) {
 				alert("학생 삭제가 되었습니다.");
 				queryClient.invalidateQueries({
-					queryKey: ["learnerList"],
+					queryKey: ["learnerList", channelId],
 				});
 				setSelectedLearners([]);
 				setIsOpenModal(false);
@@ -55,7 +55,7 @@ const DeleteLearnerModal = () => {
 
 	const deleteMutation = useMutation({
 		mutationKey: ["deleteLearner", channelId],
-		mutationFn: handleDeleteLearners,
+		mutationFn: deleteLearners,
 	});
 
 	const handleClickCancelBtn = () => {

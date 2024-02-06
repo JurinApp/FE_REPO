@@ -27,7 +27,7 @@ const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const learnerIdArr = postList.map((post) => post.postId);
+			const learnerIdArr = postList.map((post) => post.id);
 
 			setSelectedPosts(learnerIdArr);
 			setIsAllCheck(true);

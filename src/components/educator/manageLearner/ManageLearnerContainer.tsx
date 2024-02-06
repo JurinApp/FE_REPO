@@ -15,7 +15,7 @@ const ManageLearnerContainer = () => {
 	const { channelId } = useParams();
 	const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-	const inQueryLearner = async () => {
+	const getLearnersData = async () => {
 		const apiUrl =
 			searchKeyword.length === 0
 				? `/teachers/api/v1/channels/${channelId}/management`
@@ -37,7 +37,7 @@ const ManageLearnerContainer = () => {
 
 	const { data, isLoading } = useQuery({
 		queryKey: ["learnerList", channelId, searchKeyword],
-		queryFn: inQueryLearner,
+		queryFn: getLearnersData,
 	});
 
 	return (

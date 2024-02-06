@@ -1,35 +1,34 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { POST_SCHEMA } from "@/constants/formSchema";
+import useAxios from "@/hooks/useAxios";
 import { registerPostModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-
-interface ICheckDay {
-	[key: number]: string;
-}
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+	changeDateFormat,
+	changeFormDateFormat,
+} from "@/utils/changeDateFormat";
 
 interface IRegisterPostFormProps {
 	readonly isRegister: boolean;
 }
 
-const CHECK_DAY: ICheckDay = {
-	0: "일",
-	1: "월",
-	2: "화",
-	3: "수",
-	4: "목",
-	5: "금",
-	6: "토",
-};
-
 const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(registerPostModalState);
+	const navigate = useNavigate();
+	const { channelId } = useParams();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
+	const [replaceDate, setReplaceDate] = useState<string>("");
 	const {
 		register,
 		handleSubmit,
 		setValue,
+		getValues,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -46,27 +45,56 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		setIsOpenModal(true);
 	};
 
-	const handleRegister = () => {
+	const registerPostData = async () => {
 		if (!isValid) return;
-		//API 구현되면 코드 작성 예정
+
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: `/teachers/api/v1/channels/${channelId}/posts`,
+			data: {
+				mainTitle: getValues("itemName"),
+				subTitle: getValues("title"),
+				date: getValues("registerDate"),
+				content: getValues("content"),
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 201) {
+				alert("게시글 등록이 완료 되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
+				navigate(`/${channelId}/post`);
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+		}
 	};
 
-	const handleCalcTodayDate = () => {
-		const date = new Date();
-		const replaceDate = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일 (${
-			CHECK_DAY[date.getDay()]
-		})`;
-		setValue("registerDate", replaceDate);
+	const registerPostMutation = useMutation({
+		mutationKey: ["registerPost"],
+		mutationFn: registerPostData,
+	});
+
+	const initChangeDateFormat = () => {
+		const formDate = changeFormDateFormat();
+		const replaceDate = changeDateFormat(formDate);
+
+		setValue("registerDate", formDate);
+		setReplaceDate(replaceDate);
 	};
 
 	useEffect(() => {
 		if (isRegister) {
-			handleRegister();
+			registerPostMutation.mutate();
 		}
 	}, [isRegister]);
 
 	useEffect(() => {
-		handleCalcTodayDate();
+		initChangeDateFormat();
 	}, []);
 
 	return (
@@ -101,14 +129,24 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 						</label>
 						<input
 							type="text"
-							className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+							className={`hidden w-full rounded-none border-b pb-[0.625rem] outline-none ${
 								errors.registerDate
 									? "border-danger"
 									: "border-black-100 focus:border-black-800"
 							}`}
 							id="registerDate"
-							readOnly
 							{...register("registerDate")}
+						/>
+						<input
+							type="text"
+							className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+								errors.registerDate
+									? "border-danger"
+									: "border-black-100 focus:border-black-800"
+							}`}
+							id="replaceDate"
+							readOnly
+							defaultValue={replaceDate}
 						/>
 						{errors.registerDate && errors.registerDate.message && (
 							<ErrorMsg message={errors.registerDate.message} />
@@ -130,6 +168,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 										: "border-black-100 focus:border-black-800"
 								}`}
 								id="title"
+								defaultValue={replaceDate}
 								{...register("title")}
 							/>
 						</div>

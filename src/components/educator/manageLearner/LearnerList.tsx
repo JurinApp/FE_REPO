@@ -12,6 +12,7 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 	const selectedLearners = useRecoilValue(selectedLearner);
 	const resetSelectedLearners = useResetRecoilState(selectedLearner);
 	const setIsAllCheck = useSetRecoilState(allCheckState);
+	const isExists = learnerList.length === 0;
 
 	useEffect(() => {
 		if (selectedLearners.length === learnerList.length) {
@@ -28,10 +29,18 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 	}, []);
 
 	return (
-		<div className="mt-6 h-manage-height overflow-y-auto">
-			{learnerList.map((learnerInfo: ILearnerItem) => (
-				<LearnerItem key={learnerInfo.id} learnerInfo={learnerInfo} />
-			))}
+		<div
+			className={`mt-6 h-manage-height overflow-y-auto ${
+				isExists && "flex items-center justify-center"
+			}`}
+		>
+			{isExists ? (
+				<p className="text-black-700">참여중인 학생이 없습니다.</p>
+			) : (
+				learnerList.map((learnerInfo: ILearnerItem) => (
+					<LearnerItem key={learnerInfo.id} learnerInfo={learnerInfo} />
+				))
+			)}
 		</div>
 	);
 };
