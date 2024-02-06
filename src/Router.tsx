@@ -51,8 +51,9 @@ const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
 
+const queryClient = new QueryClient();
+
 const Router = () => {
-	const queryClient = new QueryClient();
 	const { isUseHeader, isUseMenu, isUseTab } =
 		useRecoilValue(headerMenuUseState);
 
