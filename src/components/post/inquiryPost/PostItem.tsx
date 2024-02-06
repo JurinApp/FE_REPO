@@ -1,7 +1,7 @@
 import { IPost } from "@/interface/post";
 import { selectedPostsState } from "@/states/selectedPostState";
 import { userRoleState } from "@/states/userRoleState";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 interface IPostItemProps {
@@ -11,6 +11,7 @@ interface IPostItemProps {
 const PostItem = ({ post }: IPostItemProps) => {
 	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
 	const userRole = useRecoilValue(userRoleState);
+	const { channelId } = useParams();
 
 	const handleCheckPost = () => {
 		const index = selectedPosts.findIndex((postId) => {
@@ -38,7 +39,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 				/>
 			</div>
 			<Link
-				to={`/post/detail/${post.id}`}
+				to={`/${channelId}/post/detail/${post.id}`}
 				className="ml-[0.75rem] flex w-full grow justify-between rounded-[0.25rem] border border-black-100 bg-white"
 			>
 				<div className="flex flex-col justify-center">
