@@ -1,26 +1,69 @@
+import useAxios from "@/hooks/useAxios";
 import { deleteConfirmModalState } from "@/states/confirmModalState";
 import { selectedLearner } from "@/states/manageLearner";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
 } from "@/utils/controlBodyScroll";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteLearnerModal = () => {
+	const queryClient = useQueryClient();
 	const [selectedLearners, setSelectedLearners] =
 		useRecoilState(selectedLearner);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteConfirmModalState);
 	const resetIsOpenModal = useResetRecoilState(deleteConfirmModalState);
+	const { axiosData } = useAxios();
+	const { channelId } = useParams();
 	const modalRef = useRef<HTMLDivElement>(null);
+
+	const handleDeleteLearners = async () => {
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/teachers/api/v1/channels/${channelId}/management`,
+			data: {
+				userIds: selectedLearners,
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 204) {
+				alert("학생 삭제가 되었습니다.");
+				queryClient.invalidateQueries({
+					queryKey: ["learnerList"],
+				});
+				setSelectedLearners([]);
+				setIsOpenModal(false);
+			}
+
+			if (status === 404) {
+				alert(
+					"채널에 해당 학생이 존재하지 않습니다. 잠시 후에 다시 시도해주세요.",
+				);
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+		}
+	};
+
+	const deleteMutation = useMutation({
+		mutationKey: ["deleteLearner", channelId],
+		mutationFn: handleDeleteLearners,
+	});
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		setSelectedLearners([]);
-		setIsOpenModal(false);
+		deleteMutation.mutate();
 	};
 
 	useEffect(() => {

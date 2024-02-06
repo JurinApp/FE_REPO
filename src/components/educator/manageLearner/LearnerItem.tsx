@@ -12,13 +12,15 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 
 	const handleCheckLearner = () => {
 		const index = selectedLearners.findIndex((learnerId) => {
-			return learnerId === learnerInfo.learnerId;
+			return learnerId === learnerInfo.id;
 		});
 
 		if (index === -1) {
-			setSelectedLearners([...selectedLearners, learnerInfo.learnerId]);
+			setSelectedLearners([...selectedLearners, learnerInfo.id]);
 		} else {
-			setSelectedLearners([...selectedLearners].splice(index, 1));
+			const deepCopySelectedLearners = [...selectedLearners];
+			deepCopySelectedLearners.splice(index, 1);
+			setSelectedLearners(deepCopySelectedLearners);
 		}
 	};
 
@@ -33,9 +35,7 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 					type="checkbox"
 					id="checkLearner"
 					className="custom-checkBox cursor-pointer"
-					checked={
-						selectedLearners.includes(learnerInfo.learnerId) ? true : false
-					}
+					checked={selectedLearners.includes(learnerInfo.id) ? true : false}
 				/>
 			</div>
 			<div
@@ -43,8 +43,8 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 			>
 				<div className="flex h-full grow cursor-pointer items-center pl-4 text-sm text-black-800">
 					<p>
-						{learnerInfo.learnerName}
-						<span> ({learnerInfo.learnerId}) </span>
+						{learnerInfo.id}
+						<span> ({learnerInfo.nickname}) </span>
 					</p>
 				</div>
 			</div>

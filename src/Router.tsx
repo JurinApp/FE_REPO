@@ -4,6 +4,7 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { headerMenuUseState } from "./states/headerMenuUseState";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
@@ -50,13 +51,15 @@ const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
 
+const queryClient = new QueryClient();
+
 const Router = () => {
-	const queryClient = new QueryClient();
 	const { isUseHeader, isUseMenu, isUseTab } =
 		useRecoilValue(headerMenuUseState);
 
 	return (
 		<QueryClientProvider client={queryClient}>
+			<ReactQueryDevtools initialIsOpen={true} />
 			<Suspense fallback={<Spinner />}>
 				{isUseHeader && <Header />}
 				{isUseTab && <TradeTab />}
@@ -69,7 +72,10 @@ const Router = () => {
 					<Route path="/setting" element={<SettingPage />} />
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
-					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route
+						path="/:channelId/manageLearner"
+						element={<ManageLearnerPage />}
+					/>
 					<Route path="/stock" element={<StockPage />} />
 					<Route path="/studentItem" element={<StudentItemPage />} />
 					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />

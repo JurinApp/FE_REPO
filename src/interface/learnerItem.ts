@@ -1,4 +1,5 @@
 export interface ILearnerItem {
-	learnerId: string;
-	learnerName: string;
+	id: number;
+	nickname: "string";
+	username: string;
 }
