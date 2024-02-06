@@ -1,10 +1,13 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { POST_SCHEMA } from "@/constants/formSchema";
+import useAxios from "@/hooks/useAxios";
 import { registerPostModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
+import { useMutation } from "@tanstack/react-query";
 
 interface ICheckDay {
 	[key: number]: string;
@@ -26,10 +29,14 @@ const CHECK_DAY: ICheckDay = {
 
 const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(registerPostModalState);
+	const { channelId } = useParams();
+	const { axiosData } = useAxios();
+	const [replaceDate, setReplaceDate] = useState<string>("");
 	const {
 		register,
 		handleSubmit,
 		setValue,
+		getValues,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -46,22 +53,61 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		setIsOpenModal(true);
 	};
 
-	const handleRegister = () => {
+	const handleRegister = async () => {
 		if (!isValid) return;
 		//API 구현되면 코드 작성 예정
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: `/teachers/api/v1/channels/${channelId}/posts`,
+			data: {
+				mainTitle: getValues("itemName"),
+				subTitle: getValues("title"),
+				date: getValues("registerDate"),
+				content: getValues("content"),
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 200) {
+				alert("게시글 등록이 완료 되었습니다.");
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+		}
 	};
 
 	const handleCalcTodayDate = () => {
-		const date = new Date();
-		const replaceDate = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDate()}일 (${
-			CHECK_DAY[date.getDay()]
+		const todayDate = new Date();
+		const month =
+			todayDate.getMonth() < 10
+				? `0${todayDate.getMonth()}`
+				: todayDate.getMonth();
+		const date =
+			todayDate.getDate() < 10
+				? `0${todayDate.getDate()}`
+				: todayDate.getDate();
+
+		const formDate = `${todayDate.getFullYear()}-${month}-${date}`;
+		const replaceDate = `${todayDate.getFullYear()}년 ${todayDate.getMonth()}월 ${todayDate.getDate()}일 (${
+			CHECK_DAY[todayDate.getDay()]
 		})`;
-		setValue("registerDate", replaceDate);
+
+		setValue("registerDate", formDate);
+		setReplaceDate(replaceDate);
 	};
+
+	const registerPostMutation = useMutation({
+		mutationKey: ["registerPost"],
+		mutationFn: handleRegister,
+	});
 
 	useEffect(() => {
 		if (isRegister) {
-			handleRegister();
+			registerPostMutation.mutate();
 		}
 	}, [isRegister]);
 
@@ -101,14 +147,24 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 						</label>
 						<input
 							type="text"
-							className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+							className={`hidden w-full rounded-none border-b pb-[0.625rem] outline-none ${
 								errors.registerDate
 									? "border-danger"
 									: "border-black-100 focus:border-black-800"
 							}`}
 							id="registerDate"
-							readOnly
 							{...register("registerDate")}
+						/>
+						<input
+							type="text"
+							className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+								errors.registerDate
+									? "border-danger"
+									: "border-black-100 focus:border-black-800"
+							}`}
+							id="replaceDate"
+							readOnly
+							defaultValue={replaceDate}
 						/>
 						{errors.registerDate && errors.registerDate.message && (
 							<ErrorMsg message={errors.registerDate.message} />
@@ -130,6 +186,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 										: "border-black-100 focus:border-black-800"
 								}`}
 								id="title"
+								defaultValue={replaceDate}
 								{...register("title")}
 							/>
 						</div>

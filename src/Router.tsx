@@ -97,10 +97,19 @@ const Router = () => {
 					<Route path="/item/register" element={<RegisterItemPage />} />
 					<Route path="/item/detail/:itemId" element={<DetailItemPage />} />
 					<Route path="/item/edit/:itemId" element={<EditItemPage />} />
-					<Route path="/post" element={<PostPage />} />
-					<Route path="/post/register" element={<RegisterPostPage />} />
-					<Route path="/post/detail/:postId" element={<DetailPostPage />} />
-					<Route path="/post/edit/:postId" element={<EditPostPage />} />
+					<Route path="/:channelId/post" element={<PostPage />} />
+					<Route
+						path="/:channelId/post/register"
+						element={<RegisterPostPage />}
+					/>
+					<Route
+						path="/:channelId/post/detail/:postId"
+						element={<DetailPostPage />}
+					/>
+					<Route
+						path="/:channelId/post/edit/:postId"
+						element={<EditPostPage />}
+					/>
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>
