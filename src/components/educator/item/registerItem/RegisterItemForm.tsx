@@ -1,21 +1,15 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import AddImage from "@assets/svg/addImage.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import { registerItemModalState } from "@/states/confirmModalState";
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
-
-interface IFormValue {
-	readonly itemName: string;
-	readonly image: string;
-	readonly quantity: number;
-	readonly price: number;
-	readonly content: string;
-}
+import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { useEffect } from "react";
 
 interface IErrors {
 	readonly itemNameError: {
@@ -37,20 +31,10 @@ interface IThumbNailImg {
 	readonly thumbNailImg: string;
 }
 
-interface IRegisterItemFormProps {
-	readonly isRegister: boolean;
-}
-
-const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
+const RegisterItemForm = () => {
 	const labelRef = useRef<HTMLLabelElement>(null);
 	const setIsOpenModal = useSetRecoilState(registerItemModalState);
-	const [formValue, setFormValue] = useState<IFormValue>({
-		itemName: "",
-		image: "",
-		quantity: 1,
-		price: 0,
-		content: "",
-	});
+	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
 	const [errors, setErrors] = useState<IErrors>({
 		itemNameError: {
 			isError: false,
@@ -85,16 +69,19 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 		if (e.currentTarget.files) {
 			if (!e.currentTarget.files[0]) return;
 
-			const thumbNailImgFile = e.currentTarget.files[0];
-			const thumbNailImgFileName = e.currentTarget.files[0].name;
+			const imgFile = e.currentTarget.files[0];
+			const imgFileName = e.currentTarget.files[0].name;
+
+			setItemFormValue((prev) => ({ ...prev, imageFile: imgFile }));
+
 			const reader = new FileReader();
-			reader.readAsDataURL(thumbNailImgFile);
+			reader.readAsDataURL(imgFile);
 
 			reader.onload = (e) => {
 				if (e.target !== null) {
 					setThumbNail({
 						thumbNailImg: e.target.result as string,
-						fileName: thumbNailImgFileName,
+						fileName: imgFileName,
 					});
 				}
 			};
@@ -103,13 +90,19 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 
 	const handleChangeQuantity = (type: string) => {
 		if (type === "decrease") {
-			if (formValue.quantity === 1) return;
+			if (itemFormValue.quantity === 1) return;
 
-			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity - 1 }));
+			setItemFormValue((prev) => ({
+				...prev,
+				quantity: itemFormValue.quantity - 1,
+			}));
 		}
 
 		if (type === "increase") {
-			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity + 1 }));
+			setItemFormValue((prev) => ({
+				...prev,
+				quantity: itemFormValue.quantity + 1,
+			}));
 		}
 	};
 
@@ -117,10 +110,10 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 		const numericValue = parseFloat(value.replace(/,/g, ""));
 
 		if (!isNaN(numericValue)) {
-			setFormValue({ ...formValue, price: numericValue });
+			setItemFormValue({ ...itemFormValue, price: numericValue });
 			setReplacePrice(numericValue.toLocaleString());
 		} else {
-			setFormValue({ ...formValue, price: 0 });
+			setItemFormValue({ ...itemFormValue, price: 0 });
 			setReplacePrice("");
 		}
 	};
@@ -194,7 +187,7 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 		if (id === "price") {
 			handleChangePrice(value);
 		} else {
-			setFormValue((prev) => ({ ...prev, [id]: value }));
+			setItemFormValue((prev) => ({ ...prev, [id]: value }));
 		}
 		handleChangeFormCheckValidation(id, value);
 	}, 1000);
@@ -210,7 +203,7 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.itemName.length === 0) {
+		if (itemFormValue.itemName.length === 0) {
 			setErrors((prev) => ({
 				...prev,
 				itemNameError: {
@@ -221,7 +214,7 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.price === 0) {
+		if (itemFormValue.price === 0) {
 			setErrors((prev) => ({
 				...prev,
 				priceError: {
@@ -232,7 +225,7 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.content.length === 0) {
+		if (itemFormValue.content.length === 0) {
 			setErrors((prev) => ({
 				...prev,
 				contentError: {
@@ -253,15 +246,11 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 		setIsOpenModal(true);
 	};
 
-	const handleSubmit = () => {
-		// API 개발되면 추가 예정
-	};
-
 	useEffect(() => {
-		if (isRegister) {
-			handleSubmit();
-		}
-	}, [isRegister]);
+		return () => {
+			setItemFormValue(INITIAL_VALUE);
+		};
+	}, []);
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
@@ -352,7 +341,8 @@ const RegisterItemForm = ({ isRegister }: IRegisterItemFormProps) => {
 							<input
 								type="number"
 								id="quantity"
-								value={formValue.quantity}
+								value={itemFormValue.quantity}
+								readOnly
 								className="flex h-10 w-[3.375rem] items-center justify-center rounded-none text-center font-medium outline-none"
 							/>
 							<button

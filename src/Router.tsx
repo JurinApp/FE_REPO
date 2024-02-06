@@ -93,10 +93,19 @@ const Router = () => {
 						element={<EditTradeStockPage />}
 					/>
 					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
-					<Route path="/item" element={<ItemPage />} />
-					<Route path="/item/register" element={<RegisterItemPage />} />
-					<Route path="/item/detail/:itemId" element={<DetailItemPage />} />
-					<Route path="/item/edit/:itemId" element={<EditItemPage />} />
+					<Route path="/:channelId/item" element={<ItemPage />} />
+					<Route
+						path="/:channelId/item/register"
+						element={<RegisterItemPage />}
+					/>
+					<Route
+						path="/:channelId/item/detail/:itemId"
+						element={<DetailItemPage />}
+					/>
+					<Route
+						path="/:channelId/item/edit/:itemId"
+						element={<EditItemPage />}
+					/>
 					<Route path="/:channelId/post" element={<PostPage />} />
 					<Route
 						path="/:channelId/post/register"

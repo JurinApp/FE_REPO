@@ -1,12 +1,13 @@
 import { deleteItemsModalState } from "@/states/confirmModalState";
 import { selectedItemState } from "@/states/selectedItemState";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const DeleteRegisterButton = () => {
 	const selectedItems = useRecoilValue(selectedItemState);
 	const isExistSelectedItems = selectedItems.length !== 0;
 	const setIsOpenModal = useSetRecoilState(deleteItemsModalState);
+	const { channelId } = useParams();
 
 	const handleDeleteItems = () => {
 		setIsOpenModal(true);
@@ -23,7 +24,7 @@ const DeleteRegisterButton = () => {
 				삭제
 			</button>
 			<Link
-				to="/item/register"
+				to={`/${channelId}/item/register`}
 				className="ml-2 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>
 				등록

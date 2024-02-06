@@ -1,50 +1,52 @@
+import useAxios from "@/hooks/useAxios";
 import DeleteItemModal from "./DeleteItemModal";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import ItemHeadingTitle from "./ItemHeadingTitle";
 import ItemList from "./ItemList";
-
-const ITEM_LIST = [
-	{
-		itemId: "1",
-		itemName: "창가자리 지정석",
-	},
-	{
-		itemId: "2",
-		itemName: "창문닦이 당번",
-	},
-	{
-		itemId: "3",
-		itemName: "숙데 면제권",
-	},
-	{
-		itemId: "4",
-		itemName: "초고우유 교환권",
-	},
-	{
-		itemId: "5",
-		itemName: "영화 티켓 2매",
-	},
-	{
-		itemId: "6",
-		itemName: "선생님이랑 틱톡",
-	},
-	{
-		itemId: "7",
-		itemName: "창가자리 지정석",
-	},
-	{
-		itemId: "8",
-		itemName: "창문닦이 당번",
-	},
-];
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "@/components/common/spinner/Spinner";
 
 const ItemContainer = () => {
+	const { axiosData } = useAxios();
+	const { channelId } = useParams();
+
+	const getItemsData = async () => {
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: `/teachers/api/v1/channels/${channelId}/items?limit=15`,
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 200) {
+				return response.data.data.results;
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도하세요.");
+			}
+		}
+	};
+
+	const { data, isLoading } = useQuery({
+		queryKey: ["items", channelId],
+		queryFn: getItemsData,
+	});
+
 	return (
 		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
-			<ItemHeadingTitle itemList={ITEM_LIST} />
-			<ItemList itemList={ITEM_LIST} />
-			<DeleteRegisterButton />
-			<DeleteItemModal />
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<>
+					<ItemHeadingTitle itemList={data} />
+					<ItemList itemList={data} />
+					<DeleteRegisterButton />
+					<DeleteItemModal />
+				</>
+			)}
 		</div>
 	);
 };

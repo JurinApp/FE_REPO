@@ -20,7 +20,7 @@ const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const itemIdArr = itemList.map((item) => item.itemId);
+			const itemIdArr = itemList.map((item) => item.id);
 			setSelectedItems(itemIdArr);
 			setIsAllCheck(true);
 		} else {
