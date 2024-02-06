@@ -14,12 +14,13 @@ const ManageLearnerHeadingTitle = ({
 	const setSelectedLearners = useSetRecoilState(selectedLearner);
 	const resetIsAllCheck = useResetRecoilState(allCheckState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
+	const isDisabled = learnerList.length === 0;
 
 	const handleAllCheckLearners = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const learnerIdArr = learnerList.map((learner) => learner.learnerId);
+			const learnerIdArr = learnerList.map((learner) => learner.id);
 			setSelectedLearners(learnerIdArr);
 			setIsAllCheck(true);
 		} else {
@@ -45,6 +46,7 @@ const ManageLearnerHeadingTitle = ({
 					id="checkAll"
 					className="custom-checkBox cursor-pointer"
 					checked={isAllCheck}
+					disabled={isDisabled}
 					onChange={handleAllCheckLearners}
 				/>
 				<label

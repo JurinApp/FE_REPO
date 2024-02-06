@@ -69,7 +69,10 @@ const Router = () => {
 					<Route path="/setting" element={<SettingPage />} />
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
-					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route
+						path="/:channelId/manageLearner"
+						element={<ManageLearnerPage />}
+					/>
 					<Route path="/stock" element={<StockPage />} />
 					<Route path="/studentItem" element={<StudentItemPage />} />
 					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />

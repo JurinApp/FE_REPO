@@ -30,7 +30,7 @@ const LearnerList = ({ learnerList }: ILearnerListProps) => {
 	return (
 		<div className="mt-6 h-manage-height overflow-y-auto">
 			{learnerList.map((learnerInfo: ILearnerItem) => (
-				<LearnerItem key={learnerInfo.learnerId} learnerInfo={learnerInfo} />
+				<LearnerItem key={learnerInfo.id} learnerInfo={learnerInfo} />
 			))}
 		</div>
 	);
