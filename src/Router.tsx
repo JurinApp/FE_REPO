@@ -4,6 +4,7 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { headerMenuUseState } from "./states/headerMenuUseState";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
@@ -57,6 +58,7 @@ const Router = () => {
 
 	return (
 		<QueryClientProvider client={queryClient}>
+			<ReactQueryDevtools initialIsOpen={true} />
 			<Suspense fallback={<Spinner />}>
 				{isUseHeader && <Header />}
 				{isUseTab && <TradeTab />}
