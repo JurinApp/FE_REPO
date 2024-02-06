@@ -40,7 +40,6 @@ const RegisterPostConfirmModal = ({
 		return () => {
 			if (isOpenModal) {
 				resetIsOpenModal();
-				setIsRegister(false);
 			}
 		};
 	}, []);

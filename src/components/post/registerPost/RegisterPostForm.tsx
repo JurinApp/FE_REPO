@@ -8,24 +8,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-interface ICheckDay {
-	readonly [key: number]: string;
-}
+import {
+	changeDateFormat,
+	changeFormDateFormat,
+} from "@/utils/changeDateFormat";
 
 interface IRegisterPostFormProps {
 	readonly isRegister: boolean;
 }
-
-const CHECK_DAY: ICheckDay = {
-	0: "일",
-	1: "월",
-	2: "화",
-	3: "수",
-	4: "목",
-	5: "금",
-	6: "토",
-};
 
 const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(registerPostModalState);
@@ -72,9 +62,9 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		if (response) {
 			const status = response.status;
 
-			if (status === 200) {
+			if (status === 201) {
 				alert("게시글 등록이 완료 되었습니다.");
-				queryClient.invalidateQueries({ queryKey: ["posts"] });
+				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
 				navigate(`/${channelId}/post`);
 			}
 
@@ -84,21 +74,9 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		}
 	};
 
-	const handleCalcTodayDate = () => {
-		const todayDate = new Date();
-		const month =
-			todayDate.getMonth() < 10
-				? `0${todayDate.getMonth()}`
-				: todayDate.getMonth();
-		const date =
-			todayDate.getDate() < 10
-				? `0${todayDate.getDate()}`
-				: todayDate.getDate();
-
-		const formDate = `${todayDate.getFullYear()}-${month}-${date}`;
-		const replaceDate = `${todayDate.getFullYear()}년 ${todayDate.getMonth()}월 ${todayDate.getDate()}일 (${
-			CHECK_DAY[todayDate.getDay()]
-		})`;
+	const initChangeDateFormat = () => {
+		const formDate = changeFormDateFormat();
+		const replaceDate = changeDateFormat(formDate);
 
 		setValue("registerDate", formDate);
 		setReplaceDate(replaceDate);
@@ -116,7 +94,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	}, [isRegister]);
 
 	useEffect(() => {
-		handleCalcTodayDate();
+		initChangeDateFormat();
 	}, []);
 
 	return (
