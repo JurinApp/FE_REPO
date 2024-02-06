@@ -21,7 +21,9 @@ const PostItem = ({ post }: IPostItemProps) => {
 		if (index === -1) {
 			setSelectedPosts([...selectedPosts, post.id]);
 		} else {
-			setSelectedPosts([...selectedPosts].splice(index, 1));
+			const deepCopySelectedPosts = [...selectedPosts];
+			deepCopySelectedPosts.splice(index, 1);
+			setSelectedPosts(deepCopySelectedPosts);
 		}
 	};
 

@@ -27,7 +27,7 @@ const PaymentPointModal = () => {
 	};
 
 	const handleClickPaymentPoint = async () => {
-		await handleSubmitPaymentPoint();
+		submitPaymentPoint();
 		setIsOpenModal(false);
 	};
 
@@ -58,7 +58,7 @@ const PaymentPointModal = () => {
 		}
 	};
 
-	const handleSubmitPaymentPoint = async () => {
+	const submitPaymentPoint = async () => {
 		const response = await axiosData("useToken", {
 			method: "POST",
 			url: `/teachers/api/v1/channels/${channelId}/management`,

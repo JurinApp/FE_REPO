@@ -45,7 +45,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		setIsOpenModal(true);
 	};
 
-	const handleRegister = async () => {
+	const registerPostData = async () => {
 		if (!isValid) return;
 
 		const response = await axiosData("useToken", {
@@ -74,6 +74,11 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		}
 	};
 
+	const registerPostMutation = useMutation({
+		mutationKey: ["registerPost"],
+		mutationFn: registerPostData,
+	});
+
 	const initChangeDateFormat = () => {
 		const formDate = changeFormDateFormat();
 		const replaceDate = changeDateFormat(formDate);
@@ -81,11 +86,6 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		setValue("registerDate", formDate);
 		setReplaceDate(replaceDate);
 	};
-
-	const registerPostMutation = useMutation({
-		mutationKey: ["registerPost"],
-		mutationFn: handleRegister,
-	});
 
 	useEffect(() => {
 		if (isRegister) {

@@ -20,7 +20,7 @@ const DetailPostInfo = () => {
 		setReplaceRegisterDate(replaceDate);
 	};
 
-	const inquiryDetailPost = async () => {
+	const getPostDetailData = async () => {
 		const response = await axiosData("useToken", {
 			method: "GET",
 			url: `/${userRole}s/api/v1/channels/${channelId}/posts/${postId}`,
@@ -46,7 +46,7 @@ const DetailPostInfo = () => {
 
 	const { data, isLoading } = useQuery({
 		queryKey: ["detailPost", channelId, postId],
-		queryFn: inquiryDetailPost,
+		queryFn: getPostDetailData,
 	});
 
 	return (
@@ -76,7 +76,9 @@ const DetailPostInfo = () => {
 								<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
 									{data.subTitle}
 								</p>
-								<p className="ml-[0.625rem] mt-[0.375rem]">{data.content}</p>
+								<p className="ml-[0.625rem] mt-[0.375rem] whitespace-pre-wrap">
+									{data.content}
+								</p>
 							</div>
 						</div>
 					</div>
