@@ -8,17 +8,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
-const TradeTab = lazy(() => import("@components/educator/trade/TradeTab"));
+const TradeTab = lazy(() => import("@components/tradeStock/TradeTab"));
 const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
 const SuccessSignUpPage = lazy(() => import("@pages/common/SuccessSignUpPage"));
-const MyPage = lazy(() => import("@/pages/common/MyPage"));
-const CreateChannelPage = lazy(
-	() => import("@/pages/common/CreateChannelPage"),
-);
+const MyPage = lazy(() => import("@pages/common/MyPage"));
+const CreateChannelPage = lazy(() => import("@pages/common/CreateChannelPage"));
 const ModifyUserinfoPage = lazy(
-	() => import("@/pages/common/ModifyUserinfoPage"),
+	() => import("@pages/common/ModifyUserinfoPage"),
 );
 const ManageLearnerPage = lazy(
 	() => import("@pages/educator/manageLearner/ManageLearnerPage"),
@@ -34,7 +32,7 @@ const EditTradeStockPage = lazy(
 	() => import("@pages/educator/trade/EditTradeStockPage"),
 );
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
-const SettingPage = lazy(() => import("@/pages/common/SettingPage"));
+const SettingPage = lazy(() => import("@pages/common/SettingPage"));
 const StockPage = lazy(() => import("@pages/student/stock/StockPage"));
 const StudentItemPage = lazy(
 	() => import("@pages/student/item/StudentItemPage"),
@@ -83,20 +81,23 @@ const Router = () => {
 					<Route path="/stock" element={<StockPage />} />
 					<Route path="/studentItem" element={<StudentItemPage />} />
 					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
-					<Route path="/trade/home" element={<TradeHomePage />} />
+					<Route path="/:channelId/trade/home" element={<TradeHomePage />} />
 					<Route
-						path="/trade/stock/register"
+						path="/:channelId/trade/stock/register"
 						element={<RegisterTradeStockPage />}
 					/>
 					<Route
-						path="/trade/stock/detail/:stockId"
+						path="/:channelId/trade/stock/detail/:stockId"
 						element={<DetailTradeStockPage />}
 					/>
 					<Route
-						path="/trade/stock/edit/:stockId"
+						path="/:channelId/trade/stock/edit/:stockId"
 						element={<EditTradeStockPage />}
 					/>
-					<Route path="/trade/todayTrade" element={<TodayTradePage />} />
+					<Route
+						path="/:channelId/trade/todayTrade"
+						element={<TodayTradePage />}
+					/>
 					<Route path="/:channelId/item" element={<ItemPage />} />
 					<Route
 						path="/:channelId/item/register"

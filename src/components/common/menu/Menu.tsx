@@ -3,7 +3,7 @@ import ClipIcon from "@assets/svg/clipSvg.svg?react";
 import TradeIcon from "@assets/svg/tradeIcon.svg?react";
 import UserIcon from "@assets/svg/userIcon.svg?react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface IMenu {
 	readonly key: string;
@@ -23,6 +23,7 @@ const studentMenuArr = [
 	{ key: "item", name: "아이템", path: "/item" },
 	{ key: "post", name: "게시판", path: "/post" },
 ];
+
 const Menu = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -30,7 +31,8 @@ const Menu = () => {
 
 	const handleClickMenu = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
-		navigate(menu.path);
+		const channelId = location.pathname.substring(1, 2);
+		navigate(`/${channelId}${menu.path}`);
 	};
 
 	useEffect(() => {
