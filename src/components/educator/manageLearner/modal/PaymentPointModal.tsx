@@ -1,4 +1,6 @@
+import useAxios from "@/hooks/useAxios";
 import { paymentPointModalState } from "@/states/confirmModalState";
+import { selectedLearner } from "@/states/manageLearner";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
@@ -6,12 +8,17 @@ import {
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
+	const [selectedLearners, setSelectedLearners] =
+		useRecoilState(selectedLearner);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(paymentPointModalState);
 	const resetIsOpenModal = useResetRecoilState(paymentPointModalState);
+	const { axiosData } = useAxios();
+	const { channelId } = useParams();
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
 
@@ -19,7 +26,8 @@ const PaymentPointModal = () => {
 		setIsOpenModal(false);
 	};
 
-	const handleClickPaymentPoint = () => {
+	const handleClickPaymentPoint = async () => {
+		submitPaymentPoint();
 		setIsOpenModal(false);
 	};
 
@@ -50,6 +58,26 @@ const PaymentPointModal = () => {
 		}
 	};
 
+	const submitPaymentPoint = async () => {
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: `/teachers/api/v1/channels/${channelId}/management`,
+			data: {
+				userIds: selectedLearners,
+				point: point,
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+			console.log(response);
+			if (status === 200) {
+				alert("포인트 지급이 완료 되었습니다.");
+				setSelectedLearners([]);
+			}
+		}
+	};
+
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -69,6 +97,8 @@ const PaymentPointModal = () => {
 
 		return () => {
 			if (isOpenModal) {
+				setPoint(0);
+				setReplacePoint("0");
 				resetIsOpenModal();
 			}
 		};

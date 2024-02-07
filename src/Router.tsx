@@ -54,7 +54,9 @@ const PostPage = lazy(() => import("@pages/post/PostPage"));
 const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
+
 const queryClient = new QueryClient();
+
 const Router = () => {
 	const { isUseHeader, isUseMenu, isUseTab } =
 		useRecoilValue(headerMenuUseState);
@@ -74,7 +76,10 @@ const Router = () => {
 					<Route path="/setting" element={<SettingPage />} />
 					<Route path="/createChannel" element={<CreateChannelPage />} />
 					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
-					<Route path="/manageLearner" element={<ManageLearnerPage />} />
+					<Route
+						path="/:channelId/manageLearner"
+						element={<ManageLearnerPage />}
+					/>
 					<Route path="/stock" element={<StockPage />} />
 					<Route path="/studentItem" element={<StudentItemPage />} />
 					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
@@ -96,10 +101,19 @@ const Router = () => {
 					<Route path="/item/register" element={<RegisterItemPage />} />
 					<Route path="/item/detail/:itemId" element={<DetailItemPage />} />
 					<Route path="/item/edit/:itemId" element={<EditItemPage />} />
-					<Route path="/post" element={<PostPage />} />
-					<Route path="/post/register" element={<RegisterPostPage />} />
-					<Route path="/post/detail/:postId" element={<DetailPostPage />} />
-					<Route path="/post/edit/:postId" element={<EditPostPage />} />
+					<Route path="/:channelId/post" element={<PostPage />} />
+					<Route
+						path="/:channelId/post/register"
+						element={<RegisterPostPage />}
+					/>
+					<Route
+						path="/:channelId/post/detail/:postId"
+						element={<DetailPostPage />}
+					/>
+					<Route
+						path="/:channelId/post/edit/:postId"
+						element={<EditPostPage />}
+					/>
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>

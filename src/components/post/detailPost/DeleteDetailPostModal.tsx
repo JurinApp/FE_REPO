@@ -5,20 +5,52 @@ import {
 } from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
+import { useParams, useNavigate } from "react-router-dom";
+import useAxios from "@/hooks/useAxios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const DeleteDetailPostModal = () => {
+	const queryClient = useQueryClient();
 	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		deleteDetailPostModalState,
 	);
 	const resetIsOpenModal = useResetRecoilState(deleteDetailPostModalState);
+	const { channelId, postId } = useParams();
+	const { axiosData } = useAxios();
+	const navigate = useNavigate();
 	const modalRef = useRef<HTMLDivElement>(null);
+
+	const deletePost = async () => {
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/teachers/api/v1/channels/${channelId}/posts/${postId}`,
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 204) {
+				setIsOpenModal(false);
+				alert("게시글 삭제가 되었습니다.");
+				queryClient.removeQueries({
+					queryKey: ["detailPost", channelId, postId],
+				});
+				navigate(`/${channelId}/post`);
+			}
+		}
+	};
+
+	const deletePostMutation = useMutation({
+		mutationKey: ["deletePost"],
+		mutationFn: deletePost,
+	});
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		setIsOpenModal(false);
+		deletePostMutation.mutate();
 	};
 
 	useEffect(() => {

@@ -1,13 +1,14 @@
 import { deletePostsModalState } from "@/states/confirmModalState";
 import { selectedPostsState } from "@/states/selectedPostState";
 import { userRoleState } from "@/states/userRoleState";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const DeleteRegisterButton = () => {
 	const selectedPosts = useRecoilValue(selectedPostsState);
 	const setIsOpenModal = useSetRecoilState(deletePostsModalState);
 	const userRole = useRecoilValue(userRoleState);
+	const { channelId } = useParams();
 
 	const handleDeletePosts = () => {
 		setIsOpenModal(true);
@@ -28,7 +29,7 @@ const DeleteRegisterButton = () => {
 				삭제
 			</button>
 			<Link
-				to="/post/register"
+				to={`/${channelId}/post/register`}
 				className="ml-1 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>
 				등록
