@@ -82,6 +82,11 @@ const RegisterItemConfirmModal = () => {
 					alert("아이템 등록 형식을 다시 확인해주세요.");
 				}
 
+				if (status === 404) {
+					alert("존재하지 않은 아이템입니다.");
+					navigate(`/${channelId}/item`);
+				}
+
 				if (status === 500) {
 					alert("서버에 오류가 발생하였습니다. 다시 시도해주세요.");
 				}
