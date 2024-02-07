@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom";
-import EditBtn from "../../assets/svg/btn_edit.svg?react";
-import { useRecoilValue } from "recoil";
-import { userinfoState } from "@/states/userinfoState";
-import { useState } from "react";
+import useAxios from "@/hooks/useAxios";
 import { EnterChannelModal } from "../channel/EnterChannelModal";
+import MoveModifyBtn from "./MoveModifyBtn";
+import UserinfoSection from "./UserinfoSection";
+import { useRecoilValue } from "recoil";
+import { userRoleState } from "@/states/userRoleState";
+import Spinner from "../common/spinner/Spinner";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface IUser {
 	readonly name: string;
@@ -12,111 +15,96 @@ interface IUser {
 }
 
 interface IChannelInfo {
-	name: string;
-	code: string;
+	readonly name: string;
+	readonly code: string;
 }
-export const UserinfoContainer = () => {
-	const authState = useRecoilValue(userinfoState);
-	const curAuthName = authState.curAuth === "teacher" ? "선생님" : "학생";
-	let sampleData: IUser = {
-		name: "홍길동",
-		school: "홍길초등학교",
-		authority: "선생님",
-	};
-	let channelInfo: IChannelInfo = {
-		name: "1-A반",
-		code: "1A2B3C4D",
-	};
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const handleConfirm = () => {
-		setIsModalOpen(false);
-	};
 
-	const handleCancel = () => {
-		setIsModalOpen(false);
+export interface IUserinfo {
+	readonly user: {
+		id: number;
+		nickname: string;
+		schoolName: string;
+		userRole: string;
 	};
+	readonly channel?: {
+		name: string;
+	};
+}
+
+export const SAMPLE_DATA: IUser = {
+	name: "홍길동",
+	school: "홍길초등학교",
+	authority: "선생님",
+};
+
+export const SAMPLE_CHANNEL: IChannelInfo = {
+	name: "1-A반",
+	code: "1A2B3C4D",
+};
+export const UserinfoContainer = () => {
+	const { axiosData } = useAxios();
+	const role =
+		useRecoilValue(userRoleState) === "teacher" ? "teacher" : "student";
+
+	const fetchUserinfo = async () => {
+		const apiUrl = `/${role}s/api/v1/users/profile`;
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: apiUrl,
+		});
+		if (role === "student") {
+			if (response) {
+				const status = response.status;
+				if (status === 200) {
+					return { user: response.data.data, channel: "" };
+				}
+			}
+		} else {
+			if (response) {
+				const status = response.status;
+				if (status === 200) {
+					return response.data.data;
+				}
+			}
+		}
+	};
+	const fetchChannel = async () => {
+		const apiUrl = `/${role}s/api/v1/channels`;
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: apiUrl,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
+	};
+	const results = useQueries({
+		queries: [
+			{
+				queryKey: ["userinfo"],
+				queryFn: fetchUserinfo,
+			},
+			{
+				queryKey: ["channelInfo"],
+				queryFn: fetchChannel,
+			},
+		],
+	});
+	const isLoading = results.some((query) => query.isLoading);
+	console.log("userinfo", results[0].data);
+	console.log("channelInfo", results[1].data);
+
 	return (
-		<div className="mx-auto h-full bg-[#3d348b] bg-opacity-5 sm:w-[24.563rem]">
-			<div className="flex h-[50.312rem] flex-col justify-end gap-4">
-				<div className="mr-4 flex justify-end">
-					<Link to="/modifyUserinfo">
-						<EditBtn />
-					</Link>
-				</div>
-				<div
-					className="ml-4 flex h-[8.5rem] w-[361px] flex-col justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
-					id="userinfoSection"
-				>
-					<div className="my-2 ml-4 flex items-center gap-4">
-						<label className="text-black text-opacity-80" htmlFor="name">
-							이름
-						</label>
-						<p className="font-medium">{curAuthName}</p>
-					</div>
-					<div className="my-2 ml-4 flex gap-4">
-						<label className="text-black text-opacity-80" htmlFor="school">
-							학교
-						</label>
-						<p className="font-medium">{sampleData.school}</p>
-					</div>
-					<div className="my-2 ml-4 flex gap-4">
-						<label className="text-black text-opacity-80" htmlFor="authority">
-							권한
-						</label>
-						<p className="font-medium">{sampleData.authority}</p>
-					</div>
-				</div>
-				{channelInfo ? (
-					<div
-						className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
-						id="channelSection"
-					>
-						<div className="my-2 ml-4 flex gap-4">
-							<label className="text-black text-opacity-80" htmlFor="school">
-								학교
-							</label>
-							<p className="font-medium">{sampleData.school}</p>
-						</div>
-						<div className="my-2 ml-4 flex gap-4">
-							<label className="text-black text-opacity-80" htmlFor="authority">
-								권한
-							</label>
-							<p className="font-medium">{sampleData.authority}</p>
-						</div>
-					</div>
-				) : (
-					<div
-						className="ml-4 flex h-[6.375rem] w-[361px] flex-col items-center justify-center rounded border border-black-100 bg-black-100"
-						id="channelSection"
-					>
-						<p className="font-medium">채널 정보가 존재하지 않습니다.</p>
-					</div>
-				)}
-				{curAuthName === "선생님" ? (
-					<Link to="/createChannel">
-						<button
-							className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
-							id="button"
-						>
-							<p className="font-medium text-white">채널 생성</p>
-						</button>
-					</Link>
-				) : (
-					<button
-						className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
-						id="button"
-						onClick={() => setIsModalOpen(true)}
-					>
-						<p className="font-medium text-white">채널 입장</p>
-					</button>
-				)}
-				{isModalOpen && (
-					<EnterChannelModal
-						onConfirm={handleConfirm}
-						onCancel={handleCancel}
-					/>
-				)}
-			</div>
+		<div className="mx-auto flex h-[calc(100vh-2.938rem)] flex-col justify-end gap-4 bg-btn-cancel-tekhelet sm:w-[24.563rem]">
+			<MoveModifyBtn />
+			{!isLoading && (
+				<UserinfoSection userinfo={results[0].data} channel={results[1].data} />
+			)}
+			<EnterChannelModal />
+			{isLoading && <Spinner />}
 		</div>
 	);
 };

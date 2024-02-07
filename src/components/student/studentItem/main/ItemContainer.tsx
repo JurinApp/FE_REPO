@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Item from "./Item";
 import ItemBuyModal from "./ItemBuyModal";
+import { useSetRecoilState } from "recoil";
+import { itemBuyModalState } from "@/states/confirmModalState";
 
 const ITEM_LIST = [
 	{
@@ -54,14 +56,12 @@ export interface IItem {
 	price: number;
 }
 const ItemContainer = () => {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const setIsItemBuyModalOpen = useSetRecoilState(itemBuyModalState);
 	const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-	const handleModalClose = () => {
-		setIsModalOpen(false);
-	};
+
 	const handleModalOpen = (item: IItem) => {
 		setSelectedItem(item);
-		setIsModalOpen(true);
+		setIsItemBuyModalOpen(true);
 	};
 
 	const buyItem = () => {
@@ -70,9 +70,9 @@ const ItemContainer = () => {
 	return (
 		<>
 			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				<div className="mx-4 mt-[24px] grid h-[188px] grid-cols-1 gap-x-2 gap-y-[14px] sm:grid-cols-3 xs:grid-cols-2">
+				<div className="mx-4 mt-6 grid h-[34.563rem] grid-cols-1 gap-x-2 gap-y-[0.875rem] overflow-scroll sm:grid-cols-3 xs:grid-cols-2">
 					{ITEM_LIST.map((item) => (
-						<>
+						<div key={item.itemId}>
 							<div onClick={() => handleModalOpen(item)}>
 								<Item
 									itemId={item.itemId}
@@ -80,18 +80,11 @@ const ItemContainer = () => {
 									price={item.price}
 								/>
 							</div>
-						</>
+						</div>
 					))}
 				</div>
 			</div>
-			{selectedItem && (
-				<ItemBuyModal
-					isModalOpen={isModalOpen}
-					onCancel={handleModalClose}
-					onConfirm={buyItem}
-					item={selectedItem}
-				/>
-			)}
+			{selectedItem && <ItemBuyModal onConfirm={buyItem} item={selectedItem} />}
 		</>
 	);
 };

@@ -13,9 +13,13 @@ const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
 const SuccessSignUpPage = lazy(() => import("@pages/common/SuccessSignUpPage"));
-const MyPage = lazy(() => import("@pages/MyPage"));
-const CreateChannelPage = lazy(() => import("@pages/CreateChannelPage"));
-const ModifyUserinfoPage = lazy(() => import("@pages/ModifyUserinfoPage"));
+const MyPage = lazy(() => import("@/pages/common/MyPage"));
+const CreateChannelPage = lazy(
+	() => import("@/pages/common/CreateChannelPage"),
+);
+const ModifyUserinfoPage = lazy(
+	() => import("@/pages/common/ModifyUserinfoPage"),
+);
 const ManageLearnerPage = lazy(
 	() => import("@pages/educator/manageLearner/ManageLearnerPage"),
 );
@@ -30,7 +34,7 @@ const EditTradeStockPage = lazy(
 	() => import("@pages/educator/trade/EditTradeStockPage"),
 );
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
-const SettingPage = lazy(() => import("@pages/SettingPage"));
+const SettingPage = lazy(() => import("@/pages/common/SettingPage"));
 const StockPage = lazy(() => import("@pages/student/stock/StockPage"));
 const StudentItemPage = lazy(
 	() => import("@pages/student/item/StudentItemPage"),

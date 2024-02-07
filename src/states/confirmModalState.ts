@@ -73,3 +73,46 @@ export const editPostModalState = atom<boolean>({
 	default: false,
 	key: "editPostModalState",
 });
+
+// -------- 설정 페이지 관리 --------
+export const withdrawalModalState = atom<boolean>({
+	default: false,
+	key: "withdrawalModalState",
+});
+
+// -------- 마이 페이지 관리 --------
+export const enterChannelModalState = atom<boolean>({
+	default: false,
+	key: "enterChannelModalState",
+});
+
+export const modifyUserinfoModalState = atom<boolean>({
+	default: false,
+	key: "modifyUserinfoModalState",
+});
+
+export const quitChannelModalState = atom<boolean>({
+	default: false,
+	key: "quitChannelModalState",
+});
+// -------- 주문 내역 관리 --------
+export const calendarModalState = atom<boolean>({
+	default: false,
+	key: "calendarModalState",
+});
+
+// -------- 학생 아이템 관리 --------
+export const itemHistoryModalState = atom<boolean>({
+	default: false,
+	key: "itemHistoryModalState",
+});
+
+export const itemBuyModalState = atom<boolean>({
+	default: false,
+	key: "itemBuyModalState",
+});
+
+export const itemUseModalState = atom<boolean>({
+	default: false,
+	key: "itemUseModalState",
+});

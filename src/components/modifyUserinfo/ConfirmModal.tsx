@@ -1,27 +1,55 @@
+import { modifyUserinfoModalState } from "@/states/confirmModalState";
+import { useEffect, useRef } from "react";
+import { useRecoilState } from "recoil";
+
 type TConfirmModalProps = {
-	isOpen: boolean;
 	onConfirm: () => void;
-	onCancel: () => void;
 };
-export const ConfirmModal = (props: TConfirmModalProps) => {
-	const { isOpen, onCancel } = props;
-	if (!isOpen) return null;
+export const ConfirmModal = ({ onConfirm }: TConfirmModalProps) => {
+	const [isOpenModifyUserinfoModal, setIsOpenModifyUserinfoModal] =
+		useRecoilState(modifyUserinfoModalState);
+
+	const modalRef = useRef<HTMLDivElement>(null);
+
+	const handleModalClose = () => {
+		setIsOpenModifyUserinfoModal(false);
+	};
+
+	useEffect(() => {
+		const handleOutSideClick = (e: Event) => {
+			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				setIsOpenModifyUserinfoModal(false);
+			}
+		};
+		document.addEventListener("mousedown", handleOutSideClick);
+
+		return () => {
+			document.removeEventListener("mousedown", handleOutSideClick);
+		};
+	}, [modalRef]);
 
 	return (
 		<>
 			<div
-				className="fixed left-1/2 top-0 h-[100vh] w-[24.563rem] -translate-x-1/2  transform bg-black-800"
-				onClick={onCancel}
-			></div>
-			<div className="fixed left-1/2 top-1/2 flex h-[17.5rem] w-[333px] -translate-x-1/2 -translate-y-1/3 transform flex-col">
-				<div className="bg-opacity-2 flex h-[7.438rem] items-center justify-center bg-[#ffffff]">
-					<p className="font-medium text-[#000000]">수정하시겠습니까?</p>
-				</div>
-				<div className="flex h-[3.75rem] flex-row">
-					<button className="w-1/2 bg-gray-300" onClick={onCancel}>
-						취소
-					</button>
-					<button className="w-1/2 bg-tekhelet text-[#ffffff]">확인</button>
+				className={`fixed left-0 top-0 z-[100] ${
+					isOpenModifyUserinfoModal ? "flex" : "hidden"
+				} h-full w-full flex-col items-center justify-center bg-black-700`}
+			>
+				<div ref={modalRef} className="w-[20rem]">
+					<div className="bg-opacity-2 flex h-[7.438rem] items-center justify-center bg-[#ffffff]">
+						<p className="font-medium text-[#000000]">수정하시겠습니까?</p>
+					</div>
+					<div className="flex h-[3.75rem] flex-row">
+						<button className="w-1/2 bg-gray-300" onClick={handleModalClose}>
+							취소
+						</button>
+						<button
+							className="w-1/2 bg-tekhelet text-[#ffffff]"
+							onClick={onConfirm}
+						>
+							확인
+						</button>
+					</div>
 				</div>
 			</div>
 		</>
