@@ -1,3 +1,4 @@
+import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 import StockHeader from "@/components/common/header/StockHeader";
 import StockTab from "@/components/student/stock/StockTab";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
@@ -77,7 +78,7 @@ const StockPage = () => {
 
 	return (
 		<>
-			<StockHeader name={SAMPLE_STOCK.stockInfo.name} />
+			<GoBackButton name={SAMPLE_STOCK.stockInfo.name} />
 			<StockTab tabs={TABS} />
 		</>
 	);

@@ -91,6 +91,10 @@ export const modifyUserinfoModalState = atom<boolean>({
 	key: "modifyUserinfoModalState",
 });
 
+export const quitChannelModalState = atom<boolean>({
+	default: false,
+	key: "quitChannelModalState",
+});
 // -------- 주문 내역 관리 --------
 export const calendarModalState = atom<boolean>({
 	default: false,

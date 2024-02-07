@@ -1,13 +1,30 @@
 import { enterChannelModalState } from "@/states/confirmModalState";
 import { userinfoState } from "@/states/userinfoState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SAMPLE_CHANNEL, SAMPLE_DATA } from "./UserinfoContainer";
 import MoveCreateChannelBtn from "./MoveCreateChannelBtn";
+import { IUserinfo } from "./UserinfoContainer";
 
-const UserinfoSection = () => {
+export interface IUserinfoProps {
+	readonly userinfo: {
+		user: {
+			id: number;
+			nickname: string;
+			schoolName: string;
+			userRole: string;
+		};
+		channel?: {
+			name: string;
+		};
+	};
+	readonly channel?: {
+		channelName: string;
+		entryCode: string;
+	};
+}
+const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 	const setIsEnterChannelModalOpen = useSetRecoilState(enterChannelModalState);
-	const authState = useRecoilValue(userinfoState);
-	const curAuth = authState.curAuth === "teacher" ? "학생" : "선생님";
+	// const authState = useRecoilValue(userinfoState);
+	// const curAuth = authState.curAuth === "teacher" ? "학생" : "선생님";
 
 	const handleModalOpen = () => {
 		setIsEnterChannelModalOpen(true);
@@ -22,37 +39,37 @@ const UserinfoSection = () => {
 					<label className="text-black text-opacity-80" htmlFor="name">
 						이름
 					</label>
-					<p className="font-medium">{curAuth}</p>
+					<p className="font-medium">{userinfo.user.nickname}</p>
 				</div>
 				<div className="my-2 ml-4 flex gap-4">
 					<label className="text-black text-opacity-80" htmlFor="school">
 						학교
 					</label>
-					<p className="font-medium">{SAMPLE_DATA.school}</p>
+					<p className="font-medium">{userinfo.user.schoolName}</p>
 				</div>
 				<div className="my-2 ml-4 flex gap-4">
 					<label className="text-black text-opacity-80" htmlFor="authority">
 						권한
 					</label>
-					<p className="font-medium">{SAMPLE_DATA.authority}</p>
+					<p className="font-medium">{userinfo.user.userRole}</p>
 				</div>
 			</div>
-			{SAMPLE_CHANNEL ? (
+			{channel ? (
 				<div
 					className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
 					id="channelSection"
 				>
 					<div className="my-2 ml-4 flex gap-4">
 						<label className="text-black text-opacity-80" htmlFor="school">
-							학교
+							채널
 						</label>
-						<p className="font-medium">{SAMPLE_DATA.school}</p>
+						<p className="font-medium">{channel.channelName}</p>
 					</div>
 					<div className="my-2 ml-4 flex gap-4">
 						<label className="text-black text-opacity-80" htmlFor="authority">
-							권한
+							코드
 						</label>
-						<p className="font-medium">{SAMPLE_DATA.authority}</p>
+						<p className="font-medium">{channel.entryCode}</p>
 					</div>
 				</div>
 			) : (
@@ -63,7 +80,7 @@ const UserinfoSection = () => {
 					<p className="font-medium">채널 정보가 존재하지 않습니다.</p>
 				</div>
 			)}
-			{curAuth === "선생님" ? (
+			{userinfo.user.userRole === "teacher" ? (
 				<MoveCreateChannelBtn />
 			) : (
 				<button

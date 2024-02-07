@@ -1,9 +1,11 @@
 import { withdrawalModalState } from "@/states/confirmModalState";
+import { removeCookie } from "@/utils/cookies";
+import { useNavigate } from "react-router";
 import { useSetRecoilState } from "recoil";
 
 const SettingSection = () => {
 	const setIsWithdrawalModalOpen = useSetRecoilState(withdrawalModalState);
-
+	const navigate = useNavigate();
 	const handleWithdrawalModalOpen = () => {
 		setIsWithdrawalModalOpen(true);
 	};
@@ -13,6 +15,11 @@ const SettingSection = () => {
 	// 	// TODO 회원 탈퇴 기능 구현
 	// 	setIsModalOpen(false);
 	// };
+
+	const handleSignOut = () => {
+		removeCookie();
+		navigate("/login");
+	};
 
 	return (
 		<div className="mx-4 flex h-[calc(100vh-2.938rem)] flex-col justify-between text-base">
@@ -44,15 +51,18 @@ const SettingSection = () => {
 				</section>
 			</div>
 			<div>
-				<div
-					className="mb-4 flex h-[3.188rem] items-center justify-center rounded border border-danger bg-[#ffffff] font-bold text-danger"
+				<button
+					className="mb-4 flex h-[3.188rem] w-full items-center justify-center rounded border border-danger bg-[#ffffff] font-bold text-danger"
 					onClick={handleWithdrawalModalOpen}
 				>
 					회원 탈퇴
-				</div>
-				<div className="mb-8 flex h-[3.188rem] items-center justify-center rounded bg-[#3d348b] font-bold text-white">
+				</button>
+				<button
+					onClick={handleSignOut}
+					className="mb-8 flex h-[3.188rem] w-full items-center justify-center rounded bg-[#3d348b] font-bold text-white"
+				>
 					로그아웃
-				</div>
+				</button>
 			</div>
 		</div>
 	);
