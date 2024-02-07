@@ -1,9 +1,12 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
+import useAxios from "@/hooks/useAxios";
 import { registerTradeStockModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 interface IRegisterTradeStockFormProps {
@@ -13,9 +16,14 @@ interface IRegisterTradeStockFormProps {
 const RegisterTradeStockForm = ({
 	isRegister,
 }: IRegisterTradeStockFormProps) => {
+	const { channelId } = useParams();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
+		getValues,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -30,8 +38,47 @@ const RegisterTradeStockForm = ({
 	});
 	const setIsOpenModal = useSetRecoilState(registerTradeStockModalState);
 
+	const registerTradeStock = async () => {
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: `/teachers/api/v1/channels/${channelId}/stocks`,
+			data: {
+				name: getValues().stockName,
+				purchasePrice: getValues().price,
+				tax: getValues().tax,
+				standard: getValues().standard,
+				content: getValues().content,
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 201) {
+				const stockId = response.data.data.id;
+
+				alert("등록이 완료 되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["stocks", channelId] });
+				navigate(`/${channelId}/trade/stock/detail/${stockId}`);
+			}
+
+			if (status === 400) {
+				alert("알맞은 형식으로 등록해주세요.");
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+		}
+	};
+
+	const registerTradeStockMutation = useMutation({
+		mutationKey: ["registerTradeStock"],
+		mutationFn: registerTradeStock,
+	});
+
 	const handleSubmitRegisterTradeStockForm = () => {
-		// TODO : API 개발 되면 코드 작성 예정, API Status Code 200이면 setIsRegister = false로 해주기
+		registerTradeStockMutation.mutate();
 	};
 
 	const handleClickRegisterBtn = () => {

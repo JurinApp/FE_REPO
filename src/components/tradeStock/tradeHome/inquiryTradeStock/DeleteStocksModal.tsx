@@ -1,16 +1,22 @@
+import useAxios from "@/hooks/useAxios";
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
 } from "@/utils/controlBodyScroll";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const DeleteStocksModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteStocksModalState);
 	const resetIsOpenModal = useResetRecoilState(deleteStocksModalState);
 	const selectedStocks = useRecoilValue(selectedStock);
+	const { channelId } = useParams();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleClickCancelBtn = () => {
@@ -18,8 +24,33 @@ const DeleteStocksModal = () => {
 	};
 
 	const handleClickDeleteBtn = () => {
-		setIsOpenModal(false);
+		deleteTradeStocksMutation.mutate();
 	};
+
+	const deleteTradeStocks = async () => {
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/teachers/api/v1/channels/${channelId}/stocks`,
+			data: {
+				stockIds: selectedStocks,
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 204) {
+				alert("주식 삭제가 되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["stocks", channelId] });
+				setIsOpenModal(false);
+			}
+		}
+	};
+
+	const deleteTradeStocksMutation = useMutation({
+		mutationKey: ["deleteStocks"],
+		mutationFn: deleteTradeStocks,
+	});
 
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {

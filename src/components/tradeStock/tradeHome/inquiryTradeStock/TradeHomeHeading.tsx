@@ -1,7 +1,8 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { allCheckStockState, selectedStock } from "@/states/tradeStock";
+import { userRoleState } from "@/states/userRoleState";
 import { ChangeEvent, useEffect, useRef } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface ITradeHomeHeadingProps {
 	readonly stockList: IStockItem[];
@@ -13,12 +14,13 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 		useRecoilState(allCheckStockState);
 	const resetIsAllCheckStock = useResetRecoilState(allCheckStockState);
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
+	const userRole = useRecoilValue(userRoleState);
 
 	const handleAllCheckStock = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const learnerIdArr = stockList.map((stock) => stock.stockId);
+			const learnerIdArr = stockList.map((stock) => stock.id);
 
 			setSelectedStocks(learnerIdArr);
 			setIsAllCheckStock(true);
@@ -45,7 +47,11 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	}, []);
 
 	return (
-		<div className="flex h-12 w-full items-center justify-between pt-[0.625rem] text-black-800">
+		<div
+			className={`${
+				userRole === "teacher" ? "flex items-center justify-between" : "hidden"
+			} h-12 w-full pt-[0.625rem] text-black-800`}
+		>
 			<div className="flex items-center">
 				<input
 					ref={checkBoxRef}

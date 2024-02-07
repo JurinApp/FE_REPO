@@ -1,18 +1,26 @@
 import { deleteStocksModalState } from "@/states/confirmModalState";
 import { selectedStock } from "@/states/tradeStock";
+import { userRoleState } from "@/states/userRoleState";
+import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Link } from "react-router-dom";
 
 const DeleteRegisterButton = () => {
 	const selectedStocks = useRecoilValue(selectedStock);
+	const userRole = useRecoilValue(userRoleState);
 	const setIsOpenModal = useSetRecoilState(deleteStocksModalState);
 
+	const { channelId } = useParams();
+
 	const handleDeleteStocks = () => {
-		setIsOpenModal;
+		setIsOpenModal(true);
 	};
 
 	return (
-		<div className="absolute bottom-6 left-0 flex w-full px-4">
+		<div
+			className={`${
+				userRole === "teacher" ? "flex" : "hidden"
+			} absolute bottom-6 left-0 w-full px-4`}
+		>
 			<button
 				type="button"
 				disabled={selectedStocks.length === 0 ? true : false}
@@ -22,7 +30,7 @@ const DeleteRegisterButton = () => {
 				삭제
 			</button>
 			<Link
-				to="/trade/stock/register"
+				to={`/${channelId}/trade/stock/register`}
 				type="button"
 				className="ml-1 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>

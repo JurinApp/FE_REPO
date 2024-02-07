@@ -10,6 +10,7 @@ interface ITradeStockListProps {
 
 const TradeStockList = ({ stockList }: ITradeStockListProps) => {
 	const resetSelectedStocks = useResetRecoilState(selectedStock);
+	const isExist = stockList.length === 0;
 
 	useEffect(() => {
 		return () => {
@@ -18,10 +19,18 @@ const TradeStockList = ({ stockList }: ITradeStockListProps) => {
 	}, []);
 
 	return (
-		<div className="mt-2 h-[calc(100vh-22rem)] overflow-y-auto">
-			{stockList.map((stockItem: IStockItem) => (
-				<TradeStockItem key={stockItem.key} stockItem={stockItem} />
-			))}
+		<div
+			className={`mt-2 h-[calc(100vh-22rem)] overflow-y-auto ${
+				isExist && "flex items-center justify-center"
+			}`}
+		>
+			{isExist ? (
+				<p className="text-black-700">등록된 주식이 없습니다.</p>
+			) : (
+				stockList.map((stockItem: IStockItem) => (
+					<TradeStockItem key={stockItem.id} stockItem={stockItem} />
+				))
+			)}
 		</div>
 	);
 };
