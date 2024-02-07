@@ -8,13 +8,26 @@ import { ConfirmModal } from "./ConfirmModal";
 import ChannelQuitModal from "./ChannelQuitModal";
 import { userRoleState } from "@/states/userRoleState";
 import useAxios from "@/hooks/useAxios";
-import { useEffect } from "react";
-import { IUserinfoProps } from "../userinfo/UserinfoSection";
+import { IChannel, IUser } from "@/interface/userinfo";
+import { IUserinfo } from "../userinfo/UserinfoContainer";
+import { useNavigate } from "react-router";
 
-const ModifyUserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
+interface IModifyUserinfoProps {
+	userinfo: IUserinfo | undefined;
+	channel: IChannel | undefined;
+}
+
+interface ISubmitData {
+	readonly nickname: string;
+	readonly schoolName: string;
+	readonly channelName?: string;
+}
+const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
+	const navigate = useNavigate();
 	const [name, setName] = useInput("");
 	const { axiosData } = useAxios();
-
+	const role = useRecoilValue(userRoleState);
+	console.log(userinfo);
 	const [schoolName, setSchoolName] = useInput("");
 	const [channelName, setChannelName] = useInput("");
 	const authState = useRecoilValue(userRoleState);
@@ -30,9 +43,39 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 	const handleQuitChannelModal = () => {
 		setIsQuitChannelModalOpen(true);
 	};
-	const handleModifySubmit = () => {
-		// TODO: 수정 API 요청.
-		console.log(name, schoolName, channelName);
+
+	const handleModifySubmit = async () => {
+		const apiUrl = `/${role}s/api/v1/users/profile`;
+
+		const submitData: ISubmitData =
+			role === "teacher"
+				? {
+						nickname: name || userinfo?.user.nickname,
+						schoolName: schoolName || userinfo?.user.schoolName,
+						channelName: channelName || channel?.channelName,
+					}
+				: {
+						nickname: name || userinfo?.user.nickname,
+						schoolName: schoolName || userinfo?.user.schoolName,
+					};
+		try {
+			const response = await axiosData("useToken", {
+				method: "PUT",
+				url: apiUrl,
+				data: submitData,
+			});
+			if (response) {
+				const status = response.status;
+				if (status === 200) {
+					return response.data.data;
+				}
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			navigate("/mypage");
+			setIsModifyUserinfoModalOpen(false);
+		}
 	};
 
 	const handleQuitChannel = () => {
@@ -63,7 +106,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 					<input
 						type="text"
 						id="name"
-						placeholder="이름"
+						placeholder={userinfo?.user.nickname}
 						onChange={setName}
 						autoComplete="off"
 						className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
@@ -74,12 +117,12 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 					<input
 						type="text"
 						id="school-name"
-						placeholder="학교 이름"
+						placeholder={userinfo?.user.schoolName}
 						onChange={setSchoolName}
 						autoComplete="off"
 						className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
 					/>
-					{curAuth === "teacher" && (
+					{curAuth === "teacher" && !!channel && (
 						<>
 							<label htmlFor="channel-name" className="font-bold">
 								채널 이름
@@ -87,7 +130,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 							<input
 								type="text"
 								id="channel-name"
-								placeholder="채널 이름"
+								placeholder={channel?.channelName}
 								onChange={setChannelName}
 								autoComplete="off"
 								className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
