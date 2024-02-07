@@ -2,21 +2,52 @@ import { deleteItemsModalState } from "@/states/confirmModalState";
 import { selectedItemState } from "@/states/selectedItemState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxios from "@/hooks/useAxios";
+import { useParams } from "react-router-dom";
 
 const DeleteItemModal = () => {
 	const [selectedItems, setSelectedItems] = useRecoilState(selectedItemState);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteItemsModalState);
 	const resetIsOpenModal = useResetRecoilState(deleteItemsModalState);
+	const { axiosData } = useAxios();
+	const { channelId } = useParams();
 	const modalRef = useRef<HTMLDivElement>(null);
+	const queryClient = useQueryClient();
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		setSelectedItems([]);
-		setIsOpenModal(false);
+		deleteItemsMutation.mutate();
 	};
+
+	const deleteItemsData = async () => {
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/teachers/api/v1/channels/${channelId}/items`,
+			data: {
+				itemIds: selectedItems,
+			},
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 204) {
+				alert("삭제가 완료되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["items", channelId] });
+				setSelectedItems([]);
+				setIsOpenModal(false);
+			}
+		}
+	};
+
+	const deleteItemsMutation = useMutation({
+		mutationKey: ["deleteItems"],
+		mutationFn: deleteItemsData,
+	});
 
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {

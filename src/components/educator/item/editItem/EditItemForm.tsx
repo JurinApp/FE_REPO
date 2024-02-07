@@ -5,17 +5,14 @@ import Logo from "@assets/svg/subColorLogo.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import { editItemModalState } from "@/states/confirmModalState";
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
-
-interface IFormValue {
-	readonly itemName: string;
-	readonly image: string;
-	readonly quantity: number;
-	readonly price: number;
-	readonly content: string;
-}
+import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import useAxios from "@/hooks/useAxios";
+import Spinner from "@/components/common/spinner/Spinner";
 
 interface IErrors {
 	readonly itemNameError: {
@@ -37,20 +34,12 @@ interface IThumbNailImg {
 	readonly thumbNailImg: string;
 }
 
-interface IEditItemFormProps {
-	readonly isEdit: boolean;
-}
-
-const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
+const EditItemForm = () => {
 	const setIsOpenModal = useSetRecoilState(editItemModalState);
 	const labelRef = useRef<HTMLLabelElement>(null);
-	const [formValue, setFormValue] = useState<IFormValue>({
-		itemName: "",
-		image: "",
-		quantity: 1,
-		price: 0,
-		content: "",
-	});
+	const { channelId, itemId } = useParams();
+	const { axiosData } = useAxios();
+	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
 	const [errors, setErrors] = useState<IErrors>({
 		itemNameError: {
 			isError: false,
@@ -81,20 +70,57 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 		setThumbNail({ fileName: "", thumbNailImg: "" });
 	};
 
+	const getDetailItemData = async () => {
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: `/teachers/api/v1/channels/${channelId}/items/${itemId}`,
+		});
+
+		if (response) {
+			const status = response.status;
+			const responseData = response.data.data;
+
+			if (status === 200) {
+				setItemFormValue({
+					itemName: responseData.title,
+					imageFile: null,
+					imageUrl: responseData.imageUrl,
+					quantity: responseData.amount,
+					price: responseData.price,
+					content: responseData.content,
+				});
+				setThumbNail({
+					fileName: responseData.imageUrl,
+					thumbNailImg: responseData.imageUrl,
+				});
+				setReplacePrice(responseData.price.toLocaleString());
+				return responseData;
+			}
+		}
+	};
+
+	const { isLoading } = useQuery({
+		queryKey: ["detailItem", channelId, itemId],
+		queryFn: getDetailItemData,
+	});
+
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
 			if (!e.currentTarget.files[0]) return;
 
-			const thumbNailImgFile = e.currentTarget.files[0];
-			const thumbNailImgFileName = e.currentTarget.files[0].name;
+			const imgFile = e.currentTarget.files[0];
+			const imgFileName = e.currentTarget.files[0].name;
+
+			setItemFormValue((prev) => ({ ...prev, imageFile: imgFile }));
+
 			const reader = new FileReader();
-			reader.readAsDataURL(thumbNailImgFile);
+			reader.readAsDataURL(imgFile);
 
 			reader.onload = (e) => {
 				if (e.target !== null) {
 					setThumbNail({
 						thumbNailImg: e.target.result as string,
-						fileName: thumbNailImgFileName,
+						fileName: imgFileName,
 					});
 				}
 			};
@@ -103,24 +129,29 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 
 	const handleChangeQuantity = (type: string) => {
 		if (type === "decrease") {
-			if (formValue.quantity === 1) return;
+			if (itemFormValue.quantity === 1) return;
 
-			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity - 1 }));
+			setItemFormValue((prev) => ({
+				...prev,
+				quantity: itemFormValue.quantity - 1,
+			}));
 		}
 
 		if (type === "increase") {
-			setFormValue((prev) => ({ ...prev, quantity: formValue.quantity + 1 }));
+			setItemFormValue((prev) => ({
+				...prev,
+				quantity: itemFormValue.quantity + 1,
+			}));
 		}
 	};
 
 	const handleChangePrice = (value: string) => {
 		const numericValue = parseFloat(value.replace(/,/g, ""));
-
 		if (!isNaN(numericValue)) {
-			setFormValue({ ...formValue, price: numericValue });
+			setItemFormValue({ ...itemFormValue, price: numericValue });
 			setReplacePrice(numericValue.toLocaleString());
 		} else {
-			setFormValue({ ...formValue, price: 0 });
+			setItemFormValue({ ...itemFormValue, price: 0 });
 			setReplacePrice("");
 		}
 	};
@@ -194,7 +225,7 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 		if (id === "price") {
 			handleChangePrice(value);
 		} else {
-			setFormValue((prev) => ({ ...prev, [id]: value }));
+			setItemFormValue((prev) => ({ ...prev, [id]: value }));
 		}
 		handleChangeFormCheckValidation(id, value);
 	}, 1000);
@@ -210,7 +241,7 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.itemName.length === 0) {
+		if (itemFormValue.itemName.length === 0) {
 			setErrors((prev) => ({
 				...prev,
 				itemNameError: {
@@ -221,7 +252,7 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.price === 0) {
+		if (itemFormValue.price === 0) {
 			setErrors((prev) => ({
 				...prev,
 				priceError: {
@@ -232,7 +263,7 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 			isValidation = false;
 		}
 
-		if (formValue.content.length === 0) {
+		if (itemFormValue.content.length === 0) {
 			setErrors((prev) => ({
 				...prev,
 				contentError: {
@@ -253,172 +284,175 @@ const EditItemForm = ({ isEdit }: IEditItemFormProps) => {
 		setIsOpenModal(true);
 	};
 
-	const handleSubmit = () => {
-		// API 개발 되면 코드 작성 예정
-	};
-
 	useEffect(() => {
-		if (isEdit) {
-			handleSubmit();
-		}
-	}, [isEdit]);
+		return () => {
+			setItemFormValue(INITIAL_VALUE);
+		};
+	}, []);
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-			<form onSubmit={handleClickEditBtn}>
-				<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto bg-white px-4 py-4">
-					<div className="w-full sm:w-[19.563rem]">
-						<label htmlFor="itemName" className="hidden">
-							아이템명
-						</label>
-						<input
-							type="text"
-							id="itemName"
-							className={`mb-2 w-full rounded-none border-b pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem] ${
-								errors.itemNameError.isError
-									? "border-danger"
-									: "border-black-100 focus:border-black-300"
-							}`}
-							placeholder="아이템명을 입력해주세요"
-							onChange={handleChangeFormValue}
-						/>
-						{errors.itemNameError.isError && (
-							<ErrorMsg message={errors.itemNameError.errorMessage} />
-						)}
-					</div>
-					{thumbNail.thumbNailImg === "" ? (
-						<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-							<Logo className="h-20 w-[4.188rem]" />
-						</div>
-					) : (
-						<img
-							src={thumbNail.thumbNailImg}
-							alt="이미지 미리보기"
-							className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
-						/>
-					)}
-
-					<div className="mt-[1.125rem] flex w-full sm:w-[19.563rem]">
-						<label
-							htmlFor="image"
-							ref={labelRef}
-							className="mr-[0.625rem] w-[2.813rem] text-black-800"
-						>
-							이미지
-						</label>
-						<p className="h-[2.438rem] max-w-[14rem] grow truncate border-b border-black-100 pb-[0.625rem]">
-							{thumbNail.fileName}
-						</p>
-						{thumbNail.thumbNailImg === "" ? (
-							<button
-								type="button"
-								onClick={handleAddImage}
-								className="ml-2 flex justify-start"
-							>
-								<AddImage />
-							</button>
-						) : (
-							<button
-								type="button"
-								onClick={handleDeleteImage}
-								className="ml-2 flex justify-start"
-							>
-								<DeleteImage />
-							</button>
-						)}
-						<input
-							id="image"
-							type="file"
-							accept=".jpg, .png"
-							className="hidden"
-							onChange={handleChangeThumbNailImage}
-						/>
-					</div>
-					<div className="mt-[0.875rem] flex w-full items-center sm:w-[19.563rem]">
-						<label
-							htmlFor="quantity"
-							className="mr-[0.625rem] w-[2.813rem] text-black-800"
-						>
-							수량
-						</label>
-						<div className="flex border border-black-100">
-							<button
-								type="button"
-								onClick={() => handleChangeQuantity("decrease")}
-								className="flex h-10 w-10 items-center justify-center border-r border-black-100"
-							>
-								<Decrease />
-							</button>
-							<input
-								type="number"
-								id="quantity"
-								value={formValue.quantity}
-								className="flex h-10 w-[3.375rem] items-center justify-center rounded-none text-center font-medium outline-none"
-							/>
-							<button
-								type="button"
-								onClick={() => handleChangeQuantity("increase")}
-								className="flex h-10 w-10 items-center justify-center border-l border-black-100"
-							>
-								<Increase />
-							</button>
-						</div>
-					</div>
-					<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
-						<div className="mb-2 flex">
-							<label
-								htmlFor="price"
-								className="mr-[0.625rem] w-[2.813rem] text-black-800"
-							>
-								가격
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<form onSubmit={handleClickEditBtn}>
+					<div className="flex h-[calc(100vh-18rem)] flex-col items-center overflow-y-auto bg-white px-4 py-4">
+						<div className="w-full sm:w-[19.563rem]">
+							<label htmlFor="itemName" className="hidden">
+								아이템명
 							</label>
 							<input
 								type="text"
-								id="price"
-								className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
-									errors.priceError.isError
+								id="itemName"
+								value={itemFormValue.itemName}
+								className={`mb-2 w-full rounded-none border-b pb-4 font-bold outline-none placeholder:text-black-300 sm:w-[19.563rem] ${
+									errors.itemNameError.isError
 										? "border-danger"
 										: "border-black-100 focus:border-black-300"
 								}`}
-								value={replacePrice}
+								placeholder="아이템명을 입력해주세요"
 								onChange={handleChangeFormValue}
 							/>
+							{errors.itemNameError.isError && (
+								<ErrorMsg message={errors.itemNameError.errorMessage} />
+							)}
 						</div>
-						{errors.priceError.isError && (
-							<ErrorMsg message={errors.priceError.errorMessage} />
+						{thumbNail.thumbNailImg === "" ? (
+							<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
+								<Logo className="h-20 w-[4.188rem]" />
+							</div>
+						) : (
+							<img
+								src={thumbNail.thumbNailImg}
+								alt="이미지 미리보기"
+								className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
+							/>
 						)}
-					</div>
-					<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
-						<div className="mb-2 flex">
+
+						<div className="mt-[1.125rem] flex w-full sm:w-[19.563rem]">
 							<label
-								htmlFor="content"
+								htmlFor="image"
+								ref={labelRef}
 								className="mr-[0.625rem] w-[2.813rem] text-black-800"
 							>
-								내용
+								이미지
 							</label>
-							<textarea
-								id="content"
-								className={`grow resize-none rounded-none border-b outline-none ${
-									errors.contentError.isError
-										? "border-danger"
-										: "border-black-100 focus:border-black-300"
-								}`}
-								onChange={handleChangeFormValue}
+							<p className="h-[2.438rem] max-w-[14rem] grow truncate border-b border-black-100 pb-[0.625rem]">
+								{thumbNail.fileName}
+							</p>
+							{thumbNail.thumbNailImg === "" ? (
+								<button
+									type="button"
+									onClick={handleAddImage}
+									className="ml-2 flex justify-start"
+								>
+									<AddImage />
+								</button>
+							) : (
+								<button
+									type="button"
+									onClick={handleDeleteImage}
+									className="ml-2 flex justify-start"
+								>
+									<DeleteImage />
+								</button>
+							)}
+							<input
+								id="image"
+								type="file"
+								accept=".jpg, .png"
+								className="hidden"
+								onChange={handleChangeThumbNailImage}
 							/>
 						</div>
-						{errors.contentError.isError && (
-							<ErrorMsg message={errors.contentError.errorMessage} />
-						)}
+						<div className="mt-[0.875rem] flex w-full items-center sm:w-[19.563rem]">
+							<label
+								htmlFor="quantity"
+								className="mr-[0.625rem] w-[2.813rem] text-black-800"
+							>
+								수량
+							</label>
+							<div className="flex border border-black-100">
+								<button
+									type="button"
+									onClick={() => handleChangeQuantity("decrease")}
+									className="flex h-10 w-10 items-center justify-center border-r border-black-100"
+								>
+									<Decrease />
+								</button>
+								<input
+									type="number"
+									id="quantity"
+									value={itemFormValue.quantity}
+									readOnly
+									className="flex h-10 w-[3.375rem] items-center justify-center rounded-none text-center font-medium outline-none"
+								/>
+								<button
+									type="button"
+									onClick={() => handleChangeQuantity("increase")}
+									className="flex h-10 w-10 items-center justify-center border-l border-black-100"
+								>
+									<Increase />
+								</button>
+							</div>
+						</div>
+						<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
+							<div className="mb-2 flex">
+								<label
+									htmlFor="price"
+									className="mr-[0.625rem] w-[2.813rem] text-black-800"
+								>
+									가격
+								</label>
+								<input
+									type="text"
+									id="price"
+									className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
+										errors.priceError.isError
+											? "border-danger"
+											: "border-black-100 focus:border-black-300"
+									}`}
+									value={replacePrice}
+									onChange={handleChangeFormValue}
+								/>
+							</div>
+							{errors.priceError.isError && (
+								<ErrorMsg message={errors.priceError.errorMessage} />
+							)}
+						</div>
+						<div className="mt-[0.875rem] flex w-full flex-col sm:w-[19.563rem]">
+							<div className="mb-2 flex">
+								<label
+									htmlFor="content"
+									className="mr-[0.625rem] w-[2.813rem] text-black-800"
+								>
+									내용
+								</label>
+								<textarea
+									id="content"
+									className={`grow resize-none rounded-none border-b outline-none ${
+										errors.contentError.isError
+											? "border-danger"
+											: "border-black-100 focus:border-black-300"
+									}`}
+									value={itemFormValue.content}
+									onChange={handleChangeFormValue}
+								/>
+							</div>
+							{errors.contentError.isError && (
+								<ErrorMsg message={errors.contentError.errorMessage} />
+							)}
+						</div>
 					</div>
-				</div>
-				<button
-					type="submit"
-					className="mx-auto mt-20 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
-					onClick={handleClickEditBtn}
-				>
-					수정
-				</button>
-			</form>
+					<button
+						type="submit"
+						className="mx-auto mt-20 h-box-height w-full rounded-[0.25rem] bg-tekhelet font-bold text-white"
+						onClick={handleClickEditBtn}
+					>
+						수정
+					</button>
+				</form>
+			)}
 		</div>
 	);
 };

@@ -1,41 +1,95 @@
+import useAxios from "@/hooks/useAxios";
 import Logo from "@assets/svg/subColorLogo.svg?react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "@/components/common/spinner/Spinner";
 
 const DetailItemInfo = () => {
+	const { channelId, itemId } = useParams();
+	const { axiosData } = useAxios();
+	const navigate = useNavigate();
+
+	const getDetailItemData = async () => {
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: `/teachers/api/v1/channels/${channelId}/items/${itemId}`,
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 200) {
+				return response.data.data;
+			}
+
+			if (status === 404) {
+				alert("존재하지 않는 아이템입니다.");
+				navigate(`/${channelId}/item}`);
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+				navigate(`/${channelId}/item`);
+			}
+		}
+	};
+
+	const { data, isLoading } = useQuery({
+		queryKey: ["detailItem", channelId, itemId],
+		queryFn: getDetailItemData,
+	});
+
 	return (
-		<div className="px-4 sm:px-0">
-			<div className="mx-auto h-[calc(100vh-20rem)] w-full overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white pb-6 sm:w-[22.653rem]">
-				<div className="px-4">
-					<p className="mt-6 border-b border-black-800 pb-4 font-bold">
-						의자 우선권
-					</p>
-					<div className="mt-[0.875rem] flex h-[9.375rem] items-center justify-center rounded-[0.25rem] bg-sub2-selected">
-						<Logo className="h-20 w-[4.188rem]" />
-					</div>
-					<div className="mt-[0.875rem] flex">
-						<div className="flex flex-col">
-							<label className="w-[2.813rem] text-black-800">이미지</label>
-							<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
-								수량
-							</label>
-							<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
-								가격
-							</label>
-							<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
-								내용
-							</label>
-						</div>
-						<div className="flex flex-col">
-							<p className="ml-[0.625rem] font-medium">/image/window.jpg</p>
-							<p className="ml-[0.625rem] mt-[0.375rem] font-medium">8</p>
-							<p className="ml-[0.625rem] mt-[0.375rem] font-medium">3,000</p>
-							<p className="ml-[0.625rem] mt-[0.375rem]">
-								의자 우선권으로 원하는 자 asds adas da sdasdasdasdasd
+		<>
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<div className="px-4 sm:px-0">
+					<div className="mx-auto h-[calc(100vh-20rem)] w-full overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white pb-6 sm:w-[22.653rem]">
+						<div className="px-4">
+							<p className="mt-6 border-b border-black-800 pb-4 font-bold">
+								의자 우선권
 							</p>
+							<div className="mt-[0.875rem] flex h-[9.375rem] items-center justify-center rounded-[0.25rem] bg-sub2-selected">
+								{data.imageUrl === "" ? (
+									<Logo className="h-20 w-[4.188rem]" />
+								) : (
+									<img
+										src={data.imageUrl}
+										alt="itemImage"
+										className="h-[9.375rem] w-full bg-cover"
+									/>
+								)}
+							</div>
+							<div className="mt-[0.875rem] flex">
+								<div className="flex flex-col">
+									<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
+										수량
+									</label>
+									<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
+										가격
+									</label>
+									<label className="mt-[0.375rem] w-[2.813rem] text-black-800">
+										내용
+									</label>
+								</div>
+								<div className="flex flex-col">
+									<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
+										{data.id}
+									</p>
+									<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
+										{data.price}
+									</p>
+									<p className="ml-[0.625rem] mt-[0.375rem] whitespace-pre-wrap">
+										{data.content}
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 

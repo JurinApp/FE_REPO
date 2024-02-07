@@ -1,4 +1,5 @@
 export interface IItem {
-	readonly itemId: string;
-	readonly itemName: string;
+	readonly id: string;
+	readonly title: string;
+	readonly imageUrl: string;
 }
