@@ -13,9 +13,7 @@ interface IRegisterTradeStockFormProps {
 	readonly isRegister: boolean;
 }
 
-const RegisterTradeStockForm = ({
-	isRegister,
-}: IRegisterTradeStockFormProps) => {
+const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
@@ -256,4 +254,4 @@ const RegisterTradeStockForm = ({
 	);
 };
 
-export default RegisterTradeStockForm;
+export default RegisterStockForm;

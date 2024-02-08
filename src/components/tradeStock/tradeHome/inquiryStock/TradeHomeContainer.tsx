@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import DeleteStocksModal from "./DeleteStocksModal";
 import TradeHomeHeading from "./TradeHomeHeading";
-import TradeStockList from "./TradeStockList";
+import StockList from "./StockList";
 import { useParams } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import { userRoleState } from "@/states/userRoleState";
@@ -37,7 +37,7 @@ const TradeHomeContainer = () => {
 			) : (
 				<>
 					<TradeHomeHeading stockList={data} />
-					<TradeStockList stockList={data} />
+					<StockList stockList={data} />
 					<DeleteRegisterButton />
 					<DeleteStocksModal />
 				</>

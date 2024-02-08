@@ -14,7 +14,7 @@ interface IEditTradeStockFormProps {
 	readonly isEdit: boolean;
 }
 
-const EditTradeStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
+const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editTradeStockModalState);
 	const queryClient = useQueryClient();
 	const { channelId, stockId } = useParams();
@@ -284,4 +284,4 @@ const EditTradeStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	);
 };
 
-export default EditTradeStockForm;
+export default EditStockForm;

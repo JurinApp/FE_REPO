@@ -1,9 +1,9 @@
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import EditTradeStockContainer from "@components/tradeStock/tradeHome/educator/educatorEditTradeStock/EditTradeStockContainer";
+import EditStockContainer from "@/components/tradeStock/tradeHome/educator/educatorEditStock/EditStockContainer";
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
 
-const EditTradeStockPage = () => {
+const EditStockPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
@@ -16,9 +16,9 @@ const EditTradeStockPage = () => {
 
 	return (
 		<>
-			<EditTradeStockContainer />
+			<EditStockContainer />
 		</>
 	);
 };
 
-export default EditTradeStockPage;
+export default EditStockPage;

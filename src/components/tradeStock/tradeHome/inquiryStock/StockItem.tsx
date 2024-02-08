@@ -9,7 +9,7 @@ interface TradeStockItemProps {
 	readonly stockItem: IStockItem;
 }
 
-const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
+const StockItem = ({ stockItem }: TradeStockItemProps) => {
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
@@ -71,4 +71,4 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	);
 };
 
-export default TradeStockItem;
+export default StockItem;

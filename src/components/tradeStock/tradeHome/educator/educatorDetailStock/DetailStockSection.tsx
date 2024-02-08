@@ -1,13 +1,13 @@
-import DeleteTradeStockButton from "./DeleteTradeStockButton";
-import DetailTradeStockInfo from "./DetailTradeStockInfo";
+import DeleteStockButton from "./DeleteStockButton";
+import DetailStockInfo from "./DetailStockInfo";
 import EditButton from "./EditButton";
 
 const DetailStockSection = () => {
 	return (
 		<div className="h-[calc(100vh-8rem)]">
 			<EditButton />
-			<DetailTradeStockInfo />
-			<DeleteTradeStockButton />
+			<DetailStockInfo />
+			<DeleteStockButton />
 		</div>
 	);
 };

@@ -2,7 +2,7 @@ import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/tradeStock";
 import { useEffect } from "react";
 import { useResetRecoilState } from "recoil";
-import TradeStockItem from "./TradeStockItem";
+import StockItem from "./StockItem";
 
 interface ITradeStockListProps {
 	readonly stockList: IStockItem[];
@@ -28,7 +28,7 @@ const TradeStockList = ({ stockList }: ITradeStockListProps) => {
 				<p className="text-black-700">등록된 주식이 없습니다.</p>
 			) : (
 				stockList.map((stockItem: IStockItem) => (
-					<TradeStockItem key={stockItem.id} stockItem={stockItem} />
+					<StockItem key={stockItem.id} stockItem={stockItem} />
 				))
 			)}
 		</div>

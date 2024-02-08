@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
-const DeleteTradeStockModal = () => {
+const DeleteStockModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		deleteDetailTradeStockModalState,
 	);
@@ -128,4 +128,4 @@ const DeleteTradeStockModal = () => {
 	);
 };
 
-export default DeleteTradeStockModal;
+export default DeleteStockModal;

@@ -1,6 +1,6 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
-import EditTradeStockForm from "./EditTradeStockForm";
-import EditConfirmTradeStockModal from "./EditConfirmTradeStockModal";
+import EditStockForm from "./EditStockForm";
+import EditConfirmStockModal from "./EditConfirmStockModal";
 import { useState } from "react";
 
 const EditTradeStockContainer = () => {
@@ -9,8 +9,8 @@ const EditTradeStockContainer = () => {
 	return (
 		<div className="relative mx-auto w-full bg-btn-cancel sm:w-[24.563rem]">
 			<GoBackButton />
-			<EditTradeStockForm isEdit={isEdit} />
-			<EditConfirmTradeStockModal setIsEdit={setIsEdit} />
+			<EditStockForm isEdit={isEdit} />
+			<EditConfirmStockModal setIsEdit={setIsEdit} />
 		</div>
 	);
 };

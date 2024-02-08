@@ -3,7 +3,7 @@ import useAxios from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
-const DetailTradeStockInfo = () => {
+const DetailStockInfo = () => {
 	const { channelId, stockId } = useParams();
 	const { axiosData } = useAxios();
 	const navigate = useNavigate();
@@ -82,4 +82,4 @@ const DetailTradeStockInfo = () => {
 	);
 };
 
-export default DetailTradeStockInfo;
+export default DetailStockInfo;
