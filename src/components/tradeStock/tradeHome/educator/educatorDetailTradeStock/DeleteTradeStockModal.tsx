@@ -1,26 +1,69 @@
+import useAxios from "@/hooks/useAxios";
 import { deleteDetailTradeStockModalState } from "@/states/confirmModalState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
 } from "@/utils/controlBodyScroll";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const DeleteTradeStockModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		deleteDetailTradeStockModalState,
 	);
+	const { channelId, stockId } = useParams();
+	const { axiosData } = useAxios();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+
 	const resetIsOpenModal = useResetRecoilState(
 		deleteDetailTradeStockModalState,
 	);
 	const modalRef = useRef<HTMLDivElement>(null);
+
+	const deleteStockData = async () => {
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
+		});
+
+		if (response) {
+			const status = response.status;
+
+			if (status === 204) {
+				alert("삭제가 완료되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["stocks", channelId] });
+				queryClient.invalidateQueries({
+					queryKey: ["detailStock", channelId, stockId],
+				});
+				navigate(`/${channelId}/trade/home`);
+			}
+
+			if (status === 400) {
+				alert("주식 거래 시간에는 삭제가 불가능합니다.");
+			}
+
+			if (status === 500) {
+				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			}
+
+			setIsOpenModal(false);
+		}
+	};
+
+	const deleteStockMutation = useMutation({
+		mutationKey: ["deleteStock"],
+		mutationFn: deleteStockData,
+	});
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		setIsOpenModal(false);
+		deleteStockMutation.mutate();
 	};
 
 	useEffect(() => {
