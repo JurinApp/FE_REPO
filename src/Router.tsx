@@ -55,7 +55,13 @@ const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1 * 60 * 5000,
+		},
+	},
+});
 
 const Router = () => {
 	const { isUseHeader, isUseMenu, isUseTab } =

@@ -1,23 +1,20 @@
 import { withdrawalModalState } from "@/states/confirmModalState";
 import { removeCookie } from "@/utils/cookies";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useSetRecoilState } from "recoil";
 
 const SettingSection = () => {
 	const setIsWithdrawalModalOpen = useSetRecoilState(withdrawalModalState);
+	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const handleWithdrawalModalOpen = () => {
 		setIsWithdrawalModalOpen(true);
 	};
 
-	// 회원 탈퇴 함수.
-	// const handleWithdrawal = () => {
-	// 	// TODO 회원 탈퇴 기능 구현
-	// 	setIsModalOpen(false);
-	// };
-
 	const handleSignOut = () => {
 		removeCookie();
+		queryClient.clear();
 		navigate("/login");
 	};
 
