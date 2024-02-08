@@ -80,7 +80,7 @@ const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 					<p className="font-medium">채널 정보가 존재하지 않습니다.</p>
 				</div>
 			)}
-			{userinfo.user.userRole === "teacher" ? (
+			{userinfo.user.userRole === "teacher" && !channel ? (
 				<MoveCreateChannelBtn />
 			) : (
 				<button

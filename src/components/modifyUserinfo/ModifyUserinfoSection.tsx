@@ -77,6 +77,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 		onSuccess: () => {
 			console.log("요청 성공");
 			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
 	});
 
