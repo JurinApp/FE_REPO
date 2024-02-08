@@ -35,7 +35,7 @@ const DeleteTradeStockModal = () => {
 			if (status === 204) {
 				alert("삭제가 완료되었습니다.");
 				queryClient.invalidateQueries({ queryKey: ["stocks", channelId] });
-				queryClient.invalidateQueries({
+				queryClient.removeQueries({
 					queryKey: ["detailStock", channelId, stockId],
 				});
 				navigate(`/${channelId}/trade/home`);

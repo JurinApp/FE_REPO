@@ -47,7 +47,11 @@ const EditConfirmTradeStockModal = ({
 	}, []);
 
 	return (
-		<div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800">
+		<div
+			className={`${
+				isOpenModal ? "flex items-center justify-center" : "hidden"
+			} fixed left-0 top-0 z-[100] h-full w-full bg-black-800`}
+		>
 			<div
 				ref={modalRef}
 				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"

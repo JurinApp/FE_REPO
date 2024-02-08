@@ -4,7 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { registerTradeStockModalState } from "@/states/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -20,11 +20,14 @@ const RegisterTradeStockForm = ({
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+	const [replacePrice, setReplacePrice] = useState<string>("");
 	const {
 		register,
 		handleSubmit,
 		getValues,
-		formState: { errors, isValid },
+		setValue,
+		setError,
+		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			stockName: "",
@@ -82,8 +85,30 @@ const RegisterTradeStockForm = ({
 	};
 
 	const handleClickRegisterBtn = () => {
-		if (isValid) {
-			setIsOpenModal(true);
+		const isValidTax = Number(getValues("tax")) <= 1;
+
+		if (!isValidTax) {
+			setError("tax", {
+				message: "세금은 1% 이하 입력만 가능합니다.",
+				type: "onChange",
+			});
+			return;
+		}
+
+		setIsOpenModal(true);
+	};
+
+	const handleChangePrice = (e: ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		const numericValue = parseFloat(value.replace(/,/g, ""));
+
+		if (!isNaN(numericValue)) {
+			console.log(numericValue);
+			setValue("price", String(numericValue));
+			setReplacePrice(numericValue.toLocaleString());
+		} else {
+			setValue("price", "0");
+			setReplacePrice("");
 		}
 	};
 
@@ -127,14 +152,22 @@ const RegisterTradeStockForm = ({
 								</label>
 								<input
 									type="number"
+									className="hidden"
+									id="price"
+									{...register("price")}
+								/>
+								<input
+									type="text"
 									className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
 										errors.price
 											? "border-danger"
 											: "border-black-100 focus:border-black-800"
 									}`}
 									id="price"
-									{...register("price")}
+									value={replacePrice}
+									onChange={handleChangePrice}
 								/>
+								<p className="flex items-center pb-[0.625rem]">P</p>
 							</div>
 							{errors.price && errors.price.message && (
 								<ErrorMsg message={errors.price.message} />
@@ -150,6 +183,7 @@ const RegisterTradeStockForm = ({
 								</label>
 								<input
 									type="number"
+									step="0.01"
 									className={`w-full rounded-none border-b  pb-[0.625rem] outline-none ${
 										errors.tax
 											? "border-danger"
@@ -158,6 +192,7 @@ const RegisterTradeStockForm = ({
 									id="tax"
 									{...register("tax")}
 								/>
+								<p>%</p>
 							</div>
 							{errors.tax && errors.tax.message && (
 								<ErrorMsg message={errors.tax.message} />

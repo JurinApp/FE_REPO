@@ -45,14 +45,8 @@ export const SIGN_UP_SCHEMA = yup.object().shape({
 
 export const REGISTER_TRADE_STOCK_SCHEMA = yup.object().shape({
 	stockName: yup.string().required("종목명 입력은 필수입니다."),
-	price: yup
-		.string()
-		.required("가격 입력은 필수입니다.")
-		.matches(/^[0-9]+$/, "가격은 숫자 입력만 가능합니다."),
-	tax: yup
-		.string()
-		.required("세금 입력은 필수입니다.")
-		.matches(/^[0-9]+$/, "세금은 숫자 입력만 가능합니다."),
+	price: yup.string().required("가격 입력은 필수입니다."),
+	tax: yup.string().required("세금 입력은 필수입니다."),
 	standard: yup.string().required("기준 입력은 필수입니다."),
 	content: yup.string().required("내용 입력은 필수입니다."),
 });

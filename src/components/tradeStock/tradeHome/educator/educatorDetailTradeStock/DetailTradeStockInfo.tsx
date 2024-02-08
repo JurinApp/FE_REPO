@@ -1,6 +1,6 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DetailTradeStockInfo = () => {
@@ -18,7 +18,11 @@ const DetailTradeStockInfo = () => {
 			const status = response.status;
 
 			if (status === 200) {
-				return response.data.data;
+				const stockData = response.data.data;
+				return {
+					...stockData,
+					purchasePrice: stockData.purchasePrice.toLocaleString(),
+				};
 			}
 
 			if (status === 404) {
@@ -62,10 +66,12 @@ const DetailTradeStockInfo = () => {
 										{data.purchasePrice}
 									</p>
 									<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
-										{data.tax}
+										{data.tax} %
 									</p>
 									<p className="ml-[0.625rem] mt-[0.375rem]">{data.standard}</p>
-									<p className="ml-[0.625rem] mt-[0.375rem]">{data.content}</p>
+									<p className="ml-[0.625rem] mt-[0.375rem] whitespace-pre-wrap">
+										{data.content}
+									</p>
 								</div>
 							</div>
 						</div>
