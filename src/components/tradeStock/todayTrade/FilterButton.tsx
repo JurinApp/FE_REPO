@@ -26,8 +26,8 @@ const FilterButton = () => {
 				onClick={() => handleClickFilter("buy")}
 				className={`mr-[0.313rem]  h-[1.875rem] rounded-full ${
 					filterState === "buy"
-						? "bg-stock-red font-bold text-white"
-						: "border border-stock-red bg-white font-medium text-stock-red"
+						? "bg-stock-buy font-bold text-white"
+						: "border border-stock-buy bg-white font-medium text-stock-buy"
 				}`}
 			>
 				매수
@@ -37,8 +37,8 @@ const FilterButton = () => {
 				onClick={() => handleClickFilter("sell")}
 				className={`h-[1.875rem] rounded-full ${
 					filterState === "sell"
-						? "bg-stock-blue font-bold text-white"
-						: "border border-stock-blue bg-white font-medium text-stock-blue"
+						? "bg-stock-sell font-bold text-white"
+						: "border border-stock-sell bg-white font-medium text-stock-sell"
 				}`}
 			>
 				매도

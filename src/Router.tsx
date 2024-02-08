@@ -84,7 +84,7 @@ const Router = () => {
 						path="/:channelId/manageLearner"
 						element={<ManageLearnerPage />}
 					/>
-					<Route path="/stock" element={<StockPage />} />
+					<Route path="/:channelId/stock" element={<StockPage />} />
 					<Route path="/studentItem" element={<StudentItemPage />} />
 					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
 					<Route path="/:channelId/trade/home" element={<TradeHomePage />} />

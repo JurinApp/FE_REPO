@@ -1,5 +1,5 @@
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import RegisterStockContainer from "@/components/tradeStock/tradeHome/educator/educatorRegisterStock/RegisterStockContainer";
+import RegisterStockContainer from "@/components/tradeStock/educator/educatorRegisterStock/RegisterStockContainer";
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
 
