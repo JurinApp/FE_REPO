@@ -4,7 +4,7 @@ import Minus from "@assets/svg/minus.svg?react";
 import { useState } from "react";
 
 interface ISellInterfaceProps {
-	stockPrice: number;
+	readonly stockPrice: number;
 }
 const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 	const [stockCount, setStockCount] = useState(1);

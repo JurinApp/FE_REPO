@@ -1,9 +1,10 @@
 import { IStockBSHistory } from "@/interface/stock";
 
 interface ITradingChartProps {
-	stockHistory: IStockBSHistory;
+	readonly stockBSHistory: IStockBSHistory;
 }
-const TradingChart = ({ stockHistory }: ITradingChartProps) => {
+
+const TradingChart = ({ stockBSHistory }: ITradingChartProps) => {
 	return (
 		<>
 			<div
@@ -11,7 +12,7 @@ const TradingChart = ({ stockHistory }: ITradingChartProps) => {
 				className="flex h-inTrade-height w-[7.688rem] flex-col"
 			>
 				<div id="buy" className="flex flex-grow flex-col">
-					{stockHistory.buy.map((transaction, index) => (
+					{stockBSHistory.buy.map((transaction, index) => (
 						<div
 							key={index}
 							className={`flex flex-grow items-center justify-between bg-stock-blue px-2 ${
@@ -24,7 +25,7 @@ const TradingChart = ({ stockHistory }: ITradingChartProps) => {
 					))}
 				</div>
 				<div id="sell" className="flex flex-grow flex-col">
-					{stockHistory.sell.map((transaction, index) => (
+					{stockBSHistory.sell.map((transaction, index) => (
 						<div
 							key={index}
 							className="flex flex-grow items-center justify-between border-t border-black-300 bg-stock-red px-2"

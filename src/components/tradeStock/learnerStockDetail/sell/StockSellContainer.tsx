@@ -1,20 +1,21 @@
 import { IStockBSHistory } from "@/interface/stock";
-import { useState } from "react";
 import TradingChart from "../TradingChart";
 import StockSellInterface from "./StockSellInterface";
 
+interface IStockSellContainerProps {
+	readonly stockBSHistory: IStockBSHistory;
+	readonly stockPrice: number;
+}
+
 const StockSellContainer = ({
-	stockSellProps,
+	stockBSHistory,
 	stockPrice,
-}: {
-	stockSellProps: IStockBSHistory;
-	stockPrice: number;
-}) => {
+}: IStockSellContainerProps) => {
 	return (
 		<>
 			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
 				<div className="flex flex-row">
-					<TradingChart stockHistory={stockSellProps} />
+					<TradingChart stockBSHistory={stockBSHistory} />
 					<StockSellInterface stockPrice={stockPrice} />
 				</div>
 			</div>

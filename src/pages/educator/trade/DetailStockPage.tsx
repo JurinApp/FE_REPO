@@ -1,4 +1,4 @@
-import DetailStockContainer from "@/components/tradeStock/educator/educatorDetailStock/DetailStockContainer";
+import DetailStockContainer from "@/components/tradeStock/educatorDetailStock/DetailStockContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";

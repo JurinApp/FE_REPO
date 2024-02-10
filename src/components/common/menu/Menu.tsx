@@ -3,7 +3,7 @@ import ClipIcon from "@assets/svg/clipSvg.svg?react";
 import TradeIcon from "@assets/svg/tradeIcon.svg?react";
 import UserIcon from "@assets/svg/userIcon.svg?react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IMenu {
 	readonly key: string;
@@ -13,12 +13,6 @@ interface IMenu {
 
 const menuArr = [
 	{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
-	{ key: "trade", name: "주식거래", path: "/trade/home" },
-	{ key: "item", name: "아이템", path: "/item" },
-	{ key: "post", name: "게시판", path: "/post" },
-];
-
-const studentMenuArr = [
 	{ key: "trade", name: "주식거래", path: "/trade/home" },
 	{ key: "item", name: "아이템", path: "/item" },
 	{ key: "post", name: "게시판", path: "/post" },

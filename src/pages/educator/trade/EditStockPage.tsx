@@ -1,5 +1,5 @@
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import EditStockContainer from "@/components/tradeStock/educator/educatorEditStock/EditStockContainer";
+import EditStockContainer from "@/components/tradeStock/editStock/EditStockContainer";
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
 

@@ -11,8 +11,9 @@ import {
 import { Line } from "react-chartjs-2";
 
 interface StockPriceChartProps {
-	stockData: { day: string; date: number; price: number }[];
+	readonly stockData: { day: string; date: number; price: number }[];
 }
+
 const StockPriceChart: React.FC<StockPriceChartProps> = ({ stockData }) => {
 	ChartJS.register(
 		CategoryScale,

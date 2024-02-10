@@ -14,7 +14,7 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	const pageLocation =
 		userRole === "teacher"
 			? `/${channelId}/trade/stock/detail/${stockItem.id}`
-			: `/${channelId}/stock`;
+			: `/${channelId}/stock/${stockItem.id}`;
 
 	return (
 		<Link to={pageLocation} className="mt-2 flex h-[2.875rem] items-center">

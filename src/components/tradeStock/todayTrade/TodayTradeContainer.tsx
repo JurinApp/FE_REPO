@@ -9,7 +9,7 @@ import FilterButton from "./FilterButton";
 import StockList from "./StockList";
 
 interface TRADE_TYPE {
-	[key: string]: string;
+	readonly [key: string]: string;
 }
 
 const TRADE_TYPE: TRADE_TYPE = {

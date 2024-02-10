@@ -1,5 +1,5 @@
 interface StockSpecProps {
-	stockInfo: {
+	readonly stockInfo: {
 		readonly name: string;
 		readonly price: number;
 		readonly tax: string;

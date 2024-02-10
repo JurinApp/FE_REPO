@@ -1,4 +1,4 @@
-import Calandar from "@assets/svg/calendar.svg?react";
+import Calendar from "@assets/svg/calendar.svg?react";
 import Cancel from "@assets/svg/cancel.svg?react";
 import { DateRange, DayPicker } from "react-day-picker";
 import { addDays, format } from "date-fns";
@@ -8,18 +8,22 @@ import "@/dayPicker.css";
 import { ko } from "date-fns/locale";
 import { useRecoilState } from "recoil";
 import { calendarModalState } from "@/states/confirmModalState";
+
 interface ICalendarModalProps {
 	readonly fetchOrder: () => void;
 }
+
 const START_DATE = new Date();
+const defaultSelected: DateRange = {
+	from: START_DATE,
+
+	to: addDays(START_DATE, 4),
+};
+
 const CalendarModal = ({ fetchOrder }: ICalendarModalProps) => {
 	const [isCalendarModalState, setIsCalendarModalState] =
 		useRecoilState(calendarModalState);
 	const handleCalendarClose = () => setIsCalendarModalState(false);
-	const defaultSelected: DateRange = {
-		from: START_DATE,
-		to: addDays(START_DATE, 4),
-	};
 	const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
 
 	let footer = "날짜를 선택해주세요.";
@@ -46,7 +50,7 @@ const CalendarModal = ({ fetchOrder }: ICalendarModalProps) => {
 						id="calendar-modal-btn"
 						className="mt-6 flex h-[2.375rem] w-auto flex-row items-center justify-center gap-2 rounded border border-black-300 bg-white px-[0.875rem]"
 					>
-						<Calandar />
+						<Calendar />
 						<p id="range" className="text-sm font-bold">
 							{footer}
 						</p>
