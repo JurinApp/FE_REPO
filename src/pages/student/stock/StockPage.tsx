@@ -1,6 +1,6 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 import StockHeader from "@/components/common/header/StockHeader";
-import StockTab from "@/components/student/stock/StockTab";
+import StockTab from "@/components/tradeStock/learnerStockDetail/StockTab";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

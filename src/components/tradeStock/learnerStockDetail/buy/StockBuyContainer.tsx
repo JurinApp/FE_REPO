@@ -1,5 +1,5 @@
 import { IStockBSHistory } from "@/interface/stock";
-import TradingChart from "../common/TradingChart";
+import TradingChart from "../TradingChart";
 import StockBuyInterface from "./StockBuyInterface";
 
 const StockBuyContainer = ({

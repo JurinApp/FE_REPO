@@ -1,6 +1,6 @@
 import { ITabs } from "@/pages/student/stock/StockPage";
 import { useState } from "react";
-import StockSpecContainer from "./detail/StockSpecContainer";
+import StockSpecContainer from "./spec/StockSpecContainer";
 import StockBuyContainer from "./buy/StockBuyContainer";
 import StockSellContainer from "./sell/StockSellContainer";
 import StockOrderContainer from "./order/StockOrderContainer";
