@@ -16,7 +16,7 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 	const detailLocation =
 		userRole === "teacher"
 			? `/${channelId}/trade/stock/detail/${stockItem.id}`
-			: ``;
+			: `/${channelId}/stock/${stockItem.id}`;
 
 	const handleCheckStock = () => {
 		const index = selectedStocks.findIndex((stockId) => {
