@@ -5,6 +5,9 @@ import { Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { headerMenuUseState } from "./states/headerMenuUseState";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import EducatorRoute from "./components/common/permissionRoute/EducatorRoute";
+import LearnerRoute from "./components/common/permissionRoute/LearnerRoute";
+import IsLoginRoute from "./components/common/permissionRoute/IsLoginRoute";
 
 const Header = lazy(() => import("@components/common/header/Header"));
 const Menu = lazy(() => import("@components/common/menu/Menu"));
@@ -78,63 +81,69 @@ const Router = () => {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signUp" element={<SignUpPage />} />
 					<Route path="/successSignUp" element={<SuccessSignUpPage />} />
-					<Route path="/mypage" element={<MyPage />} />
-					<Route path="/setting" element={<SettingPage />} />
-					<Route path="/createChannel" element={<CreateChannelPage />} />
-					<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
-					<Route
-						path="/:channelId/manageLearner"
-						element={<ManageLearnerPage />}
-					/>
-					<Route
-						path="/:channelId/stock/:stockId"
-						element={<LearnerStockDetailPage />}
-					/>
-					<Route path="/studentItem" element={<StudentItemPage />} />
-					<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
-					<Route path="/:channelId/trade/home" element={<TradeHomePage />} />
-					<Route
-						path="/:channelId/trade/stock/register"
-						element={<RegisterStockPage />}
-					/>
-					<Route
-						path="/:channelId/trade/stock/detail/:stockId"
-						element={<DetailStockPage />}
-					/>
-					<Route
-						path="/:channelId/trade/stock/edit/:stockId"
-						element={<EditStockPage />}
-					/>
-					<Route
-						path="/:channelId/trade/todayTrade"
-						element={<TodayTradePage />}
-					/>
-					<Route path="/:channelId/item" element={<ItemPage />} />
-					<Route
-						path="/:channelId/item/register"
-						element={<RegisterItemPage />}
-					/>
-					<Route
-						path="/:channelId/item/detail/:itemId"
-						element={<DetailItemPage />}
-					/>
-					<Route
-						path="/:channelId/item/edit/:itemId"
-						element={<EditItemPage />}
-					/>
-					<Route path="/:channelId/post" element={<PostPage />} />
-					<Route
-						path="/:channelId/post/register"
-						element={<RegisterPostPage />}
-					/>
-					<Route
-						path="/:channelId/post/detail/:postId"
-						element={<DetailPostPage />}
-					/>
-					<Route
-						path="/:channelId/post/edit/:postId"
-						element={<EditPostPage />}
-					/>
+					<Route element={<IsLoginRoute />}>
+						<Route path="/mypage" element={<MyPage />} />
+						<Route path="/setting" element={<SettingPage />} />
+						<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
+						<Route path="/:channelId/trade/home" element={<TradeHomePage />} />
+						<Route
+							path="/:channelId/trade/todayTrade"
+							element={<TodayTradePage />}
+						/>
+						<Route path="/:channelId/item" element={<ItemPage />} />
+						<Route path="/:channelId/post" element={<PostPage />} />
+						<Route
+							path="/:channelId/post/detail/:postId"
+							element={<DetailPostPage />}
+						/>
+					</Route>
+					<Route element={<EducatorRoute />}>
+						<Route
+							path="/:channelId/manageLearner"
+							element={<ManageLearnerPage />}
+						/>
+						<Route path="/createChannel" element={<CreateChannelPage />} />
+						<Route
+							path="/:channelId/trade/stock/register"
+							element={<RegisterStockPage />}
+						/>
+						<Route
+							path="/:channelId/trade/stock/detail/:stockId"
+							element={<DetailStockPage />}
+						/>
+						<Route
+							path="/:channelId/trade/stock/edit/:stockId"
+							element={<EditStockPage />}
+						/>
+						<Route
+							path="/:channelId/item/register"
+							element={<RegisterItemPage />}
+						/>
+						<Route
+							path="/:channelId/item/detail/:itemId"
+							element={<DetailItemPage />}
+						/>
+						<Route
+							path="/:channelId/item/edit/:itemId"
+							element={<EditItemPage />}
+						/>
+						<Route
+							path="/:channelId/post/register"
+							element={<RegisterPostPage />}
+						/>
+						<Route
+							path="/:channelId/post/edit/:postId"
+							element={<EditPostPage />}
+						/>
+					</Route>
+					<Route element={<LearnerRoute />}>
+						<Route
+							path="/:channelId/stock/:stockId"
+							element={<LearnerStockDetailPage />}
+						/>
+						<Route path="/studentItem" element={<StudentItemPage />} />
+						<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
+					</Route>
 				</Routes>
 				{isUseMenu && <Menu />}
 			</Suspense>
