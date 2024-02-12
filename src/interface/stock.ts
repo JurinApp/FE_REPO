@@ -15,11 +15,29 @@ export interface IStockItem {
 	readonly daysRangePrice: number;
 }
 
-export interface IStockInquiry {
+export interface IStockHomeResponseData {
 	readonly limit: number;
 	readonly offset: number;
 	readonly count: number;
 	readonly next: string | null;
 	readonly previous: string | null;
 	readonly results: IStockItem[];
+}
+
+export interface ITodayTradeStockItem {
+	readonly id: number;
+	readonly amount: number;
+	readonly name: string;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
+	readonly tradeType: string;
+}
+
+export interface ITodayTradeStockResponseData {
+	readonly limit: number;
+	readonly offset: number;
+	readonly count: number;
+	readonly next: string;
+	readonly previous: string;
+	readonly results: ITodayTradeStockItem[];
 }

@@ -1,11 +1,11 @@
-import { IStockInquiry } from "@/interface/stock";
+import { IStockHomeResponseData } from "@/interface/stock";
 import { allCheckStockState, selectedStock } from "@/states/tradeStock";
 import { userRoleState } from "@/states/userRoleState";
 import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface ITradeHomeHeadingProps {
-	readonly stockList: IStockInquiry[];
+	readonly stockList: IStockHomeResponseData[];
 }
 
 const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {

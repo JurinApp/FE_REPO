@@ -1,13 +1,13 @@
 import ObserveTarget from "@/components/common/observer/ObserveTarget";
 import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
-import { IStockInquiry, IStockItem } from "@/interface/stock";
+import { IStockHomeResponseData, IStockItem } from "@/interface/stock";
 import { selectedStock } from "@/states/tradeStock";
 import { RefObject, useEffect } from "react";
 import { useResetRecoilState } from "recoil";
 import StockItem from "./StockItem";
 
 interface ITradeStockListProps {
-	readonly responseData: IStockInquiry[];
+	readonly responseData: IStockHomeResponseData[];
 	readonly observeTargetRef: RefObject<HTMLDivElement>;
 	readonly isFetching: boolean;
 }

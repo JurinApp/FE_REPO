@@ -8,9 +8,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import FilterButton from "./FilterButton";
 import TodayTradeStockList from "./TodayTradeStockList";
+import { ITodayTradeStockResponseData } from "@/interface/stock";
 
 interface TRADE_TYPE {
 	readonly [key: string]: string | number;
+}
+
+interface IInfinityQueryData {
+	readonly pageParams: number[];
+	readonly pages: ITodayTradeStockResponseData[];
 }
 
 const TRADE_TYPE: TRADE_TYPE = {
@@ -18,29 +24,6 @@ const TRADE_TYPE: TRADE_TYPE = {
 	buy: 1,
 	sell: 2,
 };
-
-export interface ITodayTradeStockItem {
-	readonly id: number;
-	readonly amount: number;
-	readonly name: string;
-	readonly daysRangeRate: string;
-	readonly daysRangePrice: string;
-	readonly tradeType: string;
-}
-
-export interface ITodayTradeStock {
-	readonly limit: number;
-	readonly offset: number;
-	readonly count: number;
-	readonly next: string;
-	readonly previous: string;
-	readonly results: ITodayTradeStockItem[];
-}
-
-interface IInfinityQueryData {
-	readonly pageParams: number[];
-	readonly pages: ITodayTradeStock[];
-}
 
 const TodayTradeContainer = () => {
 	const userRole = useRecoilValue(userRoleState);
@@ -63,7 +46,7 @@ const TodayTradeContainer = () => {
 	};
 
 	const { data, isFetching, isLoading, hasNextPage, fetchNextPage } =
-		useInfiniteQuery<ITodayTradeStock, Error, IInfinityQueryData>({
+		useInfiniteQuery<ITodayTradeStockResponseData, Error, IInfinityQueryData>({
 			queryKey: ["todayTradeStocks", channelId, filterState],
 			queryFn: ({ pageParam }) => getTodayTradeStocks(pageParam as number),
 			initialPageParam: 0,

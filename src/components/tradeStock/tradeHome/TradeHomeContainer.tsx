@@ -1,7 +1,7 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
 import { useIntersectionObserver } from "@/hooks/useObserver";
-import { IStockInquiry } from "@/interface/stock";
+import { IStockHomeResponseData } from "@/interface/stock";
 import { userRoleState } from "@/states/userRoleState";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -13,7 +13,7 @@ import TradeHomeHeading from "./TradeHomeHeading";
 
 interface IInfinityQueryData {
 	readonly pageParams: number[];
-	readonly pages: IStockInquiry[];
+	readonly pages: IStockHomeResponseData[];
 }
 
 const TradeHomeContainer = () => {
@@ -27,12 +27,12 @@ const TradeHomeContainer = () => {
 			url: `/${userRole}s/api/v1/channels/${channelId}/stocks?limit=15&offset=${pageParam}`,
 		});
 
-		const resultData: IStockInquiry = response?.data.data;
+		const resultData = response?.data.data;
 		return resultData;
 	};
 
 	const { data, isFetching, isLoading, hasNextPage, fetchNextPage } =
-		useInfiniteQuery<IStockInquiry, Error, IInfinityQueryData>({
+		useInfiniteQuery<IStockHomeResponseData, Error, IInfinityQueryData>({
 			queryKey: ["stocks", channelId],
 			queryFn: ({ pageParam }) => getTradeStocksData(pageParam as number),
 			initialPageParam: 0,

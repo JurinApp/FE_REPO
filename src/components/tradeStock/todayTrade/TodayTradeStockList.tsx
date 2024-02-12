@@ -1,11 +1,14 @@
 import ObserveTarget from "@/components/common/observer/ObserveTarget";
 import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
 import { RefObject } from "react";
-import { ITodayTradeStock, ITodayTradeStockItem } from "./TodayTradeContainer";
 import TodayTradeStockItem from "./TodayTradeStockItem";
+import {
+	ITodayTradeStockResponseData,
+	ITodayTradeStockItem,
+} from "@/interface/stock";
 
 interface ITodayTradeStockListProps {
-	readonly responseData: ITodayTradeStock[];
+	readonly responseData: ITodayTradeStockResponseData[];
 	readonly observeTargetRef: RefObject<HTMLDivElement>;
 	readonly isFetching: boolean;
 }
