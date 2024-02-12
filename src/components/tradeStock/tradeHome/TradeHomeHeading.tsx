@@ -1,11 +1,11 @@
-import { IStockItem } from "@/interface/tradeHome";
+import { IStockInquiry } from "@/interface/stock";
 import { allCheckStockState, selectedStock } from "@/states/tradeStock";
 import { userRoleState } from "@/states/userRoleState";
 import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface ITradeHomeHeadingProps {
-	readonly stockList: IStockItem[];
+	readonly stockList: IStockInquiry[];
 }
 
 const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
@@ -16,11 +16,17 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	const [selectedStocks, setSelectedStocks] = useRecoilState(selectedStock);
 	const userRole = useRecoilValue(userRoleState);
 
+	const flatStockList = stockList.flatMap((stock) => {
+		return stock.results.flatMap((result) => {
+			return result;
+		});
+	});
+
 	const handleAllCheckStock = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const learnerIdArr = stockList.map((stock) => stock.id);
+			const learnerIdArr = flatStockList.map((stock) => stock.id);
 
 			setSelectedStocks(learnerIdArr);
 			setIsAllCheckStock(true);
@@ -31,7 +37,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 	};
 
 	useEffect(() => {
-		if (selectedStocks.length === stockList.length) {
+		if (selectedStocks.length === flatStockList.length) {
 			setIsAllCheckStock(true);
 		} else {
 			setIsAllCheckStock(false);
@@ -69,7 +75,7 @@ const TradeHomeHeading = ({ stockList }: ITradeHomeHeadingProps) => {
 				</label>
 			</div>
 			<h1 className="font-bold">
-				주식종목 <span>({stockList.length})</span>
+				주식종목 <span>({flatStockList.length})</span>
 			</h1>
 		</div>
 	);

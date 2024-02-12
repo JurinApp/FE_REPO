@@ -1,16 +1,31 @@
-import { IStockItem } from "@/interface/tradeHome";
+import ObserverTarget from "@/components/common/observer/ObserveTarget";
+import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
+import { IStockInquiry, IStockItem } from "@/interface/stock";
 import { selectedStock } from "@/states/tradeStock";
-import { useEffect } from "react";
+import { RefObject, useEffect } from "react";
 import { useResetRecoilState } from "recoil";
 import StockItem from "./StockItem";
 
 interface ITradeStockListProps {
-	readonly stockList: IStockItem[];
+	readonly stockList: IStockInquiry[];
+	readonly observeTargetRef: RefObject<HTMLDivElement>;
+	readonly isFetching: boolean;
 }
 
-const TradeStockList = ({ stockList }: ITradeStockListProps) => {
+const TradeStockList = ({
+	stockList,
+	observeTargetRef,
+	isFetching,
+}: ITradeStockListProps) => {
 	const resetSelectedStocks = useResetRecoilState(selectedStock);
-	const isExist = stockList.length === 0;
+
+	const flatStockList = stockList.flatMap((stock) => {
+		return stock.results.flatMap((result) => {
+			return result;
+		});
+	});
+
+	const isExist = flatStockList.length === 0;
 
 	useEffect(() => {
 		return () => {
@@ -27,9 +42,16 @@ const TradeStockList = ({ stockList }: ITradeStockListProps) => {
 			{isExist ? (
 				<p className="text-black-700">등록된 주식이 없습니다.</p>
 			) : (
-				stockList.map((stockItem: IStockItem) => (
-					<StockItem key={stockItem.id} stockItem={stockItem} />
-				))
+				<>
+					{flatStockList.map((stockItem: IStockItem) => (
+						<StockItem key={stockItem.id} stockItem={stockItem} />
+					))}
+					{isFetching ? (
+						<IntersectSpinner />
+					) : (
+						<ObserverTarget observeTargetRef={observeTargetRef} />
+					)}
+				</>
 			)}
 		</div>
 	);

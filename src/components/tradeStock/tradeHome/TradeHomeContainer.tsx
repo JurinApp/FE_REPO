@@ -1,43 +1,62 @@
-import { useQuery } from "@tanstack/react-query";
+import Spinner from "@/components/common/spinner/Spinner";
+import useAxios from "@/hooks/useAxios";
+import { useIntersectionObserver } from "@/hooks/useObserver";
+import { IStockInquiry } from "@/interface/stock";
+import { userRoleState } from "@/states/userRoleState";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import DeleteStocksModal from "./DeleteStocksModal";
-import TradeHomeHeading from "./TradeHomeHeading";
 import StockList from "./StockList";
-import { useParams } from "react-router-dom";
-import useAxios from "@/hooks/useAxios";
-import { userRoleState } from "@/states/userRoleState";
-import { useRecoilValue } from "recoil";
-import Spinner from "@/components/common/spinner/Spinner";
+import TradeHomeHeading from "./TradeHomeHeading";
+
+interface IInfinityQueryData {
+	readonly pageParams: number[];
+	readonly pages: IStockInquiry[];
+}
 
 const TradeHomeContainer = () => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
+	const observeTargetRef = useRef<HTMLDivElement>(null);
 
-	const getTradeStocksData = async () => {
+	const getTradeStocksData = async (pageParam: number) => {
 		const response = await axiosData("useToken", {
 			method: "GET",
-			url: `/${userRole}s/api/v1/channels/${channelId}/stocks`,
+			url: `/${userRole}s/api/v1/channels/${channelId}/stocks?limit=15&offset=${pageParam}`,
 		});
 
-		if (response) {
-			return response.data.data.results;
-		}
+		const resultData: IStockInquiry = response?.data.data;
+		return resultData;
 	};
 
-	const { data, isLoading } = useQuery({
-		queryKey: ["stocks", channelId],
-		queryFn: getTradeStocksData,
-	});
+	const { data, isFetching, isLoading, hasNextPage, fetchNextPage } =
+		useInfiniteQuery<IStockInquiry, Error, IInfinityQueryData>({
+			queryKey: ["stocks", channelId],
+			queryFn: ({ pageParam }) => getTradeStocksData(pageParam as number),
+			initialPageParam: 0,
+			getNextPageParam: (lastPage) => {
+				return lastPage.next !== null ? lastPage.offset + 15 : undefined;
+			},
+		});
+
+	useIntersectionObserver({ observeTargetRef, hasNextPage, fetchNextPage });
 
 	return (
 		<div className="relative mx-auto h-[calc(100vh-10.7rem)] w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
-			{isLoading ? (
+			{isLoading || !data ? (
 				<Spinner />
 			) : (
 				<>
-					<TradeHomeHeading stockList={data} />
-					<StockList stockList={data} />
+					<TradeHomeHeading stockList={data.pages} />
+					<StockList
+						stockList={data.pages}
+						observeTargetRef={observeTargetRef}
+						isFetching={isFetching}
+					/>
 					<DeleteRegisterButton />
 					<DeleteStocksModal />
 				</>
