@@ -12,7 +12,7 @@ const IsLoginRoute = () => {
 		}
 	}, []);
 
-	return userRole === "anonymous" ? <Navigate to="/mypage" /> : <Outlet />;
+	return userRole === "anonymous" ? <Navigate to="/login" /> : <Outlet />;
 };
 
 export default IsLoginRoute;
