@@ -1,23 +1,82 @@
+import useAxios from "@/hooks/useAxios";
+import { IChannel } from "@/interface/userinfo";
 import { quitChannelModalState } from "@/states/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
-import { userinfoState } from "@/states/userinfoState";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 interface IChannelQuitModalProps {
-	readonly channelName: "string";
-	readonly onDelete: () => void;
+	readonly channelName: string | undefined;
 }
-const ChannelQuitModal = ({
-	onDelete,
-	channelName,
-}: IChannelQuitModalProps) => {
+const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
+	const { axiosData } = useAxios();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const [isQuitChannelModalOpen, setIsQuitChannelModalOpen] = useRecoilState(
 		quitChannelModalState,
 	);
+	const role = useRecoilValue(userRoleState);
+
 	const modalRef = useRef(null);
 	const authState = useRecoilValue(userRoleState);
 	const curAuth = authState === "teacher" ? "선생님" : "학생";
+
+	const deleteChannel = async (id: number) => {
+		const apiUrl = `/teachers/api/v1/channels/${id}`;
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: apiUrl,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 204) {
+				queryClient.invalidateQueries({
+					queryKey: ["channelInfo"],
+				});
+				navigate("/mypage");
+				setIsQuitChannelModalOpen(false);
+			}
+		}
+	};
+
+	const fetchChannel = async () => {
+		const apiUrl = `/${role}s/api/v1/channels`;
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: apiUrl,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
+	};
+
+	const channelInfoQuery = useQuery({
+		queryKey: ["channelInfo"],
+		queryFn: fetchChannel,
+	});
+
+	const channelInfo: IChannel = channelInfoQuery.data;
+	const channelId = channelInfo.channelId;
+	console.log(channelId);
+	const { mutate } = useMutation({
+		mutationFn: deleteChannel,
+		onSuccess: () => {
+			console.log("채널 삭제 완료");
+			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
+		},
+	});
+
+	const handleQuitChannel = () => {
+		if (channelId) {
+			mutate(channelId);
+		}
+	};
 
 	const handleModalClose = () => {
 		setIsQuitChannelModalOpen(false);
@@ -47,7 +106,10 @@ const ChannelQuitModal = ({
 						<button className="w-1/2 bg-gray-300" onClick={handleModalClose}>
 							취소
 						</button>
-						<button className="w-1/2 bg-danger text-white" onClick={onDelete}>
+						<button
+							className="w-1/2 bg-danger text-white"
+							onClick={handleQuitChannel}
+						>
 							삭제
 						</button>
 					</div>

@@ -8,7 +8,7 @@ import { ConfirmModal } from "./ConfirmModal";
 import ChannelQuitModal from "./ChannelQuitModal";
 import { userRoleState } from "@/states/userRoleState";
 import useAxios from "@/hooks/useAxios";
-import { IChannel, IUser } from "@/interface/userinfo";
+import { IChannel } from "@/interface/userinfo";
 import { IUserinfo } from "../userinfo/UserinfoContainer";
 import { useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -61,14 +61,6 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 				setIsModifyUserinfoModalOpen(false);
 				return response.data.data;
 			}
-		}
-	};
-	const handleQuitChannel = () => {
-		if (role === "teacher") {
-			console.log("삭제 완료");
-		}
-		if (role === "student") {
-			console.log("탈퇴 완료");
 		}
 	};
 
@@ -158,10 +150,12 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 				</button>
 			</div>
 			<ConfirmModal onConfirm={handleModifySubmit} />
-			<ChannelQuitModal
-				channelName={channelName}
-				onDelete={handleQuitChannel}
-			/>
+			{channel && (
+				<ChannelQuitModal
+					channelName={userinfo?.channel?.name}
+					// onDelete={handleQuitChannel}
+				/>
+			)}
 		</>
 	);
 };
