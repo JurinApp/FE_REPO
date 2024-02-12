@@ -1,6 +1,9 @@
+import useAxios from "@/hooks/useAxios";
 import { enterChannelModalState } from "@/states/confirmModalState";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
 
 export const EnterChannelModal = () => {
@@ -11,10 +14,13 @@ export const EnterChannelModal = () => {
 	const [validateCode, setValidateCode] = useState<boolean>(false);
 	const [verifiedCode, setVerifiedCode] = useState<boolean>(true);
 	const modalRef = useRef<HTMLDivElement>(null);
+	const navigate = useNavigate();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 
 	// 코드 양식 유효성 검증 함수
 	const validateCodeFormat = (code: string) => {
-		const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/;
+		const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6}$/;
 		const result = regex.test(code);
 		setValidateCode(result);
 	};
@@ -39,6 +45,38 @@ export const EnterChannelModal = () => {
 
 	const handleModalClose = () => {
 		setIsEnterChannelModalOpen(false);
+	};
+
+	const enterChannel = async (code: string) => {
+		const apiUrl = `/students/api/v1/channels`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: {
+				entryCode: code,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				navigate("/mypage");
+				setIsEnterChannelModalOpen(false);
+				return response.data.data;
+			}
+		}
+	};
+	const { mutate } = useMutation({
+		mutationFn: enterChannel,
+		onSuccess: () => {
+			console.log("채널 입장");
+			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
+		},
+	});
+
+	const handleEnterChannel = () => {
+		const entryCode = code;
+		mutate(entryCode);
 	};
 
 	useEffect(() => {
@@ -93,16 +131,15 @@ export const EnterChannelModal = () => {
 						>
 							취소
 						</button>
-						{validateCode ? (
-							<button className="w-1/2 bg-iris text-[#ffffff]">입장</button>
-						) : (
-							<button
-								className="w-1/2 bg-disabled-tekhelet  text-[#ffffff]"
-								disabled
-							>
-								입장
-							</button>
-						)}
+						<button
+							className={`w-1/2 text-[#ffffff] ${
+								validateCode ? "bg-iris" : "bg-disabled-tekhelet"
+							}`}
+							disabled={!validateCode}
+							onClick={handleEnterChannel}
+						>
+							입장
+						</button>
 					</div>
 				</div>
 			</div>
