@@ -1,14 +1,14 @@
-import { IStockItem } from "@/interface/tradeHome";
 import { userRoleState } from "@/states/userRoleState";
 import IcLow from "@assets/svg/icLow.svg?react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { ITodayTradeStockItem } from "./TodayTradeContainer";
 
 interface TradeStockItemProps {
-	readonly stockItem: IStockItem;
+	readonly stockItem: ITodayTradeStockItem;
 }
 
-const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
+const TodayTradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
 	const pageLocation =
@@ -40,4 +40,4 @@ const TradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	);
 };
 
-export default TradeStockItem;
+export default TodayTradeStockItem;

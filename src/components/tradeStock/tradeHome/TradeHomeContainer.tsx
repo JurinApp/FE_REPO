@@ -4,7 +4,6 @@ import { useIntersectionObserver } from "@/hooks/useObserver";
 import { IStockInquiry } from "@/interface/stock";
 import { userRoleState } from "@/states/userRoleState";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import DeleteRegisterButton from "./DeleteRegisterButton";
@@ -21,7 +20,6 @@ const TradeHomeContainer = () => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
-	const observeTargetRef = useRef<HTMLDivElement>(null);
 
 	const getTradeStocksData = async (pageParam: number) => {
 		const response = await axiosData("useToken", {
@@ -43,7 +41,10 @@ const TradeHomeContainer = () => {
 			},
 		});
 
-	useIntersectionObserver({ observeTargetRef, hasNextPage, fetchNextPage });
+	const observeTargetRef = useIntersectionObserver({
+		hasNextPage,
+		fetchNextPage,
+	});
 
 	return (
 		<div className="relative mx-auto h-[calc(100vh-10.7rem)] w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
@@ -53,7 +54,7 @@ const TradeHomeContainer = () => {
 				<>
 					<TradeHomeHeading stockList={data.pages} />
 					<StockList
-						stockList={data.pages}
+						responseData={data.pages}
 						observeTargetRef={observeTargetRef}
 						isFetching={isFetching}
 					/>

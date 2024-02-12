@@ -1,20 +1,21 @@
 import { InfiniteQueryObserverResult } from "@tanstack/react-query";
-import { RefObject, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 //hook props interface
 interface IUseIntersectionObserverProps {
-	readonly observeTargetRef: RefObject<HTMLDivElement>;
+	// readonly observeTargetRef: RefObject<HTMLDivElement>;
 	threshold?: number;
 	readonly hasNextPage: boolean | undefined;
 	readonly fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
 }
 
 export const useIntersectionObserver = ({
-	observeTargetRef,
 	threshold = 0.1,
 	hasNextPage,
 	fetchNextPage,
 }: IUseIntersectionObserverProps) => {
+	const observeTargetRef = useRef<HTMLDivElement>(null);
+
 	const observerCallback: IntersectionObserverCallback = (entries) => {
 		entries.forEach((entry) => {
 			//target이 화면에 관찰되고, 다음페이지가 있다면 다음페이지를 호출
@@ -42,4 +43,6 @@ export const useIntersectionObserver = ({
 			}
 		};
 	}, [observerCallback, threshold, observeTargetRef]);
+
+	return observeTargetRef;
 };

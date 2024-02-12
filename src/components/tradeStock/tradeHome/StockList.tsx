@@ -1,4 +1,4 @@
-import ObserverTarget from "@/components/common/observer/ObserveTarget";
+import ObserveTarget from "@/components/common/observer/ObserveTarget";
 import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
 import { IStockInquiry, IStockItem } from "@/interface/stock";
 import { selectedStock } from "@/states/tradeStock";
@@ -7,21 +7,21 @@ import { useResetRecoilState } from "recoil";
 import StockItem from "./StockItem";
 
 interface ITradeStockListProps {
-	readonly stockList: IStockInquiry[];
+	readonly responseData: IStockInquiry[];
 	readonly observeTargetRef: RefObject<HTMLDivElement>;
 	readonly isFetching: boolean;
 }
 
 const TradeStockList = ({
-	stockList,
+	responseData,
 	observeTargetRef,
 	isFetching,
 }: ITradeStockListProps) => {
 	const resetSelectedStocks = useResetRecoilState(selectedStock);
 
-	const flatStockList = stockList.flatMap((stock) => {
-		return stock.results.flatMap((result) => {
-			return result;
+	const flatStockList = responseData.flatMap((data) => {
+		return data.results.flatMap((stock) => {
+			return stock;
 		});
 	});
 
@@ -49,7 +49,7 @@ const TradeStockList = ({
 					{isFetching ? (
 						<IntersectSpinner />
 					) : (
-						<ObserverTarget observeTargetRef={observeTargetRef} />
+						<ObserveTarget observeTargetRef={observeTargetRef} />
 					)}
 				</>
 			)}
