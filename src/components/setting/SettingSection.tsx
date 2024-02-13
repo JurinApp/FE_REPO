@@ -8,6 +8,7 @@ const SettingSection = () => {
 	const setIsWithdrawalModalOpen = useSetRecoilState(withdrawalModalState);
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+
 	const handleWithdrawalModalOpen = () => {
 		setIsWithdrawalModalOpen(true);
 	};
@@ -56,7 +57,7 @@ const SettingSection = () => {
 				</button>
 				<button
 					onClick={handleSignOut}
-					className="mb-8 flex h-[3.188rem] w-full items-center justify-center rounded bg-[#3d348b] font-bold text-white"
+					className="mb-8 flex h-[3.188rem] w-full items-center justify-center rounded bg-tekhelet font-bold text-white"
 				>
 					로그아웃
 				</button>

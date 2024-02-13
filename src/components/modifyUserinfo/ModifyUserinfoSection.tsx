@@ -67,7 +67,6 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 	const { mutate } = useMutation({
 		mutationFn: modifyUserinfo,
 		onSuccess: () => {
-			console.log("요청 성공");
 			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
@@ -143,7 +142,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 					</p>
 				</button>
 				<button
-					className=" mx-4 mb-8 flex h-[3.188rem] items-center justify-center rounded bg-[#3d348b]"
+					className=" mx-4 mb-8 flex h-[3.188rem] items-center justify-center rounded bg-tekhelet"
 					onClick={handleModifyUserinfoModal}
 				>
 					<p className="font-medium text-white">수정 완료</p>

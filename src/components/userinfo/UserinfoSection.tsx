@@ -1,8 +1,6 @@
 import { enterChannelModalState } from "@/states/confirmModalState";
-import { userinfoState } from "@/states/userinfoState";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import MoveCreateChannelBtn from "./MoveCreateChannelBtn";
-import { IUserinfo } from "./UserinfoContainer";
 
 export interface IUserinfoProps {
 	readonly userinfo: {
@@ -23,8 +21,6 @@ export interface IUserinfoProps {
 }
 const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 	const setIsEnterChannelModalOpen = useSetRecoilState(enterChannelModalState);
-	// const authState = useRecoilValue(userinfoState);
-	// const curAuth = authState.curAuth === "teacher" ? "학생" : "선생님";
 
 	const handleModalOpen = () => {
 		setIsEnterChannelModalOpen(true);

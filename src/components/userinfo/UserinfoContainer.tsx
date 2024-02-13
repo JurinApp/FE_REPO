@@ -5,19 +5,7 @@ import UserinfoSection from "./UserinfoSection";
 import { useRecoilValue } from "recoil";
 import { userRoleState } from "@/states/userRoleState";
 import Spinner from "../common/spinner/Spinner";
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-
-interface IUser {
-	readonly name: string;
-	readonly school: string;
-	readonly authority: string;
-}
-
-interface IChannelInfo {
-	readonly name: string;
-	readonly code: string;
-}
+import { useQueries } from "@tanstack/react-query";
 
 export interface IUserinfo {
 	readonly user: {
@@ -31,20 +19,9 @@ export interface IUserinfo {
 	};
 }
 
-export const SAMPLE_DATA: IUser = {
-	name: "홍길동",
-	school: "홍길초등학교",
-	authority: "선생님",
-};
-
-export const SAMPLE_CHANNEL: IChannelInfo = {
-	name: "1-A반",
-	code: "1A2B3C4D",
-};
 export const UserinfoContainer = () => {
 	const { axiosData } = useAxios();
-	const role =
-		useRecoilValue(userRoleState) === "teacher" ? "teacher" : "student";
+	const role = useRecoilValue(userRoleState);
 
 	const fetchUserinfo = async () => {
 		const apiUrl = `/${role}s/api/v1/users/profile`;
@@ -52,19 +29,12 @@ export const UserinfoContainer = () => {
 			method: "GET",
 			url: apiUrl,
 		});
-		if (role === "student") {
-			if (response) {
-				const status = response.status;
-				if (status === 200) {
-					return { user: response.data.data, channel: "" };
-				}
+		if (response) {
+			if (role === "student") {
+				return { user: response.data.data, channel: "" };
 			}
-		} else {
-			if (response) {
-				const status = response.status;
-				if (status === 200) {
-					return response.data.data;
-				}
+			if (role === "teacher") {
+				return response.data.data;
 			}
 		}
 	};
@@ -94,8 +64,6 @@ export const UserinfoContainer = () => {
 		],
 	});
 	const isLoading = results.some((query) => query.isLoading);
-	console.log("userinfo", results[0].data);
-	console.log("channelInfo", results[1].data);
 
 	return (
 		<div className="mx-auto flex h-[calc(100vh-2.938rem)] flex-col justify-end gap-4 bg-btn-cancel-tekhelet sm:w-[24.563rem]">

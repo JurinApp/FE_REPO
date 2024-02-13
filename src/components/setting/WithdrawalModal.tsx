@@ -9,17 +9,19 @@ import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const WithdrawalModal = () => {
+	const navigate = useNavigate();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
+	const modalRef = useRef<HTMLDivElement>(null);
 	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
 		useRecoilState(withdrawalModalState);
-	const { axiosData } = useAxios();
-	const role = useRecoilValue(userRoleState);
-	const queryClient = useQueryClient();
-	const navigate = useNavigate();
 	const resetOpenWithdrwalModal = useResetRecoilState(withdrawalModalState);
+	const role = useRecoilValue(userRoleState);
+
 	const [password, setPassword] = useState<string>("");
 	const [validatePW, setValidatePW] = useState<boolean>(false);
 	const [verifiedPW, setVerifiedPW] = useState<boolean>(true);
-	const modalRef = useRef<HTMLDivElement>(null);
+
 	const handleModalClose = () => {
 		setIsOpenWithdrawalModal(false);
 	};
@@ -31,7 +33,6 @@ const WithdrawalModal = () => {
 		setValidatePW(result);
 	};
 	const debounceValidation = debounce(validatePasswordFormat, 1000);
-	// 비밀번호 양식 유효성 검사.
 
 	const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const password = event.target.value;
