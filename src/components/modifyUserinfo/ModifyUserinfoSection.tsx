@@ -150,12 +150,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 				</button>
 			</div>
 			<ConfirmModal onConfirm={handleModifySubmit} />
-			{channel && (
-				<ChannelQuitModal
-					channelName={userinfo?.channel?.name}
-					// onDelete={handleQuitChannel}
-				/>
-			)}
+			{channel && <ChannelQuitModal />}
 		</>
 	);
 };
