@@ -7,21 +7,37 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-interface IChannelQuitModalProps {
-	readonly channelName: string | undefined;
-}
-const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
+const ChannelQuitModal = () => {
 	const { axiosData } = useAxios();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const [isQuitChannelModalOpen, setIsQuitChannelModalOpen] = useRecoilState(
 		quitChannelModalState,
 	);
+	const fetchChannel = async () => {
+		const apiUrl = `/${role}s/api/v1/channels`;
+		const response = await axiosData("useToken", {
+			method: "GET",
+			url: apiUrl,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
+	};
+	const channelInfoQuery = useQuery({
+		queryKey: ["channelInfo"],
+		queryFn: fetchChannel,
+	});
 	const role = useRecoilValue(userRoleState);
 
+	const channelInfo: IChannel = channelInfoQuery.data;
+	const channelId = channelInfo.id;
+	const channelName = channelInfo.channelName;
+
 	const modalRef = useRef(null);
-	const authState = useRecoilValue(userRoleState);
-	const curAuth = authState === "teacher" ? "선생님" : "학생";
 
 	const deleteChannel = async (id: number) => {
 		const apiUrl = `/teachers/api/v1/channels/${id}`;
@@ -41,28 +57,24 @@ const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
 		}
 	};
 
-	const fetchChannel = async () => {
-		const apiUrl = `/${role}s/api/v1/channels`;
+	const handleQuitChannel = async () => {
+		const apiUrl = `/students/api/v1/channels/${channelId}`;
 		const response = await axiosData("useToken", {
-			method: "GET",
+			method: "DELETE",
 			url: apiUrl,
 		});
 		if (response) {
 			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
+			if (status === 204) {
+				queryClient.invalidateQueries({
+					queryKey: ["channelInfo"],
+				});
+				navigate("/mypage");
+				setIsQuitChannelModalOpen(false);
 			}
 		}
 	};
 
-	const channelInfoQuery = useQuery({
-		queryKey: ["channelInfo"],
-		queryFn: fetchChannel,
-	});
-
-	const channelInfo: IChannel = channelInfoQuery.data;
-	const channelId = channelInfo.channelId;
-	console.log(channelId);
 	const { mutate } = useMutation({
 		mutationFn: deleteChannel,
 		onSuccess: () => {
@@ -72,7 +84,7 @@ const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
 		},
 	});
 
-	const handleQuitChannel = () => {
+	const handleDeleteChannel = () => {
 		if (channelId) {
 			mutate(channelId);
 		}
@@ -82,8 +94,7 @@ const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
 		setIsQuitChannelModalOpen(false);
 	};
 
-	let message =
-		curAuth === "선생님" ? "삭제하시겠습니까?" : "탈퇴하시겠습니까?";
+	let message = role === "teacher" ? "삭제하시겠습니까?" : "탈퇴하시겠습니까?";
 
 	return (
 		<>
@@ -108,9 +119,11 @@ const ChannelQuitModal = ({ channelName }: IChannelQuitModalProps) => {
 						</button>
 						<button
 							className="w-1/2 bg-danger text-white"
-							onClick={handleQuitChannel}
+							onClick={
+								role === "teacher" ? handleDeleteChannel : handleQuitChannel
+							}
 						>
-							삭제
+							{role === "teacher" ? "삭제" : "탈퇴"}
 						</button>
 					</div>
 				</div>
