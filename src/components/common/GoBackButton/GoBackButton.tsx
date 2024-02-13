@@ -1,5 +1,6 @@
 import Back from "@assets/svg/backIcon.svg?react";
 import { useNavigate } from "react-router-dom";
+
 interface StockHeaderProps {
 	name?: string;
 }

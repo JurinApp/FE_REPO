@@ -1,39 +1,40 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
 import { useIntersectionObserver } from "@/hooks/useObserver";
-import { IPostResponseData } from "@/interface/post";
+import { IStockHomeResponseData } from "@/interface/stock";
 import { userRoleState } from "@/states/userRoleState";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import DeletePostsModal from "./DeletePostsModal";
 import DeleteRegisterButton from "./DeleteRegisterButton";
-import PostHeadingAndTitle from "./PostHeadingAndTitle";
-import PostList from "./PostList";
+import DeleteStocksModal from "./DeleteStocksModal";
+import StockList from "./StockList";
+import TradeHomeHeading from "./TradeHomeHeading";
 
 interface IInfinityQueryData {
 	readonly pageParams: number[];
-	readonly pages: IPostResponseData[];
+	readonly pages: IStockHomeResponseData[];
 }
 
-const PostContainer = () => {
+const TradeHomeContainer = () => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
 
-	const handleInquiryPost = async (param: number) => {
+	const getTradeStocksData = async (pageParam: number) => {
 		const response = await axiosData("useToken", {
 			method: "GET",
-			url: `/${userRole}s/api/v1/channels/${channelId}/posts?limit=15&offset=${param}`,
+			url: `/${userRole}s/api/v1/channels/${channelId}/stocks?limit=15&offset=${pageParam}`,
 		});
 
-		return response?.data.data;
+		const resultData = response?.data.data;
+		return resultData;
 	};
 
-	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
-		useInfiniteQuery<IPostResponseData, Error, IInfinityQueryData>({
-			queryKey: ["posts", channelId],
-			queryFn: ({ pageParam }) => handleInquiryPost(pageParam as number),
+	const { data, isFetching, isLoading, hasNextPage, fetchNextPage } =
+		useInfiniteQuery<IStockHomeResponseData, Error, IInfinityQueryData>({
+			queryKey: ["stocks", channelId],
+			queryFn: ({ pageParam }) => getTradeStocksData(pageParam as number),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => {
 				return lastPage.next !== null ? lastPage.offset + 15 : undefined;
@@ -46,23 +47,23 @@ const PostContainer = () => {
 	});
 
 	return (
-		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
+		<div className="relative mx-auto h-[calc(100vh-10.7rem)] w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
 			{isLoading || !data ? (
 				<Spinner />
 			) : (
 				<>
-					<PostHeadingAndTitle responseData={data.pages} />
-					<PostList
+					<TradeHomeHeading stockList={data.pages} />
+					<StockList
 						responseData={data.pages}
-						isFetching={isFetching}
 						observeTargetRef={observeTargetRef}
+						isFetching={isFetching}
 					/>
 					<DeleteRegisterButton />
-					<DeletePostsModal />
+					<DeleteStocksModal />
 				</>
 			)}
 		</div>
 	);
 };
 
-export default PostContainer;
+export default TradeHomeContainer;
