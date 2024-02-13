@@ -1,4 +1,4 @@
-import { IPost } from "@/interface/post";
+import { IPostResponseData } from "@/interface/post";
 import {
 	allCheckPostsState,
 	selectedPostsState,
@@ -13,21 +13,27 @@ import {
 } from "recoil";
 
 interface IPostHeadingAndTitleProps {
-	readonly postList: IPost[];
+	readonly responseData: IPostResponseData[];
 }
 
-const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
+const PostHeadingAndTitle = ({ responseData }: IPostHeadingAndTitleProps) => {
 	const setSelectedPosts = useSetRecoilState(selectedPostsState);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckPostsState);
 	const resetIsAllCheck = useResetRecoilState(allCheckPostsState);
 	const userRole = useRecoilValue(userRoleState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
+	const flatMapPostList = responseData.flatMap((data) => {
+		return data.results.flatMap((post) => {
+			return post;
+		});
+	});
+
 	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const learnerIdArr = postList.map((post) => post.id);
+			const learnerIdArr = flatMapPostList.map((post) => post.id);
 
 			setSelectedPosts(learnerIdArr);
 			setIsAllCheck(true);
@@ -68,7 +74,7 @@ const PostHeadingAndTitle = ({ postList }: IPostHeadingAndTitleProps) => {
 				</label>
 			</div>
 			<h1 className="font-bold">
-				게시글 <span>({postList.length})</span>
+				게시글 <span>({flatMapPostList.length})</span>
 			</h1>
 		</div>
 	);

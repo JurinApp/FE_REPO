@@ -23,6 +23,7 @@ export const SIGN_UP_SCHEMA = yup.object().shape({
 			/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}[^\s]*$/,
 			"영소문자, 숫자, 특수문자를 모두 포함한 8자리 이상 입력해주세요.",
 		)
+		.oneOf([yup.ref("checkPassword")], "비밀번호가 일치하지 않습니다.")
 		.required("비밀번호를 입력해주세요"),
 	checkPassword: yup
 		.string()
@@ -45,14 +46,8 @@ export const SIGN_UP_SCHEMA = yup.object().shape({
 
 export const REGISTER_TRADE_STOCK_SCHEMA = yup.object().shape({
 	stockName: yup.string().required("종목명 입력은 필수입니다."),
-	price: yup
-		.string()
-		.required("가격 입력은 필수입니다.")
-		.matches(/^[0-9]+$/, "가격은 숫자 입력만 가능합니다."),
-	tax: yup
-		.string()
-		.required("세금 입력은 필수입니다.")
-		.matches(/^[0-9]+$/, "세금은 숫자 입력만 가능합니다."),
+	price: yup.string().required("가격 입력은 필수입니다."),
+	tax: yup.string().required("세금 입력은 필수입니다."),
 	standard: yup.string().required("기준 입력은 필수입니다."),
 	content: yup.string().required("내용 입력은 필수입니다."),
 });

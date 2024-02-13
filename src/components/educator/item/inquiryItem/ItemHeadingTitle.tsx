@@ -1,4 +1,4 @@
-import { IItem } from "@/interface/item";
+import { IItemResponseData } from "@/interface/item";
 import {
 	allCheckItemsState,
 	selectedItemState,
@@ -7,20 +7,26 @@ import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IItemHeadingTitleProps {
-	readonly itemList: IItem[];
+	readonly responseData: IItemResponseData[];
 }
 
-const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
+const ItemHeadingTitle = ({ responseData }: IItemHeadingTitleProps) => {
 	const setSelectedItems = useSetRecoilState(selectedItemState);
 	const [isAllCheck, setIsAllCheck] = useRecoilState(allCheckItemsState);
 	const resetIsAllCheck = useResetRecoilState(allCheckItemsState);
 	const checkBoxRef = useRef<HTMLInputElement>(null);
 
+	const flatMapItemList = responseData.flatMap((data) => {
+		return data.results.flatMap((item) => {
+			return item;
+		});
+	});
+
 	const clickAllCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		const isCheck = e.target.checked;
 
 		if (isCheck) {
-			const itemIdArr = itemList.map((item) => item.id);
+			const itemIdArr = flatMapItemList.map((item) => item.id);
 			setSelectedItems(itemIdArr);
 			setIsAllCheck(true);
 		} else {
@@ -56,7 +62,7 @@ const ItemHeadingTitle = ({ itemList }: IItemHeadingTitleProps) => {
 				</label>
 			</div>
 			<h1 className="font-bold">
-				아이템 <span>({itemList.length})</span>
+				아이템 <span>({flatMapItemList.length})</span>
 			</h1>
 		</div>
 	);

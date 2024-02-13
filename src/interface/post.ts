@@ -4,3 +4,12 @@ export interface IPost {
 	readonly subTitle: string;
 	readonly date: string;
 }
+
+export interface IPostResponseData {
+	readonly limit: number;
+	readonly offset: number;
+	readonly count: number;
+	readonly next: string | null;
+	readonly previous: string | null;
+	readonly results: IPost[];
+}

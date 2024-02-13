@@ -1,9 +1,11 @@
+import { userRoleState } from "@/states/userRoleState";
 import BucketIcon from "@assets/svg/bucketIcon.svg?react";
 import ClipIcon from "@assets/svg/clipSvg.svg?react";
 import TradeIcon from "@assets/svg/tradeIcon.svg?react";
 import UserIcon from "@assets/svg/userIcon.svg?react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 interface IMenu {
 	readonly key: string;
@@ -18,38 +20,37 @@ const menuArr = [
 	{ key: "post", name: "게시판", path: "/post" },
 ];
 
-const studentMenuArr = [
-	{ key: "trade", name: "주식거래", path: "/trade/home" },
-	{ key: "item", name: "아이템", path: "/item" },
-	{ key: "post", name: "게시판", path: "/post" },
-];
 const Menu = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [selectedMenu, setSelectedMenu] = useState<string>(menuArr[0].key);
+	const userRole = useRecoilValue(userRoleState);
+	let filterMenuArr: IMenu[] = [];
+
+	if (userRole === "student") {
+		filterMenuArr = menuArr.filter((menu) => menu.key !== "manageLearner");
+	} else {
+		filterMenuArr = menuArr;
+	}
 
 	const handleClickMenu = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
-		navigate(menu.path);
+		const channelId = location.pathname.substring(1, 2);
+		navigate(`/${channelId}${menu.path}`);
 	};
 
 	useEffect(() => {
 		const path = location.pathname;
-
-		if (path === "/manageLearner") {
+		if (path.includes("manageLearner")) {
 			setSelectedMenu("manageLearner");
 		}
-		if (
-			path === "/trade/home" ||
-			path === "/trade/todayTrade" ||
-			path === "/trade/myStock"
-		) {
+		if (path.includes("trade") || path.includes("stock")) {
 			setSelectedMenu("trade");
 		}
-		if (path === "/item") {
+		if (path.includes("item")) {
 			setSelectedMenu("item");
 		}
-		if (path === "/post") {
+		if (path.includes("post")) {
 			setSelectedMenu("post");
 		}
 	}, []);
@@ -57,7 +58,7 @@ const Menu = () => {
 	return (
 		<div className="sticky bottom-0 z-[99] mx-auto h-[4.188rem] w-full bg-white px-6 py-[0.5rem] sm:w-[24.563rem]">
 			<div className="flex items-center justify-between">
-				{menuArr.map((menu: IMenu) => (
+				{filterMenuArr.map((menu: IMenu) => (
 					<div
 						key={menu.key}
 						className="flex cursor-pointer flex-col items-center"

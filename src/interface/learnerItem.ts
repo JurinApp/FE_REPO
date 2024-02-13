@@ -1,5 +1,5 @@
 export interface ILearnerItem {
-	id: number;
-	nickname: "string";
-	username: string;
+	readonly id: number;
+	readonly nickname: string;
+	readonly username: string;
 }

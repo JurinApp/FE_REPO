@@ -1,7 +1,6 @@
 export interface IStockItem {
-	readonly key: string;
-	readonly stockId: string;
-	readonly stockName: string;
-	readonly stockPrice: number;
-	readonly pastStockPrice: number;
+	readonly id: string;
+	readonly name: string;
+	readonly daysRangeRate: number;
+	readonly daysRangePrice: number;
 }
