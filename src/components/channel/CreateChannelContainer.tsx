@@ -33,7 +33,6 @@ const CreateChannelContainer = () => {
 	const { mutate } = useMutation({
 		mutationFn: createChannel,
 		onSuccess: () => {
-			console.log("채널 생성 성공");
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
 	});
@@ -46,7 +45,7 @@ const CreateChannelContainer = () => {
 	};
 
 	return (
-		<div className="mx-auto h-[calc(100vh-2.938rem)] w-[393px] bg-[#ffffff]">
+		<div className="mx-auto h-[calc(100vh-2.938rem)] w-[393px] bg-white">
 			<div className="flex h-full flex-col justify-end gap-4">
 				<h1 className=" ml-4 text-[1.625rem] font-bold">채널 생성</h1>
 				<form
@@ -64,12 +63,12 @@ const CreateChannelContainer = () => {
 						autoComplete="off"
 						className="border-b pb-2 text-base placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
 					/>
-					<p className="mx-auto mt-16 text-sm font-normal text-[#3d348b]">
+					<p className="mx-auto mt-16 text-sm font-normal text-tekhelet">
 						채널 생성 시 코드가 랜덤으로 부여됩니다.
 					</p>
 				</form>
 				<button
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
+					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
 					id="button"
 					onClick={handleCreateChannel}
 				>

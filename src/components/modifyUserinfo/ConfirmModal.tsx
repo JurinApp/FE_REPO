@@ -36,15 +36,15 @@ export const ConfirmModal = ({ onConfirm }: TConfirmModalProps) => {
 				} h-full w-full flex-col items-center justify-center bg-black-700`}
 			>
 				<div ref={modalRef} className="w-[20rem]">
-					<div className="bg-opacity-2 flex h-[7.438rem] items-center justify-center bg-[#ffffff]">
-						<p className="font-medium text-[#000000]">수정하시겠습니까?</p>
+					<div className="bg-opacity-2 flex h-[7.438rem] items-center justify-center bg-white">
+						<p className="font-medium text-black">수정하시겠습니까?</p>
 					</div>
 					<div className="flex h-[3.75rem] flex-row">
 						<button className="w-1/2 bg-gray-300" onClick={handleModalClose}>
 							취소
 						</button>
 						<button
-							className="w-1/2 bg-tekhelet text-[#ffffff]"
+							className="w-1/2 bg-tekhelet text-white"
 							onClick={onConfirm}
 						>
 							확인

@@ -25,11 +25,6 @@ export const EnterChannelModal = () => {
 		setValidateCode(result);
 	};
 	const debounceValidation = debounce(validateCodeFormat, 1000);
-	// 코드 유효성 검증 함수
-	// const verifyCode = () => {
-	// TODO: DB에 존재하는 채널 코드 확인 API 추가 예정.
-	// setVerifiedCode(true);
-	// };
 
 	const handleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const code = event.target.value;
@@ -68,7 +63,6 @@ export const EnterChannelModal = () => {
 	const { mutate } = useMutation({
 		mutationFn: enterChannel,
 		onSuccess: () => {
-			console.log("채널 입장");
 			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
@@ -101,8 +95,8 @@ export const EnterChannelModal = () => {
 				} h-full w-full flex-col items-center justify-center bg-black-700`}
 			>
 				<div ref={modalRef} className="w-[20rem]">
-					<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-[#ffffff]">
-						<p className="text-lg font-medium text-[#000000]">
+					<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
+						<p className="text-lg font-medium text-black">
 							채널 코드를 입력하세요.
 						</p>
 						{!verifiedCode ? (
@@ -132,7 +126,7 @@ export const EnterChannelModal = () => {
 							취소
 						</button>
 						<button
-							className={`w-1/2 text-[#ffffff] ${
+							className={`w-1/2 text-white ${
 								validateCode ? "bg-iris" : "bg-disabled-tekhelet"
 							}`}
 							disabled={!validateCode}

@@ -78,7 +78,6 @@ const ChannelQuitModal = () => {
 	const { mutate } = useMutation({
 		mutationFn: deleteChannel,
 		onSuccess: () => {
-			console.log("채널 삭제 완료");
 			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
