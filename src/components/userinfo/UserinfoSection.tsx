@@ -1,8 +1,7 @@
 import { enterChannelModalState } from "@/states/confirmModalState";
-import { userinfoState } from "@/states/userinfoState";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import MoveCreateChannelBtn from "./MoveCreateChannelBtn";
-import { IUserinfo } from "./UserinfoContainer";
+import { useNavigate } from "react-router";
 
 export interface IUserinfoProps {
 	readonly userinfo: {
@@ -17,22 +16,29 @@ export interface IUserinfoProps {
 		};
 	};
 	readonly channel?: {
+		id: number;
 		channelName: string;
 		entryCode: string;
 	};
 }
 const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 	const setIsEnterChannelModalOpen = useSetRecoilState(enterChannelModalState);
-	// const authState = useRecoilValue(userinfoState);
-	// const curAuth = authState.curAuth === "teacher" ? "학생" : "선생님";
-
+	const navigate = useNavigate();
 	const handleModalOpen = () => {
 		setIsEnterChannelModalOpen(true);
+	};
+	const movePage = () => {
+		if (userinfo.user.userRole === "teacher") {
+			navigate(`/${channel?.id}/manageLearner`);
+		}
+		if (userinfo.user.userRole === "student") {
+			navigate(`/stock`);
+		}
 	};
 	return (
 		<>
 			<div
-				className="ml-4 flex h-[8.5rem] w-[361px] flex-col justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
+				className="ml-4 flex h-[8.5rem] w-[361px] flex-col justify-center rounded border border-black border-opacity-10 bg-white "
 				id="userinfoSection"
 			>
 				<div className="my-2 ml-4 flex items-center gap-4">
@@ -56,7 +62,7 @@ const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 			</div>
 			{channel ? (
 				<div
-					className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-[#ffffff] "
+					className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-white "
 					id="channelSection"
 				>
 					<div className="my-2 ml-4 flex gap-4">
@@ -82,11 +88,19 @@ const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 			)}
 			{userinfo.user.userRole === "teacher" && !channel ? (
 				<MoveCreateChannelBtn />
-			) : (
+			) : userinfo.user.userRole === "student" && !channel ? (
 				<button
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-[#3d348b]"
+					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
 					id="button"
 					onClick={handleModalOpen}
+				>
+					<p className="font-medium text-white">채널 참여</p>
+				</button>
+			) : (
+				<button
+					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
+					id="button"
+					onClick={movePage}
 				>
 					<p className="font-medium text-white">채널 입장</p>
 				</button>
