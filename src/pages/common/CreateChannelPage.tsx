@@ -1,4 +1,4 @@
-import { CreateChannelContainer } from "@/components/channel/CreateChannelContainer";
+import CreateChannelContainer from "@/components/channel/CreateChannelContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";

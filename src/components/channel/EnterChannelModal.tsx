@@ -1,6 +1,9 @@
+import useAxios from "@/hooks/useAxios";
 import { enterChannelModalState } from "@/states/confirmModalState";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
 
 export const EnterChannelModal = () => {
@@ -11,19 +14,17 @@ export const EnterChannelModal = () => {
 	const [validateCode, setValidateCode] = useState<boolean>(false);
 	const [verifiedCode, setVerifiedCode] = useState<boolean>(true);
 	const modalRef = useRef<HTMLDivElement>(null);
+	const navigate = useNavigate();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 
 	// 코드 양식 유효성 검증 함수
 	const validateCodeFormat = (code: string) => {
-		const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/;
+		const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6}$/;
 		const result = regex.test(code);
 		setValidateCode(result);
 	};
 	const debounceValidation = debounce(validateCodeFormat, 1000);
-	// 코드 유효성 검증 함수
-	// const verifyCode = () => {
-	// TODO: DB에 존재하는 채널 코드 확인 API 추가 예정.
-	// setVerifiedCode(true);
-	// };
 
 	const handleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const code = event.target.value;
@@ -39,6 +40,37 @@ export const EnterChannelModal = () => {
 
 	const handleModalClose = () => {
 		setIsEnterChannelModalOpen(false);
+	};
+
+	const enterChannel = async (code: string) => {
+		const apiUrl = `/students/api/v1/channels`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: {
+				entryCode: code,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				navigate("/mypage");
+				setIsEnterChannelModalOpen(false);
+				return response.data.data;
+			}
+		}
+	};
+	const { mutate } = useMutation({
+		mutationFn: enterChannel,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
+		},
+	});
+
+	const handleEnterChannel = () => {
+		const entryCode = code;
+		mutate(entryCode);
 	};
 
 	useEffect(() => {
@@ -63,8 +95,8 @@ export const EnterChannelModal = () => {
 				} h-full w-full flex-col items-center justify-center bg-black-700`}
 			>
 				<div ref={modalRef} className="w-[20rem]">
-					<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-[#ffffff]">
-						<p className="text-lg font-medium text-[#000000]">
+					<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
+						<p className="text-lg font-medium text-black">
 							채널 코드를 입력하세요.
 						</p>
 						{!verifiedCode ? (
@@ -93,16 +125,15 @@ export const EnterChannelModal = () => {
 						>
 							취소
 						</button>
-						{validateCode ? (
-							<button className="w-1/2 bg-iris text-[#ffffff]">입장</button>
-						) : (
-							<button
-								className="w-1/2 bg-disabled-tekhelet  text-[#ffffff]"
-								disabled
-							>
-								입장
-							</button>
-						)}
+						<button
+							className={`w-1/2 text-white ${
+								validateCode ? "bg-iris" : "bg-disabled-tekhelet"
+							}`}
+							disabled={!validateCode}
+							onClick={handleEnterChannel}
+						>
+							입장
+						</button>
 					</div>
 				</div>
 			</div>

@@ -8,9 +8,10 @@ import { ConfirmModal } from "./ConfirmModal";
 import ChannelQuitModal from "./ChannelQuitModal";
 import { userRoleState } from "@/states/userRoleState";
 import useAxios from "@/hooks/useAxios";
-import { IChannel, IUser } from "@/interface/userinfo";
+import { IChannel } from "@/interface/userinfo";
 import { IUserinfo } from "../userinfo/UserinfoContainer";
 import { useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface IModifyUserinfoProps {
 	userinfo: IUserinfo | undefined;
@@ -24,18 +25,19 @@ interface ISubmitData {
 }
 const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 	const navigate = useNavigate();
-	const [name, setName] = useInput("");
-	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	const role = useRecoilValue(userRoleState);
-	console.log(userinfo);
+	const { axiosData } = useAxios();
+
+	const [name, setName] = useInput("");
 	const [schoolName, setSchoolName] = useInput("");
 	const [channelName, setChannelName] = useInput("");
-	const authState = useRecoilValue(userRoleState);
-	const curAuth = authState === "teacher" ? "teacher" : "student";
+
 	const setIsModifyUserinfoModalOpen = useSetRecoilState(
 		modifyUserinfoModalState,
 	);
 	const setIsQuitChannelModalOpen = useSetRecoilState(quitChannelModalState);
+
 	const handleModifyUserinfoModal = () => {
 		setIsModifyUserinfoModalOpen(true);
 	};
@@ -44,9 +46,33 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 		setIsQuitChannelModalOpen(true);
 	};
 
-	const handleModifySubmit = async () => {
+	const modifyUserinfo = async (submitData: ISubmitData) => {
 		const apiUrl = `/${role}s/api/v1/users/profile`;
 
+		const response = await axiosData("useToken", {
+			method: "PUT",
+			url: apiUrl,
+			data: submitData,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				navigate("/mypage");
+				setIsModifyUserinfoModalOpen(false);
+				return response.data.data;
+			}
+		}
+	};
+
+	const { mutate } = useMutation({
+		mutationFn: modifyUserinfo,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
+		},
+	});
+
+	const handleModifySubmit = () => {
 		const submitData: ISubmitData =
 			role === "teacher"
 				? {
@@ -58,40 +84,9 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 						nickname: name || userinfo?.user.nickname,
 						schoolName: schoolName || userinfo?.user.schoolName,
 					};
-		try {
-			const response = await axiosData("useToken", {
-				method: "PUT",
-				url: apiUrl,
-				data: submitData,
-			});
-			if (response) {
-				const status = response.status;
-				if (status === 200) {
-					return response.data.data;
-				}
-			}
-		} catch (error) {
-			console.error(error);
-		} finally {
-			navigate("/mypage");
-			setIsModifyUserinfoModalOpen(false);
-		}
+		mutate(submitData);
 	};
 
-	const handleQuitChannel = () => {
-		if (curAuth === "teacher") {
-			console.log("삭제 완료");
-		}
-		if (curAuth === "student") {
-			console.log("탈퇴 완료");
-		}
-	};
-
-	// 채널 조회 api
-	// /students/api/v1/channels
-	// /teachers/api/v1/channels
-
-	// 채널 조회 api 진행 후, 채널 정보가 있다면 탈퇴 또는 삭제가 가능해야한다.
 	return (
 		<>
 			<div className="flex h-full flex-col justify-end gap-4">
@@ -122,7 +117,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 						autoComplete="off"
 						className="border-b pb-2 placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none"
 					/>
-					{curAuth === "teacher" && !!channel && (
+					{role === "teacher" && !!channel && (
 						<>
 							<label htmlFor="channel-name" className="font-bold">
 								채널 이름
@@ -143,21 +138,18 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 					onClick={handleQuitChannelModal}
 				>
 					<p className={`font-medium text-danger`}>
-						{curAuth === "teacher" ? "채널 삭제" : "채널 탈퇴"}
+						{role === "teacher" ? "채널 삭제" : "채널 탈퇴"}
 					</p>
 				</button>
 				<button
-					className=" mx-4 mb-8 flex h-[3.188rem] items-center justify-center rounded bg-[#3d348b]"
+					className=" mx-4 mb-8 flex h-[3.188rem] items-center justify-center rounded bg-tekhelet"
 					onClick={handleModifyUserinfoModal}
 				>
 					<p className="font-medium text-white">수정 완료</p>
 				</button>
 			</div>
 			<ConfirmModal onConfirm={handleModifySubmit} />
-			<ChannelQuitModal
-				channelName={channelName}
-				onDelete={handleQuitChannel}
-			/>
+			{channel && <ChannelQuitModal />}
 		</>
 	);
 };

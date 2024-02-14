@@ -11,6 +11,7 @@ export interface IUser {
 }
 
 export interface IChannel {
+	readonly id: number;
 	readonly channelName: string;
 	readonly entryCode: string;
 }

@@ -1,26 +1,29 @@
+import useAxios from "@/hooks/useAxios";
 import { withdrawalModalState } from "@/states/confirmModalState";
+import { userRoleState } from "@/states/userRoleState";
+import { removeCookie } from "@/utils/cookies";
+import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useNavigate } from "react-router";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const WithdrawalModal = () => {
+	const navigate = useNavigate();
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
+	const modalRef = useRef<HTMLDivElement>(null);
 	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
 		useRecoilState(withdrawalModalState);
-
 	const resetOpenWithdrwalModal = useResetRecoilState(withdrawalModalState);
+	const role = useRecoilValue(userRoleState);
+
 	const [password, setPassword] = useState<string>("");
 	const [validatePW, setValidatePW] = useState<boolean>(false);
 	const [verifiedPW, setVerifiedPW] = useState<boolean>(true);
-	const modalRef = useRef<HTMLDivElement>(null);
+
 	const handleModalClose = () => {
 		setIsOpenWithdrawalModal(false);
-	};
-
-	const verifyPassword = () => {
-		// TODO: 유효한 코드인지를 확인.(API 호출)
-		setTimeout(() => {
-			setVerifiedPW(false);
-		}, 1000);
 	};
 
 	const validatePasswordFormat = (password: string) => {
@@ -30,7 +33,6 @@ const WithdrawalModal = () => {
 		setValidatePW(result);
 	};
 	const debounceValidation = debounce(validatePasswordFormat, 1000);
-	// 비밀번호 양식 유효성 검사.
 
 	const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const password = event.target.value;
@@ -63,6 +65,25 @@ const WithdrawalModal = () => {
 			resetOpenWithdrwalModal();
 		};
 	}, []);
+
+	const handleDeleteUser = async () => {
+		const apiUrl = `/${role}s/api/v1/users/profile`;
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: apiUrl,
+			data: {
+				password: password,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 204) {
+				removeCookie();
+				queryClient.clear();
+				navigate("/login");
+			}
+		}
+	};
 
 	return (
 		<>
@@ -101,21 +122,15 @@ const WithdrawalModal = () => {
 						<button className="w-1/2 bg-btn-cancel" onClick={handleModalClose}>
 							취소
 						</button>
-						{validatePW ? (
-							<button
-								className="w-1/2 bg-danger text-[#ffffff]"
-								onClick={verifyPassword}
-							>
-								확인
-							</button>
-						) : (
-							<button
-								className="w-1/2 bg-disabled-danger text-[#ffffff]"
-								disabled
-							>
-								확인
-							</button>
-						)}
+						<button
+							className={`w-1/2 text-[#ffffff] ${
+								validatePW ? "bg-danger" : "bg-disabled-danger"
+							}`}
+							onClick={handleDeleteUser}
+							disabled={!validatePW}
+						>
+							확인
+						</button>
 					</div>
 				</div>
 			</div>
