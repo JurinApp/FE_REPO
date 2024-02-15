@@ -39,8 +39,8 @@ const ChannelQuitModal = () => {
 
 	const modalRef = useRef(null);
 
-	const deleteChannel = async (id: number) => {
-		const apiUrl = `/teachers/api/v1/channels/${id}`;
+	const deleteOrQuitChannel = async (channelId: number) => {
+		const apiUrl = `${role}s/api/v1/channels/${channelId}`;
 		const response = await axiosData("useToken", {
 			method: "DELETE",
 			url: apiUrl,
@@ -48,44 +48,24 @@ const ChannelQuitModal = () => {
 		if (response) {
 			const status = response.status;
 			if (status === 204) {
-				queryClient.invalidateQueries({
-					queryKey: ["channelInfo"],
-				});
-				navigate("/mypage");
-				setIsQuitChannelModalOpen(false);
-			}
-		}
-	};
-
-	const handleQuitChannel = async () => {
-		const apiUrl = `/students/api/v1/channels/${channelId}`;
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 204) {
-				queryClient.invalidateQueries({
-					queryKey: ["channelInfo"],
-				});
-				navigate("/mypage");
-				setIsQuitChannelModalOpen(false);
+				return response.data.data;
 			}
 		}
 	};
 
 	const { mutate } = useMutation({
-		mutationFn: deleteChannel,
+		mutationFn: deleteOrQuitChannel,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 		},
 	});
 
-	const handleDeleteChannel = () => {
+	const handleDeleteOrQuitChannel = () => {
 		if (channelId) {
 			mutate(channelId);
+			navigate("/mypage");
+			setIsQuitChannelModalOpen(false);
 		}
 	};
 
@@ -118,9 +98,7 @@ const ChannelQuitModal = () => {
 						</button>
 						<button
 							className="w-1/2 bg-danger text-white"
-							onClick={
-								role === "teacher" ? handleDeleteChannel : handleQuitChannel
-							}
+							onClick={handleDeleteOrQuitChannel}
 						>
 							{role === "teacher" ? "삭제" : "탈퇴"}
 						</button>

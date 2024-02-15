@@ -32,7 +32,7 @@ const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
 			navigate(`/${channel?.id}/manageLearner`);
 		}
 		if (userinfo.user.userRole === "student") {
-			navigate(`/stock`);
+			navigate(`/${channel?.id}/trade/home`);
 		}
 	};
 	return (
