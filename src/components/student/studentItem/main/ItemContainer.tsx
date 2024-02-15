@@ -44,10 +44,7 @@ const ItemContainer = () => {
 	});
 
 	const isLoading = itemList.isLoading;
-	console.log(isLoading);
-	const buyItem = () => {
-		console.log("구매");
-	};
+
 	return (
 		<>
 			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
@@ -71,11 +68,7 @@ const ItemContainer = () => {
 				</div>
 			</div>
 			{selectedItem && (
-				<ItemBuyModal
-					onConfirm={buyItem}
-					item={selectedItem}
-					channelId={channelId}
-				/>
+				<ItemBuyModal item={selectedItem} channelId={channelId} />
 			)}
 		</>
 	);
