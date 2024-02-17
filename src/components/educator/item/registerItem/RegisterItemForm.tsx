@@ -13,16 +13,20 @@ import { useEffect } from "react";
 
 interface IErrors {
 	readonly itemNameError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 	readonly priceError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 	readonly contentError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
+	};
+	readonly itemImageError: {
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 }
 
@@ -48,6 +52,10 @@ const RegisterItemForm = () => {
 			isError: false,
 			errorMessage: "",
 		},
+		itemImageError: {
+			isError: false,
+			errorMessage: "",
+		},
 	});
 	const [replacePrice, setReplacePrice] = useState<string>("");
 	const [thumbNail, setThumbNail] = useState<IThumbNailImg>({
@@ -63,11 +71,109 @@ const RegisterItemForm = () => {
 
 	const handleDeleteImage = () => {
 		setThumbNail({ fileName: "", thumbNailImg: "" });
+		setItemFormValue((prev) => ({ ...prev, imageFile: null }));
+		setErrors((prev) => ({
+			...prev,
+			itemImageError: {
+				isError: false,
+				errorMessage: "",
+			},
+		}));
+	};
+
+	const handleChangeFormCheckValidation = (
+		id: string,
+		value: string | null,
+	) => {
+		if (id === "itemName") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: true,
+						errorMessage: "아이템명 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "price") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: true,
+						errorMessage: "가격 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "content") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: true,
+						errorMessage: "내용 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "image" && value === null) {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: true,
+					errorMessage: "이미지 업로드는 필수입니다.",
+				},
+			}));
+		} else {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: false,
+					errorMessage: "",
+				},
+			}));
+		}
 	};
 
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
-			if (!e.currentTarget.files[0]) return;
+			let value = "upload";
+			console.log(e.currentTarget.files[0]);
+			if (!e.currentTarget.files[0]) {
+				handleChangeFormCheckValidation("image", null);
+				return;
+			} else {
+				handleChangeFormCheckValidation("image", value);
+			}
 
 			const imgFile = e.currentTarget.files[0];
 			const imgFileName = e.currentTarget.files[0].name;
@@ -115,68 +221,6 @@ const RegisterItemForm = () => {
 		} else {
 			setItemFormValue({ ...itemFormValue, price: 0 });
 			setReplacePrice("");
-		}
-	};
-
-	const handleChangeFormCheckValidation = (id: string, value: string) => {
-		if (id === "itemName") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: true,
-						errorMessage: "아이템명 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "price") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: true,
-						errorMessage: "가격 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "content") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: true,
-						errorMessage: "내용 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
 		}
 	};
 
@@ -236,6 +280,17 @@ const RegisterItemForm = () => {
 			isValidation = false;
 		}
 
+		if (itemFormValue.imageFile === null) {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: true,
+					errorMessage: "이미지 업로드는 필수입니다.",
+				},
+			}));
+			isValidation = false;
+		}
+
 		return isValidation;
 	};
 
@@ -275,53 +330,63 @@ const RegisterItemForm = () => {
 							<ErrorMsg message={errors.itemNameError.errorMessage} />
 						)}
 					</div>
-					{thumbNail.thumbNailImg === "" ? (
-						<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-							<Logo className="h-20 w-[4.188rem]" />
-						</div>
-					) : (
-						<img
-							src={thumbNail.thumbNailImg}
-							alt="이미지 미리보기"
-							className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
-						/>
-					)}
-
-					<div className="mt-[1.125rem] flex w-full sm:w-[19.563rem]">
-						<label
-							htmlFor="image"
-							ref={labelRef}
-							className="mr-[0.625rem] w-[2.813rem] text-black-800"
-						>
-							이미지
-						</label>
-						<p className="h-[2.438rem] max-w-[14rem] grow truncate border-b border-black-100 pb-[0.625rem]">
-							{thumbNail.fileName}
-						</p>
+					<div>
 						{thumbNail.thumbNailImg === "" ? (
-							<button
-								type="button"
-								onClick={handleAddImage}
-								className="ml-2 flex justify-start"
-							>
-								<AddImage />
-							</button>
+							<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
+								<Logo className="h-20 w-[4.188rem]" />
+							</div>
 						) : (
-							<button
-								type="button"
-								onClick={handleDeleteImage}
-								className="ml-2 flex justify-start"
-							>
-								<DeleteImage />
-							</button>
+							<img
+								src={thumbNail.thumbNailImg}
+								alt="이미지 미리보기"
+								className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
+							/>
 						)}
-						<input
-							id="image"
-							type="file"
-							accept=".jpg, .png"
-							className="hidden"
-							onChange={handleChangeThumbNailImage}
-						/>
+						<div className="mb-2 mt-[1.125rem] flex w-full sm:w-[19.563rem]">
+							<label
+								htmlFor="image"
+								ref={labelRef}
+								className="mr-[0.625rem] w-[2.813rem] text-black-800"
+							>
+								이미지
+							</label>
+							<p
+								className={`h-[2.438rem] max-w-[14rem] grow truncate border-b pb-[0.625rem] ${
+									errors.itemImageError.isError
+										? "border-danger"
+										: "border-black-100 focus:border-black-300"
+								}`}
+							>
+								{thumbNail.fileName}
+							</p>
+							{thumbNail.thumbNailImg === "" ? (
+								<button
+									type="button"
+									onClick={handleAddImage}
+									className="ml-2 flex justify-start"
+								>
+									<AddImage />
+								</button>
+							) : (
+								<button
+									type="button"
+									onClick={handleDeleteImage}
+									className="ml-2 flex justify-start"
+								>
+									<DeleteImage />
+								</button>
+							)}
+							<input
+								id="image"
+								type="file"
+								accept=".jpg, .png"
+								className="hidden"
+								onChange={handleChangeThumbNailImage}
+							/>
+						</div>
+						{errors.itemImageError.isError && (
+							<ErrorMsg message={errors.itemImageError.errorMessage} />
+						)}
 					</div>
 					<div className="mt-[0.875rem] flex w-full items-center sm:w-[19.563rem]">
 						<label
