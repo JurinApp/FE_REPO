@@ -1,37 +1,50 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import AddImage from "@assets/svg/addImage.svg?react";
-import DeleteImage from "@assets/svg/deleteImage.svg?react";
-import Logo from "@assets/svg/subColorLogo.svg?react";
-import Increase from "@assets/svg/increaseIcon.svg?react";
-import Decrease from "@assets/svg/decreaseIcon.svg?react";
-import _ from "lodash";
-import { useSetRecoilState, useRecoilState } from "recoil";
-import { editItemModalState } from "@/states/confirmModalState";
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import useAxios from "@/hooks/useAxios";
 import Spinner from "@/components/common/spinner/Spinner";
+import useAxios from "@/hooks/useAxios";
+import { editItemModalState } from "@/states/confirmModalState";
+import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import AddImage from "@assets/svg/addImage.svg?react";
+import Decrease from "@assets/svg/decreaseIcon.svg?react";
+import DeleteImage from "@assets/svg/deleteImage.svg?react";
+import Increase from "@assets/svg/increaseIcon.svg?react";
+import Logo from "@assets/svg/subColorLogo.svg?react";
+import { useQuery } from "@tanstack/react-query";
+import _ from "lodash";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IErrors {
 	readonly itemNameError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 	readonly priceError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 	readonly contentError: {
-		isError: boolean;
-		errorMessage: string;
+		readonly isError: boolean;
+		readonly errorMessage: string;
+	};
+	readonly itemImageError: {
+		readonly isError: boolean;
+		readonly errorMessage: string;
 	};
 }
 
 interface IThumbNailImg {
 	readonly fileName: string;
 	readonly thumbNailImg: string;
+}
+
+interface IResponseData {
+	readonly id: number;
+	readonly title: string;
+	readonly imageUrl: string;
+	readonly amount: number;
+	readonly price: number;
+	readonly content: string;
 }
 
 const EditItemForm = () => {
@@ -53,6 +66,10 @@ const EditItemForm = () => {
 			isError: false,
 			errorMessage: "",
 		},
+		itemImageError: {
+			isError: false,
+			errorMessage: "",
+		},
 	});
 	const [replacePrice, setReplacePrice] = useState<string>("");
 	const [thumbNail, setThumbNail] = useState<IThumbNailImg>({
@@ -60,14 +77,20 @@ const EditItemForm = () => {
 		thumbNailImg: "",
 	});
 
-	const handleAddImage = () => {
-		if (labelRef.current) {
-			labelRef.current.click();
-		}
-	};
-
-	const handleDeleteImage = () => {
-		setThumbNail({ fileName: "", thumbNailImg: "" });
+	const successGetItemData = (responseData: IResponseData) => {
+		setItemFormValue({
+			itemName: responseData.title,
+			imageFile: null,
+			imageUrl: responseData.imageUrl,
+			quantity: responseData.amount,
+			price: responseData.price,
+			content: responseData.content,
+		});
+		setThumbNail({
+			fileName: responseData.imageUrl,
+			thumbNailImg: responseData.imageUrl,
+		});
+		setReplacePrice(responseData.price.toLocaleString());
 	};
 
 	const getDetailItemData = async () => {
@@ -78,36 +101,131 @@ const EditItemForm = () => {
 
 		if (response) {
 			const status = response.status;
-			const responseData = response.data.data;
+			const responseData: IResponseData = response.data.data;
 
 			if (status === 200) {
-				setItemFormValue({
-					itemName: responseData.title,
-					imageFile: null,
-					imageUrl: responseData.imageUrl,
-					quantity: responseData.amount,
-					price: responseData.price,
-					content: responseData.content,
-				});
-				setThumbNail({
-					fileName: responseData.imageUrl,
-					thumbNailImg: responseData.imageUrl,
-				});
-				setReplacePrice(responseData.price.toLocaleString());
+				successGetItemData(responseData);
 				return responseData;
 			}
 		}
 	};
 
 	const { isLoading } = useQuery({
-		queryKey: ["detailItem", channelId, itemId],
+		queryKey: ["editDetailItem", channelId, itemId],
 		queryFn: getDetailItemData,
 	});
 
+	const handleAddImage = () => {
+		if (labelRef.current) {
+			labelRef.current.click();
+		}
+	};
+
+	const handleDeleteImage = () => {
+		setThumbNail({ fileName: "", thumbNailImg: "" });
+		setItemFormValue((prev) => ({ ...prev, imageFile: null, imageUrl: "" }));
+		setErrors((prev) => ({
+			...prev,
+			itemImageError: {
+				isError: false,
+				errorMessage: "",
+			},
+		}));
+	};
+
+	const handleChangeFormCheckValidation = (
+		id: string,
+		value: string | null,
+	) => {
+		if (id === "itemName") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: true,
+						errorMessage: "아이템명 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					itemNameError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "price") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: true,
+						errorMessage: "가격 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					priceError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "content") {
+			if (value !== null && value.length === 0) {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: true,
+						errorMessage: "내용 입력은 필수입니다.",
+					},
+				}));
+			} else {
+				setErrors((prev) => ({
+					...prev,
+					contentError: {
+						isError: false,
+						errorMessage: "",
+					},
+				}));
+			}
+		}
+
+		if (id === "image" && value === null) {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: true,
+					errorMessage: "이미지 업로드는 필수입니다.",
+				},
+			}));
+		} else {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: false,
+					errorMessage: "",
+				},
+			}));
+		}
+	};
+
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
-			if (!e.currentTarget.files[0]) return;
+			let value = "upload";
 
+			if (!e.currentTarget.files[0]) {
+				handleChangeFormCheckValidation("image", null);
+				return;
+			} else {
+				handleChangeFormCheckValidation("image", value);
+			}
 			const imgFile = e.currentTarget.files[0];
 			const imgFileName = e.currentTarget.files[0].name;
 
@@ -156,68 +274,6 @@ const EditItemForm = () => {
 		}
 	};
 
-	const handleChangeFormCheckValidation = (id: string, value: string) => {
-		if (id === "itemName") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: true,
-						errorMessage: "아이템명 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "price") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: true,
-						errorMessage: "가격 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "content") {
-			if (value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: true,
-						errorMessage: "내용 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-	};
-
 	const handleChangeFormValue = _.throttle((e) => {
 		const id = e.target.id;
 		const value = e.target.value;
@@ -236,7 +292,8 @@ const EditItemForm = () => {
 		if (
 			errors.itemNameError.isError ||
 			errors.priceError.isError ||
-			errors.contentError.isError
+			errors.contentError.isError ||
+			errors.itemImageError.isError
 		) {
 			isValidation = false;
 		}
@@ -269,6 +326,20 @@ const EditItemForm = () => {
 				contentError: {
 					isError: true,
 					errorMessage: "내용 입력은 필수입니다.",
+				},
+			}));
+			isValidation = false;
+		}
+
+		if (
+			itemFormValue.imageFile === null &&
+			itemFormValue.imageUrl.length === 0
+		) {
+			setErrors((prev) => ({
+				...prev,
+				itemImageError: {
+					isError: true,
+					errorMessage: "이미지 업로드는 필수입니다.",
 				},
 			}));
 			isValidation = false;
@@ -317,53 +388,63 @@ const EditItemForm = () => {
 								<ErrorMsg message={errors.itemNameError.errorMessage} />
 							)}
 						</div>
-						{thumbNail.thumbNailImg === "" ? (
-							<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-								<Logo className="h-20 w-[4.188rem]" />
-							</div>
-						) : (
-							<img
-								src={thumbNail.thumbNailImg}
-								alt="이미지 미리보기"
-								className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
-							/>
-						)}
-
-						<div className="mt-[1.125rem] flex w-full sm:w-[19.563rem]">
-							<label
-								htmlFor="image"
-								ref={labelRef}
-								className="mr-[0.625rem] w-[2.813rem] text-black-800"
-							>
-								이미지
-							</label>
-							<p className="h-[2.438rem] max-w-[14rem] grow truncate border-b border-black-100 pb-[0.625rem]">
-								{thumbNail.fileName}
-							</p>
+						<div>
 							{thumbNail.thumbNailImg === "" ? (
-								<button
-									type="button"
-									onClick={handleAddImage}
-									className="ml-2 flex justify-start"
-								>
-									<AddImage />
-								</button>
+								<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
+									<Logo className="h-20 w-[4.188rem]" />
+								</div>
 							) : (
-								<button
-									type="button"
-									onClick={handleDeleteImage}
-									className="ml-2 flex justify-start"
-								>
-									<DeleteImage />
-								</button>
+								<img
+									src={thumbNail.thumbNailImg}
+									alt="이미지 미리보기"
+									className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
+								/>
 							)}
-							<input
-								id="image"
-								type="file"
-								accept=".jpg, .png"
-								className="hidden"
-								onChange={handleChangeThumbNailImage}
-							/>
+							<div className="mb-2 mt-[1.125rem] flex w-full sm:w-[19.563rem]">
+								<label
+									htmlFor="image"
+									ref={labelRef}
+									className="mr-[0.625rem] w-[2.813rem] text-black-800"
+								>
+									이미지
+								</label>
+								<p
+									className={`h-[2.438rem] max-w-[14rem] grow truncate border-b border-black-100 pb-[0.625rem] ${
+										errors.itemImageError.isError
+											? "border-danger"
+											: "border-black-100 focus:border-black-300"
+									}`}
+								>
+									{thumbNail.fileName}
+								</p>
+								{thumbNail.thumbNailImg === "" ? (
+									<button
+										type="button"
+										onClick={handleAddImage}
+										className="ml-2 flex justify-start"
+									>
+										<AddImage />
+									</button>
+								) : (
+									<button
+										type="button"
+										onClick={handleDeleteImage}
+										className="ml-2 flex justify-start"
+									>
+										<DeleteImage />
+									</button>
+								)}
+								<input
+									id="image"
+									type="file"
+									accept=".jpg, .png"
+									className="hidden"
+									onChange={handleChangeThumbNailImage}
+								/>
+							</div>
+							{errors.itemImageError.isError && (
+								<ErrorMsg message={errors.itemImageError.errorMessage} />
+							)}
 						</div>
 						<div className="mt-[0.875rem] flex w-full items-center sm:w-[19.563rem]">
 							<label

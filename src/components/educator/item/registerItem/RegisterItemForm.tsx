@@ -71,7 +71,7 @@ const RegisterItemForm = () => {
 
 	const handleDeleteImage = () => {
 		setThumbNail({ fileName: "", thumbNailImg: "" });
-		setItemFormValue((prev) => ({ ...prev, imageFile: null }));
+		setItemFormValue((prev) => ({ ...prev, imageFile: null, imageUrl: "" }));
 		setErrors((prev) => ({
 			...prev,
 			itemImageError: {
@@ -167,7 +167,7 @@ const RegisterItemForm = () => {
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
 			let value = "upload";
-			console.log(e.currentTarget.files[0]);
+
 			if (!e.currentTarget.files[0]) {
 				handleChangeFormCheckValidation("image", null);
 				return;
@@ -242,7 +242,8 @@ const RegisterItemForm = () => {
 		if (
 			errors.itemNameError.isError ||
 			errors.priceError.isError ||
-			errors.contentError.isError
+			errors.contentError.isError ||
+			errors.itemImageError.isError
 		) {
 			isValidation = false;
 		}
