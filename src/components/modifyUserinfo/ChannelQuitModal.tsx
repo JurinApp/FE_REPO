@@ -1,6 +1,6 @@
 import useAxios from "@/hooks/useAxios";
 import { IChannel } from "@/interface/userinfo";
-import { quitChannelModalState } from "@/states/confirmModalState";
+import { quitChannelModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";

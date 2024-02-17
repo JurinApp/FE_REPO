@@ -1,4 +1,4 @@
-import { TodayTradeFilterState } from "@/states/TodayTradeFilterState";
+import { TodayTradeFilterState } from "@/states/filterState/TodayTradeFilterState";
 import { useRecoilState } from "recoil";
 
 const FilterButton = () => {

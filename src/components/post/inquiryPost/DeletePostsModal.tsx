@@ -1,5 +1,5 @@
-import { deletePostsModalState } from "@/states/confirmModalState";
-import { selectedPostsState } from "@/states/selectedPostState";
+import { deletePostsModalState } from "@/states/modalState/confirmModalState";
+import { selectedPostsState } from "@/states/selectedState/selectedPostState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,

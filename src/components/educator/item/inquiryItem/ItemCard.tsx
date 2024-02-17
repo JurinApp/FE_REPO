@@ -1,5 +1,5 @@
 import { IItem } from "@/interface/item";
-import { selectedItemState } from "@/states/selectedItemState";
+import { selectedItemState } from "@/states/selectedState/selectedItemState";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";

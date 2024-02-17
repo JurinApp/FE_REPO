@@ -1,7 +1,7 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { paymentPointModalState } from "@/states/confirmModalState";
-import { selectedLearner } from "@/states/manageLearner";
+import { paymentPointModalState } from "@/states/modalState/confirmModalState";
+import { selectedLearner } from "@/states/selectedState/selectedLearnerState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,

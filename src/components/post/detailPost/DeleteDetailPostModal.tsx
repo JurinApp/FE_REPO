@@ -1,4 +1,4 @@
-import { deleteDetailPostModalState } from "@/states/confirmModalState";
+import { deleteDetailPostModalState } from "@/states/modalState/confirmModalState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,

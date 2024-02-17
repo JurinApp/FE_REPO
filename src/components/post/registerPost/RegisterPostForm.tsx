@@ -1,7 +1,7 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { POST_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
-import { registerPostModalState } from "@/states/confirmModalState";
+import { registerPostModalState } from "@/states/modalState/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";

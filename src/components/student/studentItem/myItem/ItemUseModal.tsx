@@ -1,6 +1,6 @@
 import { IMyItem } from "./MyItemContainer";
 import { useRecoilState } from "recoil";
-import { itemUseModalState } from "@/states/confirmModalState";
+import { itemUseModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 type TItemBuyModalProps = {
 	readonly onConfirm: () => void;
@@ -37,7 +37,7 @@ const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 				<div ref={modalRef}>
 					<div className="bg-opacity-2 flex h-[21.813rem] w-[20.813rem] justify-center bg-[#ffffff]">
 						<div className="flex flex-col">
-							<div className="border-b-main-disabled mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b">
+							<div className="mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b border-b-main-disabled">
 								<p className="text-lg font-medium">
 									<span className="font-bold text-tekhelet">
 										{item.itemName}

@@ -1,5 +1,5 @@
 import { ITabs } from "@/pages/student/stock/LearnerStockDetailPage";
-import { selectedStockTabState } from "@/states/selectedStockTabState";
+import { selectedStockTabState } from "@/states/selectedTabState/selectedStockTabState";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 

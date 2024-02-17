@@ -1,6 +1,6 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { editItemModalState } from "@/states/confirmModalState";
+import { editItemModalState } from "@/states/modalState/confirmModalState";
 import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";

@@ -2,7 +2,7 @@ import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { POST_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
-import { editPostModalState } from "@/states/confirmModalState";
+import { editPostModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
 import { changeDateFormat } from "@/utils/changeDateFormat";
 import { yupResolver } from "@hookform/resolvers/yup";

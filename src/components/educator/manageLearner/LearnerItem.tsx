@@ -1,5 +1,5 @@
 import { ILearnerItem } from "@/interface/learnerItem";
-import { selectedLearner } from "@/states/manageLearner";
+import { selectedLearner } from "@/states/selectedState/selectedLearnerState";
 import { useRecoilState } from "recoil";
 
 interface ILearnerInfoProps {

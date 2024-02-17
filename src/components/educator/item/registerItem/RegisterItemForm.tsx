@@ -6,7 +6,7 @@ import Increase from "@assets/svg/increaseIcon.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import _ from "lodash";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { registerItemModalState } from "@/states/confirmModalState";
+import { registerItemModalState } from "@/states/modalState/confirmModalState";
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
 import { useEffect } from "react";

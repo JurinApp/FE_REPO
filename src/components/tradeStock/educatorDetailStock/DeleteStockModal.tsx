@@ -1,6 +1,6 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { deleteDetailTradeStockModalState } from "@/states/confirmModalState";
+import { deleteDetailTradeStockModalState } from "@/states/modalState/confirmModalState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,

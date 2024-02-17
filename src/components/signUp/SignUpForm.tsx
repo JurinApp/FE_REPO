@@ -1,7 +1,7 @@
 import { SIGN_UP_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
 import useInput from "@/hooks/useInput";
-import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
+import { signUpConfirmModalState } from "@/states/modalState/signUpConfirmModal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";

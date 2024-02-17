@@ -1,5 +1,5 @@
-import { deleteItemsModalState } from "@/states/confirmModalState";
-import { selectedItemState } from "@/states/selectedItemState";
+import { deleteItemsModalState } from "@/states/modalState/confirmModalState";
+import { selectedItemState } from "@/states/selectedState/selectedItemState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

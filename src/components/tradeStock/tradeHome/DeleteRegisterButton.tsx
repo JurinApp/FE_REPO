@@ -1,5 +1,5 @@
-import { deleteStocksModalState } from "@/states/confirmModalState";
-import { selectedStock } from "@/states/tradeStock";
+import { deleteStocksModalState } from "@/states/modalState/confirmModalState";
+import { selectedStock } from "@/states/selectedState/selectedTradeStock";
 import { userRoleState } from "@/states/userRoleState";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";

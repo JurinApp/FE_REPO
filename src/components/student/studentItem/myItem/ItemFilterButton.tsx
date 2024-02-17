@@ -1,4 +1,4 @@
-import { myItemFilterState } from "@/states/myItemFilterState";
+import { myItemFilterState } from "@/states/filterState/myItemFilterState";
 import { useRecoilState } from "recoil";
 
 const ItemFilterButton = () => {

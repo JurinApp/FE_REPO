@@ -2,7 +2,7 @@ import { IPostResponseData } from "@/interface/post";
 import {
 	allCheckPostsState,
 	selectedPostsState,
-} from "@/states/selectedPostState";
+} from "@/states/selectedState/selectedPostState";
 import { userRoleState } from "@/states/userRoleState";
 import { ChangeEvent, useEffect, useRef } from "react";
 import {

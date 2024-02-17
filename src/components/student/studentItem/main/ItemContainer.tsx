@@ -2,7 +2,7 @@ import { useState } from "react";
 import Item from "./Item";
 import ItemBuyModal from "./ItemBuyModal";
 import { useSetRecoilState } from "recoil";
-import { itemBuyModalState } from "@/states/confirmModalState";
+import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 
 const ITEM_LIST = [
 	{

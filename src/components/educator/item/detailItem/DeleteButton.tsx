@@ -1,4 +1,4 @@
-import { deleteDetailItemModalState } from "@/states/confirmModalState";
+import { deleteDetailItemModalState } from "@/states/modalState/confirmModalState";
 import { useSetRecoilState } from "recoil";
 
 const DeleteButton = () => {

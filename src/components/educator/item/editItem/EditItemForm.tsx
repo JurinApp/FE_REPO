@@ -1,7 +1,7 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { editItemModalState } from "@/states/confirmModalState";
+import { editItemModalState } from "@/states/modalState/confirmModalState";
 import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
 import AddImage from "@assets/svg/addImage.svg?react";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";

@@ -1,4 +1,4 @@
-import { registerItemModalState } from "@/states/confirmModalState";
+import { registerItemModalState } from "@/states/modalState/confirmModalState";
 import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";

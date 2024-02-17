@@ -1,4 +1,4 @@
-import { deleteDetailPostModalState } from "@/states/confirmModalState";
+import { deleteDetailPostModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
