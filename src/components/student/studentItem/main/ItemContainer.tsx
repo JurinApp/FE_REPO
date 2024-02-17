@@ -52,14 +52,18 @@ const ItemContainer = () => {
 					{!isLoading ? (
 						itemList.data.results.map((item: IItem) => (
 							<div key={item.id}>
-								<div onClick={() => handleModalOpen(item)}>
+								<button
+									onClick={() => handleModalOpen(item)}
+									disabled={!item.amount}
+								>
 									<Item
+										amount={item.amount}
 										id={item.id}
 										title={item.title}
 										price={item.price}
 										imageUrl={item.imageUrl}
 									/>
-								</div>
+								</button>
 							</div>
 						))
 					) : (

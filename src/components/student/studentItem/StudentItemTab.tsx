@@ -30,16 +30,16 @@ const StudentItemTab = () => {
 		navigate(path);
 	};
 
-	useEffect(() => {
-		const path = location.pathname;
+	// useEffect(() => {
+	// 	const path = location.pathname;
 
-		if (path === "/studentItem") {
-			setSelectedTab("studentItemHome");
-		}
-		if (path === "/studentItem/myItem") {
-			setSelectedTab("studentMyItem");
-		}
-	}, [location]);
+	// 	if (path === "/studentItem") {
+	// 		setSelectedTab("studentItemHome");
+	// 	}
+	// 	if (path === "/studentItem/myItem") {
+	// 		setSelectedTab("studentMyItem");
+	// 	}
+	// }, [location]);
 
 	useEffect(() => {
 		return () => {

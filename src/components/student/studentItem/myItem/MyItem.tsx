@@ -5,7 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { itemHistoryModalState } from "@/states/confirmModalState";
 
 interface IMyItemProps {
-	readonly itemId: string;
+	readonly itemId: number;
 	readonly itemName: string;
 	readonly quantity: number;
 }
