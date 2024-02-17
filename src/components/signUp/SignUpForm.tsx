@@ -41,7 +41,7 @@ const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
-	const { isLoading, axiosData } = useAxios();
+	const { isFetchLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const {
 		register,
@@ -510,7 +510,7 @@ const SignUpForm = () => {
 			{confirmModalState.isModalOpen && (
 				<SignUpConfirmModal setIsSignUp={setIsSignUp} />
 			)}
-			{isLoading && <Spinner />}
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };

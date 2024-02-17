@@ -18,7 +18,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editTradeStockModalState);
 	const queryClient = useQueryClient();
 	const { channelId, stockId } = useParams();
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const navigate = useNavigate();
 	const [replacePrice, setReplacePrice] = useState<string>("");
 
@@ -280,6 +280,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 					</form>
 				)}
 			</div>
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };

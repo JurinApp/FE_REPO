@@ -21,7 +21,7 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editPostModalState);
 	const navigate = useNavigate();
 	const { channelId, postId } = useParams();
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const queryClient = useQueryClient();
 	const [replaceFormDate, setReplaceFormDate] = useState<string>("");
 	const {
@@ -140,7 +140,7 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-			{isLoading ? (
+			{isLoading || isFetchLoading ? (
 				<Spinner />
 			) : (
 				<form onSubmit={handleSubmit(handleClickEditBtn)}>
