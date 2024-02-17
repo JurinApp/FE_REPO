@@ -5,5 +5,5 @@ export const decodeToken = (token: string) => {
 	const decodePayload = decode(payload);
 	const payloadObj = JSON.parse(decodePayload);
 
-	return payloadObj.user_role.name;
+	return payloadObj.user_role.name ? payloadObj.user_role.name : "anonymous";
 };
