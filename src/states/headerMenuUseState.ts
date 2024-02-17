@@ -1,9 +1,9 @@
 import { atom } from "recoil";
 
 interface IHeaderMenuUseState {
-	isUseHeader: boolean;
-	isUseMenu: boolean;
-	isUseTab: boolean;
+	readonly isUseHeader: boolean;
+	readonly isUseMenu: boolean;
+	readonly isUseTab: boolean;
 }
 
 export const headerMenuUseState = atom<IHeaderMenuUseState>({
