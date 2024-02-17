@@ -66,12 +66,6 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 
 			if (status === 200) {
 				const stockData = response.data.data;
-				setValue("stockName", stockData.name);
-				setValue("price", stockData.purchasePrice);
-				setValue("tax", stockData.tax);
-				setValue("standard", stockData.standard);
-				setValue("content", stockData.content);
-				setReplacePrice(stockData.purchasePrice.toLocaleString());
 				return stockData;
 			}
 
@@ -82,7 +76,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		}
 	};
 
-	const { isLoading } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["editDetailStock", channelId, stockId],
 		queryFn: getDetailStockData,
 	});
@@ -146,11 +140,26 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		setIsOpenModal(true);
 	};
 
+	const successGetStockData = () => {
+		setValue("stockName", data.name);
+		setValue("price", data.purchasePrice);
+		setValue("tax", data.tax);
+		setValue("standard", data.standard);
+		setValue("content", data.content);
+		setReplacePrice(data.purchasePrice.toLocaleString());
+	};
+
 	useEffect(() => {
 		if (isEdit) {
 			handleSubmitEditTradeStockForm();
 		}
 	}, [isEdit]);
+
+	useEffect(() => {
+		if (data) {
+			successGetStockData();
+		}
+	}, [data]);
 
 	return (
 		<>
