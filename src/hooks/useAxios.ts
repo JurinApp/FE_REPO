@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const useAxios = () => {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isFetchLoading, setIsFetchLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	const defaultAxios: AxiosInstance = axios.create({
@@ -41,7 +41,7 @@ const useAxios = () => {
 
 	const axiosData = async (type: string, configParams: AxiosRequestConfig) => {
 		try {
-			setIsLoading(true);
+			setIsFetchLoading(true);
 			if (type === "default") {
 				const response = await defaultAxios.request(configParams);
 				return response;
@@ -56,11 +56,11 @@ const useAxios = () => {
 				return axiosError.response;
 			}
 		} finally {
-			setIsLoading(false);
+			setIsFetchLoading(false);
 		}
 	};
 
-	return { isLoading, axiosData };
+	return { isFetchLoading, axiosData };
 };
 
 export default useAxios;

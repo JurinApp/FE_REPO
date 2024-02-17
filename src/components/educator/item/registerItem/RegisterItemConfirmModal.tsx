@@ -1,11 +1,11 @@
-import { registerItemModalState } from "@/states/modalState/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
-import { useEffect, useRef } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "@/hooks/useAxios";
-import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "@/components/common/spinner/Spinner";
+import useAxios from "@/hooks/useAxios";
+import { registerItemModalState } from "@/states/modalState/confirmModalState";
+import { registerItemForm } from "@/states/registerItemForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface IResult {
 	imageUrl: string;
@@ -14,7 +14,7 @@ interface IResult {
 
 const RegisterItemConfirmModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(registerItemModalState);
-	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const itemFormValue = useRecoilValue(registerItemForm);
 	const resetIsOpenModal = useResetRecoilState(registerItemModalState);
 	const { axiosData, isFetchLoading } = useAxios();
 	const { channelId } = useParams();
@@ -74,7 +74,6 @@ const RegisterItemConfirmModal = () => {
 				if (status === 201) {
 					const itemId = response.data.data.id;
 					alert("아이템 등록이 완료 되었습니다.");
-					setItemFormValue(INITIAL_VALUE);
 					queryClient.invalidateQueries({ queryKey: ["items", channelId] });
 					navigate(`/${channelId}/item/detail/${itemId}`);
 				}

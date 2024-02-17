@@ -93,7 +93,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
 			data: {
 				name: getValues("stockName"),
-				purchasePrice: 1111111,
+				purchasePrice: getValues("price"),
 				tax: getValues("tax"),
 				standard: getValues("standard"),
 				content: getValues("content"),

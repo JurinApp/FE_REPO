@@ -1,11 +1,11 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
 import { editItemModalState } from "@/states/modalState/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { registerItemForm } from "@/states/registerItemForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface IResult {
 	imageUrl: string;
@@ -14,7 +14,7 @@ interface IResult {
 
 const EditConfirmItemModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(editItemModalState);
-	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const itemFormValue = useRecoilValue(registerItemForm);
 	const resetIsOpenModal = useResetRecoilState(editItemModalState);
 	const { axiosData, isFetchLoading } = useAxios();
 	const { channelId, itemId } = useParams();
@@ -88,7 +88,6 @@ const EditConfirmItemModal = () => {
 
 				if (status === 200) {
 					alert("수정이 완료되었습니다.");
-					setItemFormValue(INITIAL_VALUE);
 					queryClient.invalidateQueries({
 						queryKey: ["detailItem", channelId, itemId],
 					});

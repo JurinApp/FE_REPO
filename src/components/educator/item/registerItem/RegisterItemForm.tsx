@@ -1,13 +1,13 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import { registerItemModalState } from "@/states/modalState/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { registerItemForm } from "@/states/registerItemForm";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import _ from "lodash";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IErrors {
 	readonly itemNameError: {
@@ -31,6 +31,7 @@ interface IErrors {
 const RegisterItemForm = () => {
 	const setIsOpenModal = useSetRecoilState(registerItemModalState);
 	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const resetItemFormValue = useResetRecoilState(registerItemForm);
 	const [errors, setErrors] = useState<IErrors>({
 		itemNameError: {
 			isError: false,
@@ -282,7 +283,7 @@ const RegisterItemForm = () => {
 
 	useEffect(() => {
 		return () => {
-			setItemFormValue(INITIAL_VALUE);
+			resetItemFormValue();
 		};
 	}, []);
 

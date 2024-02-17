@@ -2,7 +2,7 @@ import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
 import { editItemModalState } from "@/states/modalState/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { registerItemForm } from "@/states/registerItemForm";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IErrors {
 	readonly itemNameError: {
@@ -46,6 +46,7 @@ const EditItemForm = () => {
 	const { channelId, itemId } = useParams();
 	const { axiosData } = useAxios();
 	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const resetItemFormValue = useResetRecoilState(registerItemForm);
 	const [errors, setErrors] = useState<IErrors>({
 		itemNameError: {
 			isError: false,
@@ -88,16 +89,14 @@ const EditItemForm = () => {
 
 		if (response) {
 			const status = response.status;
-			const responseData: IResponseData = response.data.data;
 
 			if (status === 200) {
-				successGetItemData(responseData);
-				return responseData;
+				return response.data.data;
 			}
 		}
 	};
 
-	const { isLoading } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["editDetailItem", channelId, itemId],
 		queryFn: getDetailItemData,
 	});
@@ -333,8 +332,14 @@ const EditItemForm = () => {
 	};
 
 	useEffect(() => {
+		if (data) {
+			successGetItemData(data);
+		}
+	}, [data]);
+
+	useEffect(() => {
 		return () => {
-			setItemFormValue(INITIAL_VALUE);
+			resetItemFormValue();
 		};
 	}, []);
 
