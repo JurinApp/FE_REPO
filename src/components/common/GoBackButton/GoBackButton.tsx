@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 interface StockHeaderProps {
 	name?: string;
+	readonly backNavigationPath: string;
 }
-const GoBackButton = ({ name }: StockHeaderProps) => {
+const GoBackButton = ({ name, backNavigationPath }: StockHeaderProps) => {
 	const navigate = useNavigate();
 
 	const handleGoBack = () => {
-		navigate(-1);
+		navigate(backNavigationPath);
 	};
 
 	return (

@@ -4,8 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
 	const location = useLocation();
-	// TODO : 권한 별로 나누어 경로 지정해줄 예정
-	const path = location.pathname === "/signUp" ? "/login" : "";
+	const path = location.pathname === "/signUp" ? "/login" : "/mypage";
 
 	return (
 		<header className="sticky top-0 z-[99] mx-auto h-[2.938rem] w-full border-b border-black-200 bg-white sm:w-[24.563rem]">
