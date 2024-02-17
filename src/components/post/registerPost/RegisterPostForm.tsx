@@ -68,8 +68,10 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 				navigate(`/${channelId}/post`);
 			}
 
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
+			if (status === 403) {
+				alert(
+					"해당 채널의 게시글 생성 권한이 없거나 게시글 등록 형식이 잘못되었습니다.",
+				);
 			}
 		}
 	};

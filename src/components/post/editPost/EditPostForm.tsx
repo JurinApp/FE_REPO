@@ -54,14 +54,15 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 				return response.data.data;
 			}
 
+			if (status === 403) {
+				alert(
+					"해당 채널의 게시글 생성 권한이 없거나 게시글 등록 형식이 잘못되었습니다.",
+				);
+			}
+
 			if (status === 404) {
 				alert("존재하지 않는 게시글입니다.");
 				navigate(`/${channelId}/post`);
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-				navigate(`/${channelId}/post/detail/${postId}`);
 			}
 		}
 	};
