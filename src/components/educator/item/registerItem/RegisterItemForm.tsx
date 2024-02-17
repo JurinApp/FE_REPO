@@ -1,15 +1,13 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
-import AddImage from "@assets/svg/addImage.svg?react";
-import DeleteImage from "@assets/svg/deleteImage.svg?react";
-import Logo from "@assets/svg/subColorLogo.svg?react";
-import Increase from "@assets/svg/increaseIcon.svg?react";
-import Decrease from "@assets/svg/decreaseIcon.svg?react";
-import _ from "lodash";
-import { useSetRecoilState, useRecoilState } from "recoil";
-import { registerItemModalState } from "@/states/modalState/confirmModalState";
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
+import { registerItemModalState } from "@/states/modalState/confirmModalState";
 import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
-import { useEffect } from "react";
+import Decrease from "@assets/svg/decreaseIcon.svg?react";
+import DeleteImage from "@assets/svg/deleteImage.svg?react";
+import Increase from "@assets/svg/increaseIcon.svg?react";
+import Logo from "@assets/svg/subColorLogo.svg?react";
+import _ from "lodash";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface IErrors {
 	readonly itemNameError: {
@@ -30,13 +28,7 @@ interface IErrors {
 	};
 }
 
-interface IThumbNailImg {
-	readonly fileName: string;
-	readonly thumbNailImg: string;
-}
-
 const RegisterItemForm = () => {
-	const labelRef = useRef<HTMLLabelElement>(null);
 	const setIsOpenModal = useSetRecoilState(registerItemModalState);
 	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
 	const [errors, setErrors] = useState<IErrors>({
@@ -58,25 +50,16 @@ const RegisterItemForm = () => {
 		},
 	});
 	const [replacePrice, setReplacePrice] = useState<string>("");
-	const [thumbNail, setThumbNail] = useState<IThumbNailImg>({
-		fileName: "",
-		thumbNailImg: "",
-	});
-
-	const handleAddImage = () => {
-		if (labelRef.current) {
-			labelRef.current.click();
-		}
-	};
+	const [thumbNail, setThumbNail] = useState<string>("");
 
 	const handleDeleteImage = () => {
-		setThumbNail({ fileName: "", thumbNailImg: "" });
+		setThumbNail("");
 		setItemFormValue((prev) => ({ ...prev, imageFile: null, imageUrl: "" }));
 		setErrors((prev) => ({
 			...prev,
 			itemImageError: {
-				isError: false,
-				errorMessage: "",
+				isError: true,
+				errorMessage: "이미지 업로드는 필수입니다.",
 			},
 		}));
 	};
@@ -166,6 +149,7 @@ const RegisterItemForm = () => {
 
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget.files) {
+			const imgFile = e.currentTarget.files[0];
 			let value = "upload";
 
 			if (!e.currentTarget.files[0]) {
@@ -175,9 +159,6 @@ const RegisterItemForm = () => {
 				handleChangeFormCheckValidation("image", value);
 			}
 
-			const imgFile = e.currentTarget.files[0];
-			const imgFileName = e.currentTarget.files[0].name;
-
 			setItemFormValue((prev) => ({ ...prev, imageFile: imgFile }));
 
 			const reader = new FileReader();
@@ -185,10 +166,7 @@ const RegisterItemForm = () => {
 
 			reader.onload = (e) => {
 				if (e.target !== null) {
-					setThumbNail({
-						thumbNailImg: e.target.result as string,
-						fileName: imgFileName,
-					});
+					setThumbNail(e.target.result as string);
 				}
 			};
 		}
@@ -332,59 +310,41 @@ const RegisterItemForm = () => {
 						)}
 					</div>
 					<div>
-						{thumbNail.thumbNailImg === "" ? (
-							<div className="mt-[0.875rem] flex min-h-[9.375rem] w-full items-center justify-center rounded-[0.25rem] bg-sub2-selected sm:w-[19.563rem]">
-								<Logo className="h-20 w-[4.188rem]" />
+						{thumbNail === "" ? (
+							<div className="mb-2">
+								<label
+									htmlFor="itemImage"
+									className={`mt-[0.875rem] flex min-h-[9.375rem] w-full cursor-pointer flex-col items-center justify-center rounded-[0.25rem] bg-sub2-selected font-medium text-medium-slate-blue hover:bg-disabled-tekhelet sm:w-[19.563rem] ${
+										errors.itemImageError.isError && "border border-danger"
+									}`}
+								>
+									<Logo className="mb-2 h-20 w-[4.188rem]" />
+									이미지 업로드
+								</label>
+								<input
+									id="itemImage"
+									type="file"
+									className="hidden"
+									accept=".jpg, .png"
+									onChange={handleChangeThumbNailImage}
+								/>
 							</div>
 						) : (
-							<img
-								src={thumbNail.thumbNailImg}
-								alt="이미지 미리보기"
-								className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
-							/>
-						)}
-						<div className="mb-2 mt-[1.125rem] flex w-full sm:w-[19.563rem]">
-							<label
-								htmlFor="image"
-								ref={labelRef}
-								className="mr-[0.625rem] w-[2.813rem] text-black-800"
-							>
-								이미지
-							</label>
-							<p
-								className={`h-[2.438rem] max-w-[14rem] grow truncate border-b pb-[0.625rem] ${
-									errors.itemImageError.isError
-										? "border-danger"
-										: "border-black-100 focus:border-black-300"
-								}`}
-							>
-								{thumbNail.fileName}
-							</p>
-							{thumbNail.thumbNailImg === "" ? (
+							<div className="relative">
+								<img
+									src={thumbNail}
+									alt="이미지 미리보기"
+									className="mt-[0.875rem] h-[9.375rem] w-full rounded-[0.25rem] object-contain sm:w-[19.563rem]"
+								/>
 								<button
-									type="button"
-									onClick={handleAddImage}
-									className="ml-2 flex justify-start"
-								>
-									<AddImage />
-								</button>
-							) : (
-								<button
-									type="button"
 									onClick={handleDeleteImage}
-									className="ml-2 flex justify-start"
+									type="button"
+									className="absolute right-0 top-0 flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 hover:bg-black-100"
 								>
 									<DeleteImage />
 								</button>
-							)}
-							<input
-								id="image"
-								type="file"
-								accept=".jpg, .png"
-								className="hidden"
-								onChange={handleChangeThumbNailImage}
-							/>
-						</div>
+							</div>
+						)}
 						{errors.itemImageError.isError && (
 							<ErrorMsg message={errors.itemImageError.errorMessage} />
 						)}
