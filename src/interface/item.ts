@@ -12,3 +12,7 @@ export interface IItemResponseData {
 	readonly previous: string | null;
 	readonly results: IItem[];
 }
+
+export interface IErrorMessages {
+	readonly [key: string]: string;
+}

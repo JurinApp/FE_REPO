@@ -1,5 +1,6 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
+import { ERROR_MESSAGES } from "@/constants/itemErrorMessages";
 import useAxios from "@/hooks/useAxios";
 import { editItemModalState } from "@/states/modalState/confirmModalState";
 import { registerItemForm } from "@/states/registerItemForm";
@@ -42,11 +43,13 @@ interface IResponseData {
 }
 
 const EditItemForm = () => {
+	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
 	const setIsOpenModal = useSetRecoilState(editItemModalState);
+	const resetItemFormValue = useResetRecoilState(registerItemForm);
 	const { channelId, itemId } = useParams();
 	const { axiosData } = useAxios();
-	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
-	const resetItemFormValue = useResetRecoilState(registerItemForm);
+	const [thumbNail, setThumbNail] = useState<string>("");
+	const [replacePrice, setReplacePrice] = useState<string>("");
 	const [errors, setErrors] = useState<IErrors>({
 		itemNameError: {
 			isError: false,
@@ -65,8 +68,6 @@ const EditItemForm = () => {
 			errorMessage: "",
 		},
 	});
-	const [replacePrice, setReplacePrice] = useState<string>("");
-	const [thumbNail, setThumbNail] = useState<string>("");
 
 	const successGetItemData = (responseData: IResponseData) => {
 		setItemFormValue({
@@ -113,87 +114,29 @@ const EditItemForm = () => {
 		}));
 	};
 
+	const setItemFormErrors = (key: string, isError: boolean) => {
+		setErrors((prev) => ({
+			...prev,
+			[`${key}Error`]: {
+				isError,
+				errorMessage: isError ? ERROR_MESSAGES[key] : "",
+			},
+		}));
+	};
+
 	const handleChangeFormCheckValidation = (
 		id: string,
 		value: string | null,
 	) => {
-		if (id === "itemName") {
-			if (value !== null && value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: true,
-						errorMessage: "아이템명 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					itemNameError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
+		let isError: boolean = false;
 
-		if (id === "price") {
-			if (value !== null && value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: true,
-						errorMessage: "가격 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					priceError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "content") {
-			if (value !== null && value.length === 0) {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: true,
-						errorMessage: "내용 입력은 필수입니다.",
-					},
-				}));
-			} else {
-				setErrors((prev) => ({
-					...prev,
-					contentError: {
-						isError: false,
-						errorMessage: "",
-					},
-				}));
-			}
-		}
-
-		if (id === "image" && value === null) {
-			setErrors((prev) => ({
-				...prev,
-				itemImageError: {
-					isError: true,
-					errorMessage: "이미지 업로드는 필수입니다.",
-				},
-			}));
+		if (id === "itemImage") {
+			isError = value === null;
 		} else {
-			setErrors((prev) => ({
-				...prev,
-				itemImageError: {
-					isError: false,
-					errorMessage: "",
-				},
-			}));
+			isError = value !== null && value.length === 0;
 		}
+
+		setItemFormErrors(id, isError);
 	};
 
 	const handleChangeThumbNailImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -201,12 +144,9 @@ const EditItemForm = () => {
 			const imgFile = e.currentTarget.files[0];
 			let value = "upload";
 
-			if (!e.currentTarget.files[0]) {
-				handleChangeFormCheckValidation("image", null);
-				return;
-			} else {
-				handleChangeFormCheckValidation("image", value);
-			}
+			!e.currentTarget.files[0]
+				? handleChangeFormCheckValidation("itemImage", null)
+				: handleChangeFormCheckValidation("itemImage", value);
 
 			setItemFormValue((prev) => ({ ...prev, imageFile: imgFile }));
 
@@ -222,21 +162,15 @@ const EditItemForm = () => {
 	};
 
 	const handleChangeQuantity = (type: string) => {
-		if (type === "decrease") {
-			if (itemFormValue.quantity === 1) return;
+		if (type === "decrease" && itemFormValue.quantity === 1) return;
 
-			setItemFormValue((prev) => ({
-				...prev,
-				quantity: itemFormValue.quantity - 1,
-			}));
-		}
+		const increment = type === "decrease" ? -1 : 1;
+		const newQuantity = itemFormValue.quantity + increment;
 
-		if (type === "increase") {
-			setItemFormValue((prev) => ({
-				...prev,
-				quantity: itemFormValue.quantity + 1,
-			}));
-		}
+		setItemFormValue((prev) => ({
+			...prev,
+			quantity: newQuantity,
+		}));
 	};
 
 	const handleChangePrice = (value: string) => {
@@ -262,72 +196,27 @@ const EditItemForm = () => {
 		handleChangeFormCheckValidation(id, value);
 	}, 1000);
 
-	const handleSubmitFormCheckValidation = () => {
-		let isValidation: boolean = true;
+	const formCheckValidation = () => {
+		const validations: { [key: string]: boolean } = {
+			itemName: itemFormValue.itemName.length === 0,
+			price: itemFormValue.price === 0,
+			content: itemFormValue.content.length === 0,
+			itemImage: itemFormValue.imageFile === null,
+		};
 
-		if (
-			errors.itemNameError.isError ||
-			errors.priceError.isError ||
-			errors.contentError.isError ||
-			errors.itemImageError.isError
-		) {
-			isValidation = false;
-		}
+		Object.keys(validations).forEach((key) => {
+			if (validations[key]) {
+				setItemFormErrors(key, true);
+			}
+		});
 
-		if (itemFormValue.itemName.length === 0) {
-			setErrors((prev) => ({
-				...prev,
-				itemNameError: {
-					isError: true,
-					errorMessage: "아이템명 입력은 필수입니다.",
-				},
-			}));
-			isValidation = false;
-		}
-
-		if (itemFormValue.price === 0) {
-			setErrors((prev) => ({
-				...prev,
-				priceError: {
-					isError: true,
-					errorMessage: "가격 입력은 필수입니다.",
-				},
-			}));
-			isValidation = false;
-		}
-
-		if (itemFormValue.content.length === 0) {
-			setErrors((prev) => ({
-				...prev,
-				contentError: {
-					isError: true,
-					errorMessage: "내용 입력은 필수입니다.",
-				},
-			}));
-			isValidation = false;
-		}
-
-		if (
-			itemFormValue.imageFile === null &&
-			itemFormValue.imageUrl.length === 0
-		) {
-			setErrors((prev) => ({
-				...prev,
-				itemImageError: {
-					isError: true,
-					errorMessage: "이미지 업로드는 필수입니다.",
-				},
-			}));
-			isValidation = false;
-		}
-
-		return isValidation;
+		return Object.values(validations).includes(true);
 	};
 
 	const handleClickEditBtn = (e: FormEvent) => {
 		e.preventDefault();
 
-		if (!handleSubmitFormCheckValidation()) return;
+		if (formCheckValidation()) return;
 		setIsOpenModal(true);
 	};
 
