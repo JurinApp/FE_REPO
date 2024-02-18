@@ -283,6 +283,15 @@ const SignUpForm = () => {
 	}, [watch().id]);
 
 	useEffect(() => {
+		watch("password") !== watch("checkPassword") && watch("password")
+			? setError("checkPassword", {
+					type: "passwordMissMatch",
+					message: "비밀번호가 일치하지 않습니다.",
+				})
+			: clearErrors("checkPassword");
+	}, [watch().password, watch().checkPassword]);
+
+	useEffect(() => {
 		if (
 			watch().auth === "1" &&
 			codeDuplicateCheck.isCodeBtnDisabled &&
