@@ -1,11 +1,12 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 import StockTab from "./StockTab";
 import { useRecoilValue } from "recoil";
-import { selectedStockTabState } from "@/states/selectedStockTabState";
+import { selectedStockTabState } from "@/states/selectedTabState/selectedStockTabState";
 import StockSpecContainer from "./spec/StockSpecContainer";
 import StockBuyContainer from "./buy/StockBuyContainer";
 import StockSellContainer from "./sell/StockSellContainer";
 import StockOrderContainer from "./order/StockOrderContainer";
+import { useParams } from "react-router-dom";
 
 const SAMPLE_STOCK = {
 	stockInfo: {
@@ -49,10 +50,14 @@ const SAMPLE_STOCK = {
 
 const LearnerStockDetailContainer = () => {
 	const selectedTab = useRecoilValue(selectedStockTabState);
+	const { channelId, stockId } = useParams();
 
 	return (
 		<>
-			<GoBackButton name={SAMPLE_STOCK.stockInfo.name} />
+			<GoBackButton
+				name={SAMPLE_STOCK.stockInfo.name}
+				backNavigationPath={`/${channelId}/stock/${stockId}`}
+			/>
 			<StockTab />
 			{selectedTab === "spec" && (
 				<StockSpecContainer

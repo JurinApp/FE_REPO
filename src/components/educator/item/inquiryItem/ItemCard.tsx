@@ -1,5 +1,5 @@
 import { IItem } from "@/interface/item";
-import { selectedItemState } from "@/states/selectedItemState";
+import { selectedItemState } from "@/states/selectedState/selectedItemState";
 import Logo from "@assets/svg/subColorLogo.svg?react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -32,18 +32,16 @@ const ItemCard = ({ item }: IItemCardProps) => {
 				to={`/${channelId}/item/detail/${item.id}`}
 				className="mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]"
 			>
-				<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem] bg-sub2-selected">
+				<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem]">
 					{item.imageUrl === "" ? (
-						<Logo className="h-[3.875rem] w-[3.25rem]" />
+						<Logo className="h-[3.875rem] w-[3.25rem] bg-sub2-selected" />
 					) : (
-						<img
-							src={item.imageUrl}
-							alt="itemImage"
-							className="h-[7.188rem] w-full bg-contain"
-						/>
+						<div className="flex h-full w-full items-center justify-center border-none bg-white">
+							<img src={item.imageUrl} alt="itemImage" className="bg-cover" />
+						</div>
 					)}
 				</div>
-				<div className="flex grow items-center justify-center rounded-b-[0.25rem] bg-white">
+				<div className="flex grow items-center justify-center rounded-b-[0.25rem] border-t bg-white">
 					<p className="truncate text-sm">{item.title}</p>
 				</div>
 			</Link>

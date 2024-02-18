@@ -3,15 +3,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { headerMenuUseState } from "./states/headerMenuUseState";
+import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import EducatorRoute from "./components/common/permissionRoute/EducatorRoute";
-import LearnerRoute from "./components/common/permissionRoute/LearnerRoute";
-import IsLoginRoute from "./components/common/permissionRoute/IsLoginRoute";
+import EducatorRoute from "@components/common/permissionRoute/EducatorRoute";
+import LearnerRoute from "@components/common/permissionRoute/LearnerRoute";
+import IsLoginRoute from "@components/common/permissionRoute/IsLoginRoute";
+import Menu from "@components/common/menu/Menu";
+import Header from "@components/common/header/Header";
+import TradeTab from "@components/tradeStock/TradeTab";
 
-const Header = lazy(() => import("@components/common/header/Header"));
-const Menu = lazy(() => import("@components/common/menu/Menu"));
-const TradeTab = lazy(() => import("@components/tradeStock/TradeTab"));
 const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
 const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
@@ -26,18 +26,16 @@ const ManageLearnerPage = lazy(
 );
 const TradeHomePage = lazy(() => import("@pages/educator/trade/TradePage"));
 const RegisterStockPage = lazy(
-	() => import("@/pages/educator/trade/RegisterStockPage"),
+	() => import("@pages/educator/trade/RegisterStockPage"),
 );
 const DetailStockPage = lazy(
-	() => import("@/pages/educator/trade/DetailStockPage"),
+	() => import("@pages/educator/trade/DetailStockPage"),
 );
-const EditStockPage = lazy(
-	() => import("@/pages/educator/trade/EditStockPage"),
-);
+const EditStockPage = lazy(() => import("@pages/educator/trade/EditStockPage"));
 const TodayTradePage = lazy(() => import("@pages/common/TodayTradePage"));
 const SettingPage = lazy(() => import("@pages/common/SettingPage"));
 const LearnerStockDetailPage = lazy(
-	() => import("@/pages/student/stock/LearnerStockDetailPage"),
+	() => import("@pages/student/stock/LearnerStockDetailPage"),
 );
 const StudentItemPage = lazy(
 	() => import("@pages/student/item/StudentItemPage"),
@@ -73,9 +71,9 @@ const Router = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ReactQueryDevtools initialIsOpen={true} />
+			{isUseHeader && <Header />}
+			{isUseTab && <TradeTab />}
 			<Suspense fallback={<Spinner />}>
-				{isUseHeader && <Header />}
-				{isUseTab && <TradeTab />}
 				<Routes>
 					<Route path="/" element={<SplashPage />} />
 					<Route path="/login" element={<LoginPage />} />
@@ -145,8 +143,8 @@ const Router = () => {
 						<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
 					</Route>
 				</Routes>
-				{isUseMenu && <Menu />}
 			</Suspense>
+			{isUseMenu && <Menu />}
 		</QueryClientProvider>
 	);
 };

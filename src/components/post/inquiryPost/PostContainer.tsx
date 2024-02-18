@@ -4,7 +4,7 @@ import { useIntersectionObserver } from "@/hooks/useObserver";
 import { IPostResponseData } from "@/interface/post";
 import { userRoleState } from "@/states/userRoleState";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import DeletePostsModal from "./DeletePostsModal";
 import DeleteRegisterButton from "./DeleteRegisterButton";
@@ -20,6 +20,7 @@ const PostContainer = () => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
+	const navigate = useNavigate();
 
 	const handleInquiryPost = async (param: number) => {
 		const response = await axiosData("useToken", {
@@ -27,7 +28,18 @@ const PostContainer = () => {
 			url: `/${userRole}s/api/v1/channels/${channelId}/posts?limit=15&offset=${param}`,
 		});
 
-		return response?.data.data;
+		if (response) {
+			const status = response.status;
+
+			if (status === 200) {
+				return response.data.data;
+			}
+
+			if (status === 404) {
+				alert("현재 채널에 참여중이지 않습니다.");
+				navigate("/mypage");
+			}
+		}
 	};
 
 	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =

@@ -1,8 +1,8 @@
 import {
 	deleteConfirmModalState,
 	paymentPointModalState,
-} from "@/states/confirmModalState";
-import { selectedLearner } from "@/states/manageLearner";
+} from "@/states/modalState/confirmModalState";
+import { selectedLearner } from "@/states/selectedState/selectedLearnerState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import PointIcon from "@assets/svg/pointIcon.svg?react";
 

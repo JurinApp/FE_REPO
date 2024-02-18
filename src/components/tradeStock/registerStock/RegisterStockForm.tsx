@@ -1,7 +1,8 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
+import Spinner from "@/components/common/spinner/Spinner";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
-import { registerTradeStockModalState } from "@/states/confirmModalState";
+import { registerTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -15,7 +16,7 @@ interface IRegisterTradeStockFormProps {
 
 const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 	const { channelId } = useParams();
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const [replacePrice, setReplacePrice] = useState<string>("");
@@ -250,6 +251,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 					</button>
 				</form>
 			</div>
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };

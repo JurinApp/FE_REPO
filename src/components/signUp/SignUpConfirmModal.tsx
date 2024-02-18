@@ -1,4 +1,4 @@
-import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
+import { signUpConfirmModalState } from "@/states/modalState/signUpConfirmModal";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 

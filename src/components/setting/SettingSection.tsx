@@ -1,4 +1,4 @@
-import { withdrawalModalState } from "@/states/confirmModalState";
+import { withdrawalModalState } from "@/states/modalState/confirmModalState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";

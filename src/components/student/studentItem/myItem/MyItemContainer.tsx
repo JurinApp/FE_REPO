@@ -3,9 +3,9 @@ import ItemFilterButton from "./ItemFilterButton";
 import Item from "../main/Item";
 import MyItem from "./MyItem";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { myItemFilterState } from "@/states/myItemFilterState";
+import { myItemFilterState } from "@/states/filterState/myItemFilterState";
 import ItemUseModal from "./ItemUseModal";
-import { itemUseModalState } from "@/states/confirmModalState";
+import { itemUseModalState } from "@/states/modalState/confirmModalState";
 
 const ITEM_LIST = [
 	{

@@ -1,4 +1,4 @@
-import { selectedTabState } from "@/states/selectedTabState";
+import { selectedTabState } from "@/states/selectedTabState/selectedTabState";
 import { userRoleState } from "@/states/userRoleState";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";

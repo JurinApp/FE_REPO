@@ -1,8 +1,8 @@
+import { ITodayTradeStockItem } from "@/interface/stock";
 import { userRoleState } from "@/states/userRoleState";
 import IcLow from "@assets/svg/icLow.svg?react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { ITodayTradeStockItem } from "./TodayTradeContainer";
 
 interface TradeStockItemProps {
 	readonly stockItem: ITodayTradeStockItem;

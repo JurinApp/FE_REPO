@@ -2,7 +2,7 @@ import { IPost, IPostResponseData } from "@/interface/post";
 import {
 	allCheckPostsState,
 	selectedPostsState,
-} from "@/states/selectedPostState";
+} from "@/states/selectedState/selectedPostState";
 import { RefObject, useEffect } from "react";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import PostItem from "./PostItem";

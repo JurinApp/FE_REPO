@@ -1,4 +1,4 @@
-import { deleteDetailTradeStockModalState } from "@/states/confirmModalState";
+import { deleteDetailTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { useSetRecoilState } from "recoil";
 
 const DeleteStockButton = () => {

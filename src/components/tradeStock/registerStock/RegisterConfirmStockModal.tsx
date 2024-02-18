@@ -1,4 +1,4 @@
-import { registerTradeStockModalState } from "@/states/confirmModalState";
+import { registerTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 

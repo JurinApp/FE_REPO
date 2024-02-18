@@ -1,4 +1,4 @@
-import { itemHistoryModalState } from "@/states/confirmModalState";
+import { itemHistoryModalState } from "@/states/modalState/confirmModalState";
 import Cancel from "@assets/svg/cancel.svg?react";
 import { useRecoilState } from "recoil";
 

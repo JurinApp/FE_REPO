@@ -1,10 +1,11 @@
+import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { editItemModalState } from "@/states/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
+import { editItemModalState } from "@/states/modalState/confirmModalState";
+import { registerItemForm } from "@/states/registerItemForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface IResult {
 	imageUrl: string;
@@ -13,9 +14,9 @@ interface IResult {
 
 const EditConfirmItemModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(editItemModalState);
-	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const itemFormValue = useRecoilValue(registerItemForm);
 	const resetIsOpenModal = useResetRecoilState(editItemModalState);
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const { channelId, itemId } = useParams();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -87,7 +88,6 @@ const EditConfirmItemModal = () => {
 
 				if (status === 200) {
 					alert("수정이 완료되었습니다.");
-					setItemFormValue(INITIAL_VALUE);
 					queryClient.invalidateQueries({
 						queryKey: ["detailItem", channelId, itemId],
 					});
@@ -142,36 +142,42 @@ const EditConfirmItemModal = () => {
 	}, []);
 
 	return (
-		<div
-			className={`${
-				isOpenModal ? "fixed" : "hidden"
-			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
-		>
-			<div
-				ref={modalRef}
-				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
-			>
-				<div className="flex grow items-center justify-center">
-					<p className="my-auto">수정하시겠습니까?</p>
-				</div>
-				<div className="flex">
-					<button
-						type="button"
-						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={handleClickCancelBtn}
+		<>
+			{isFetchLoading ? (
+				<Spinner />
+			) : (
+				<div
+					className={`${
+						isOpenModal ? "fixed" : "hidden"
+					} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+				>
+					<div
+						ref={modalRef}
+						className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
 					>
-						취소
-					</button>
-					<button
-						type="button"
-						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={handleClickEditBtn}
-					>
-						확인
-					</button>
+						<div className="flex grow items-center justify-center">
+							<p className="my-auto">수정하시겠습니까?</p>
+						</div>
+						<div className="flex">
+							<button
+								type="button"
+								className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
+								onClick={handleClickCancelBtn}
+							>
+								취소
+							</button>
+							<button
+								type="button"
+								className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
+								onClick={handleClickEditBtn}
+							>
+								확인
+							</button>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 

@@ -4,7 +4,7 @@ import Minus from "@assets/svg/minus.svg?react";
 import { IItem } from "./ItemContainer";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { itemBuyModalState } from "@/states/confirmModalState";
+import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 type TItemBuyModalProps = {
 	readonly onConfirm: () => void;
 	readonly item: IItem;
@@ -51,7 +51,7 @@ const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 				<div ref={modalRef}>
 					<div className="bg-opacity-2 flex h-[21.813rem] w-[20.813rem] justify-center bg-[#ffffff]">
 						<div className="flex flex-col">
-							<div className="border-b-main-disabled mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b">
+							<div className="mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b border-b-main-disabled">
 								<p className="text-lg font-medium">
 									<span className="font-bold text-tekhelet">
 										{item.itemName}

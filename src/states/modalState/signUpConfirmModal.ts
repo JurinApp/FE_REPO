@@ -5,12 +5,12 @@ interface ISignUpConfirmModalState {
 	readonly isModalOpen: boolean;
 }
 
-const INITIAL_VALUE = {
+const AUTH_INITIAL_VALUE = {
 	selectedAuth: "1",
 	isModalOpen: false,
 };
 
 export const signUpConfirmModalState = atom<ISignUpConfirmModalState>({
 	key: "signUpConfirmModalState",
-	default: INITIAL_VALUE,
+	default: AUTH_INITIAL_VALUE,
 });

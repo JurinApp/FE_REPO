@@ -1,7 +1,7 @@
 import Calendar from "@assets/svg/calendar.svg?react";
 import CalendarModal from "./CalendarModal";
 import { useSetRecoilState } from "recoil";
-import { calendarModalState } from "@/states/confirmModalState";
+import { calendarModalState } from "@/states/modalState/confirmModalState";
 
 const today = new Date();
 const year = today.getFullYear();

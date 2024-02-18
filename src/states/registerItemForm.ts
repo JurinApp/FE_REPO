@@ -9,7 +9,7 @@ interface IFormValue {
 	readonly content: string;
 }
 
-export const INITIAL_VALUE = {
+const ITEM_INITIAL_VALUE = {
 	itemName: "",
 	imageFile: null,
 	imageUrl: "",
@@ -20,5 +20,5 @@ export const INITIAL_VALUE = {
 
 export const registerItemForm = atom<IFormValue>({
 	key: "registerItemForm",
-	default: INITIAL_VALUE,
+	default: ITEM_INITIAL_VALUE,
 });

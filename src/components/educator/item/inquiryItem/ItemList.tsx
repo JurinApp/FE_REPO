@@ -3,7 +3,7 @@ import ItemCard from "./ItemCard";
 import {
 	allCheckItemsState,
 	selectedItemState,
-} from "@/states/selectedItemState";
+} from "@/states/selectedState/selectedItemState";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { RefObject, useEffect } from "react";
 import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
