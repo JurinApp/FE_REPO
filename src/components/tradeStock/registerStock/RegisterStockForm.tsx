@@ -26,6 +26,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 		getValues,
 		setValue,
 		setError,
+		clearErrors,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -102,11 +103,14 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 		const numericValue = parseFloat(value.replace(/,/g, ""));
 
 		if (!isNaN(numericValue)) {
-			console.log(numericValue);
 			setValue("price", String(numericValue));
 			setReplacePrice(numericValue.toLocaleString());
+			if (errors.price) clearErrors("price");
 		} else {
-			setValue("price", "0");
+			setValue("price", "");
+			setError("price", {
+				message: "가격 입력은 필수입니다.",
+			});
 			setReplacePrice("");
 		}
 	};
@@ -230,7 +234,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 								</label>
 								<textarea
 									className={`w-full resize-none rounded-none border-b outline-none ${
-										errors.standard
+										errors.content
 											? "border-danger"
 											: "border-black-100 focus:border-black-800"
 									}`}
