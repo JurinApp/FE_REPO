@@ -2,7 +2,7 @@ import { useState } from "react";
 import ItemFilterButton from "./ItemFilterButton";
 import MyItem from "./MyItem";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { myItemFilterState } from "@/states/myItemFilterState";
+import { myItemFilterState } from "@/states/filterState/myItemFilterState";
 import ItemUseModal from "./ItemUseModal";
 import { itemUseModalState } from "@/states/confirmModalState";
 import useAxios from "@/hooks/useAxios";

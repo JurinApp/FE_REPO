@@ -2,7 +2,7 @@ import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { POST_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
-import { editPostModalState } from "@/states/confirmModalState";
+import { editPostModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
 import { changeDateFormat } from "@/utils/changeDateFormat";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,7 +21,7 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editPostModalState);
 	const navigate = useNavigate();
 	const { channelId, postId } = useParams();
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const queryClient = useQueryClient();
 	const [replaceFormDate, setReplaceFormDate] = useState<string>("");
 	const {
@@ -54,14 +54,15 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 				return response.data.data;
 			}
 
+			if (status === 403) {
+				alert(
+					"해당 채널의 게시글 생성 권한이 없거나 게시글 등록 형식이 잘못되었습니다.",
+				);
+			}
+
 			if (status === 404) {
 				alert("존재하지 않는 게시글입니다.");
 				navigate(`/${channelId}/post`);
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-				navigate(`/${channelId}/post/detail/${postId}`);
 			}
 		}
 	};
@@ -139,7 +140,7 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-			{isLoading ? (
+			{isLoading || isFetchLoading ? (
 				<Spinner />
 			) : (
 				<form onSubmit={handleSubmit(handleClickEditBtn)}>

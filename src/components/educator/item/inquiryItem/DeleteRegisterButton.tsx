@@ -1,5 +1,5 @@
-import { deleteItemsModalState } from "@/states/confirmModalState";
-import { selectedItemState } from "@/states/selectedItemState";
+import { deleteItemsModalState } from "@/states/modalState/confirmModalState";
+import { selectedItemState } from "@/states/selectedState/selectedItemState";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 

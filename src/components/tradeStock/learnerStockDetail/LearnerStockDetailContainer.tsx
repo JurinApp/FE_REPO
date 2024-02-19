@@ -1,7 +1,7 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 import StockTab from "./StockTab";
 import { useRecoilValue } from "recoil";
-import { selectedStockTabState } from "@/states/selectedStockTabState";
+import { selectedStockTabState } from "@/states/selectedTabState/selectedStockTabState";
 import StockSpecContainer from "./spec/StockSpecContainer";
 import StockBuyContainer from "./buy/StockBuyContainer";
 import StockSellContainer from "./sell/StockSellContainer";
@@ -140,7 +140,10 @@ const LearnerStockDetailContainer = () => {
 	const isLoading = fetchQuery.some((query) => query.isLoading);
 	return (
 		<>
-			<GoBackButton name={SAMPLE_STOCK.stockInfo.name} />
+			<GoBackButton
+				name={SAMPLE_STOCK.stockInfo.name}
+				backNavigationPath={`/${channelId}/stock/${stockId}`}
+			/>
 			<StockTab />
 			{selectedTab === "spec" && !isLoading && (
 				<StockSpecContainer

@@ -1,7 +1,7 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
 import { useIntersectionObserver } from "@/hooks/useObserver";
-import { TodayTradeFilterState } from "@/states/TodayTradeFilterState";
+import { TodayTradeFilterState } from "@/states/filterState/TodayTradeFilterState";
 import { userRoleState } from "@/states/userRoleState";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";

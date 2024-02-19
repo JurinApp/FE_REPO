@@ -1,6 +1,6 @@
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { useRef, useEffect } from "react";
-import { editTradeStockModalState } from "@/states/confirmModalState";
+import { editTradeStockModalState } from "@/states/modalState/confirmModalState";
 
 interface IEditConfirmTradeStockModalProps {
 	readonly setIsEdit: (isEdit: boolean) => void;

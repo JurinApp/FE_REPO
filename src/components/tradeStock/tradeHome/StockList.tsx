@@ -1,7 +1,7 @@
 import ObserveTarget from "@/components/common/observer/ObserveTarget";
 import IntersectSpinner from "@/components/common/spinner/IntersectSpinner";
 import { IStockHomeResponseData, IStockItem } from "@/interface/stock";
-import { selectedStock } from "@/states/tradeStock";
+import { selectedStock } from "@/states/selectedState/selectedTradeStock";
 import { RefObject, useEffect } from "react";
 import { useResetRecoilState } from "recoil";
 import StockItem from "./StockItem";

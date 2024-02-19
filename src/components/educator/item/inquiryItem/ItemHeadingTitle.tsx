@@ -2,7 +2,7 @@ import { IItemResponseData } from "@/interface/item";
 import {
 	allCheckItemsState,
 	selectedItemState,
-} from "@/states/selectedItemState";
+} from "@/states/selectedState/selectedItemState";
 import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 

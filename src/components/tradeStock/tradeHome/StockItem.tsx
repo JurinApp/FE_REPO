@@ -1,5 +1,5 @@
 import { IStockItem } from "@/interface/tradeHome";
-import { selectedStock } from "@/states/tradeStock";
+import { selectedStock } from "@/states/selectedState/selectedTradeStock";
 import IcLow from "@assets/svg/icLow.svg?react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Link, useParams } from "react-router-dom";

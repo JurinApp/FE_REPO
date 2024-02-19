@@ -75,7 +75,7 @@ const DetailItemInfo = () => {
 								</div>
 								<div className="flex flex-col">
 									<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
-										{data.id}
+										{data.amount}
 									</p>
 									<p className="ml-[0.625rem] mt-[0.375rem] font-medium">
 										{data.price}

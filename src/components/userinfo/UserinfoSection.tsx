@@ -1,4 +1,4 @@
-import { enterChannelModalState } from "@/states/confirmModalState";
+import { enterChannelModalState } from "@/states/modalState/confirmModalState";
 import { useSetRecoilState } from "recoil";
 import MoveCreateChannelBtn from "./MoveCreateChannelBtn";
 import { useNavigate } from "react-router";

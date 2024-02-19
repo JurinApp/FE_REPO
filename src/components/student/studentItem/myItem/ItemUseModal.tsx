@@ -1,6 +1,6 @@
 import { IMyItemList } from "./MyItemContainer";
 import { useRecoilState } from "recoil";
-import { itemUseModalState } from "@/states/confirmModalState";
+import { itemUseModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

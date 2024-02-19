@@ -1,5 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { withdrawalModalState } from "@/states/confirmModalState";
+import { withdrawalModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";

@@ -1,4 +1,4 @@
-import { editPostModalState } from "@/states/confirmModalState";
+import { editPostModalState } from "@/states/modalState/confirmModalState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,

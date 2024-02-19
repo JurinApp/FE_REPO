@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { withdrawalModalState } from "@/states/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
+=======
+import { withdrawalModalState } from "@/states/modalState/confirmModalState";
+>>>>>>> 684de28c9e417e0294032f3e8c2bbb22365dbb0d
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";

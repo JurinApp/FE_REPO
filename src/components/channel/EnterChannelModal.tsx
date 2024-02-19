@@ -1,5 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { enterChannelModalState } from "@/states/confirmModalState";
+import { enterChannelModalState } from "@/states/modalState/confirmModalState";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";

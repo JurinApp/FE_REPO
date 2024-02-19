@@ -7,7 +7,7 @@ import "react-day-picker/src/style.css";
 import "@/dayPicker.css";
 import { ko } from "date-fns/locale";
 import { useRecoilState } from "recoil";
-import { calendarModalState } from "@/states/confirmModalState";
+import { calendarModalState } from "@/states/modalState/confirmModalState";
 
 // interface ICalendarModalProps {
 // 	readonly fetchOrder: () => void;

@@ -1,5 +1,8 @@
 import { ILearnerItem } from "@/interface/learnerItem";
-import { allCheckState, selectedLearner } from "@/states/manageLearner";
+import {
+	allCheckState,
+	selectedLearner,
+} from "@/states/selectedState/selectedLearnerState";
 import { ChangeEvent, useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 

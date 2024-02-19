@@ -2,7 +2,7 @@ import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
-import { editTradeStockModalState } from "@/states/confirmModalState";
+import { editTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -18,7 +18,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editTradeStockModalState);
 	const queryClient = useQueryClient();
 	const { channelId, stockId } = useParams();
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const navigate = useNavigate();
 	const [replacePrice, setReplacePrice] = useState<string>("");
 
@@ -66,12 +66,6 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 
 			if (status === 200) {
 				const stockData = response.data.data;
-				setValue("stockName", stockData.name);
-				setValue("price", stockData.purchasePrice);
-				setValue("tax", stockData.tax);
-				setValue("standard", stockData.standard);
-				setValue("content", stockData.content);
-				setReplacePrice(stockData.purchasePrice.toLocaleString());
 				return stockData;
 			}
 
@@ -82,7 +76,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		}
 	};
 
-	const { isLoading } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["editDetailStock", channelId, stockId],
 		queryFn: getDetailStockData,
 	});
@@ -93,7 +87,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
 			data: {
 				name: getValues("stockName"),
-				purchasePrice: 1111111,
+				purchasePrice: getValues("price"),
 				tax: getValues("tax"),
 				standard: getValues("standard"),
 				content: getValues("content"),
@@ -146,11 +140,26 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		setIsOpenModal(true);
 	};
 
+	const successGetStockData = () => {
+		setValue("stockName", data.name);
+		setValue("price", data.purchasePrice);
+		setValue("tax", data.tax);
+		setValue("standard", data.standard);
+		setValue("content", data.content);
+		setReplacePrice(data.purchasePrice.toLocaleString());
+	};
+
 	useEffect(() => {
 		if (isEdit) {
 			handleSubmitEditTradeStockForm();
 		}
 	}, [isEdit]);
+
+	useEffect(() => {
+		if (data) {
+			successGetStockData();
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -280,6 +289,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 					</form>
 				)}
 			</div>
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };

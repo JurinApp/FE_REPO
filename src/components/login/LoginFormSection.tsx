@@ -22,7 +22,7 @@ interface IError {
 }
 
 const LoginFormSection = () => {
-	const { isLoading, axiosData } = useAxios();
+	const { isFetchLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const setUserRole = useSetRecoilState(userRoleState);
 	const {
@@ -162,7 +162,7 @@ const LoginFormSection = () => {
 					</Link>
 				</div>
 			</form>
-			{isLoading && <Spinner />}
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };

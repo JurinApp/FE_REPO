@@ -2,7 +2,7 @@ import useInput from "@/hooks/useInput";
 import {
 	modifyUserinfoModalState,
 	quitChannelModalState,
-} from "@/states/confirmModalState";
+} from "@/states/modalState/confirmModalState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ConfirmModal } from "./ConfirmModal";
 import ChannelQuitModal from "./ChannelQuitModal";

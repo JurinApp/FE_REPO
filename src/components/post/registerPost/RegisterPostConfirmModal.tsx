@@ -1,4 +1,4 @@
-import { registerPostModalState } from "@/states/confirmModalState";
+import { registerPostModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 

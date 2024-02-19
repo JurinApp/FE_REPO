@@ -1,10 +1,11 @@
-import { registerItemModalState } from "@/states/confirmModalState";
-import { INITIAL_VALUE, registerItemForm } from "@/states/registerItemForm";
-import { useEffect, useRef } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { useParams, useNavigate } from "react-router-dom";
+import { registerItemModalState } from "@/states/modalState/confirmModalState";
+import { registerItemForm } from "@/states/registerItemForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface IResult {
 	imageUrl: string;
@@ -13,9 +14,9 @@ interface IResult {
 
 const RegisterItemConfirmModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(registerItemModalState);
-	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
+	const itemFormValue = useRecoilValue(registerItemForm);
 	const resetIsOpenModal = useResetRecoilState(registerItemModalState);
-	const { axiosData } = useAxios();
+	const { axiosData, isFetchLoading } = useAxios();
 	const { channelId } = useParams();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -73,7 +74,6 @@ const RegisterItemConfirmModal = () => {
 				if (status === 201) {
 					const itemId = response.data.data.id;
 					alert("아이템 등록이 완료 되었습니다.");
-					setItemFormValue(INITIAL_VALUE);
 					queryClient.invalidateQueries({ queryKey: ["items", channelId] });
 					navigate(`/${channelId}/item/detail/${itemId}`);
 				}
@@ -106,8 +106,8 @@ const RegisterItemConfirmModal = () => {
 	};
 
 	const handleClickRegisterBtn = () => {
-		registerItemMutation.mutate();
 		setIsOpenModal(false);
+		registerItemMutation.mutate();
 	};
 
 	useEffect(() => {
@@ -133,36 +133,42 @@ const RegisterItemConfirmModal = () => {
 	}, []);
 
 	return (
-		<div
-			className={`${
-				isOpenModal ? "fixed" : "hidden"
-			} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
-		>
-			<div
-				ref={modalRef}
-				className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
-			>
-				<div className="flex grow items-center justify-center">
-					<p className="my-auto">등록하시겠습니까?</p>
-				</div>
-				<div className="flex">
-					<button
-						type="button"
-						className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
-						onClick={handleClickCancelBtn}
+		<>
+			{isFetchLoading ? (
+				<Spinner />
+			) : (
+				<div
+					className={`${
+						isOpenModal ? "fixed" : "hidden"
+					} left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black-800`}
+				>
+					<div
+						ref={modalRef}
+						className="flex h-[12rem] w-modal-width flex-col rounded bg-white"
 					>
-						취소
-					</button>
-					<button
-						type="button"
-						className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
-						onClick={handleClickRegisterBtn}
-					>
-						확인
-					</button>
+						<div className="flex grow items-center justify-center">
+							<p className="my-auto">등록하시겠습니까?</p>
+						</div>
+						<div className="flex">
+							<button
+								type="button"
+								className="h-[3.75rem] grow rounded-bl bg-btn-cancel-tekhelet text-black-800"
+								onClick={handleClickCancelBtn}
+							>
+								취소
+							</button>
+							<button
+								type="button"
+								className="h-[3.75rem] grow rounded-br bg-medium-slate-blue font-bold text-white"
+								onClick={handleClickRegisterBtn}
+							>
+								확인
+							</button>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 

@@ -2,7 +2,7 @@ import UsedItem from "@assets/svg/usedItem.svg?react";
 import ItemHis from "@assets/svg/itemHistory.svg?react";
 import ItemHistoryModal from "./ItemHistoryModal";
 import { useSetRecoilState } from "recoil";
-import { itemHistoryModalState } from "@/states/confirmModalState";
+import { itemHistoryModalState } from "@states/confirmModalState";
 import useAxios from "@/hooks/useAxios";
 import { useState } from "react";
 

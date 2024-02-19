@@ -1,5 +1,5 @@
-import { deletePostsModalState } from "@/states/confirmModalState";
-import { selectedPostsState } from "@/states/selectedPostState";
+import { deletePostsModalState } from "@/states/modalState/confirmModalState";
+import { selectedPostsState } from "@/states/selectedState/selectedPostState";
 import { userRoleState } from "@/states/userRoleState";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";

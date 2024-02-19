@@ -1,4 +1,4 @@
-import { modifyUserinfoModalState } from "@/states/confirmModalState";
+import { modifyUserinfoModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 

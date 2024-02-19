@@ -1,5 +1,5 @@
 import { IPost } from "@/interface/post";
-import { selectedPostsState } from "@/states/selectedPostState";
+import { selectedPostsState } from "@/states/selectedState/selectedPostState";
 import { userRoleState } from "@/states/userRoleState";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";

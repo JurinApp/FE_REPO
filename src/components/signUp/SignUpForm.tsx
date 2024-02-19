@@ -1,7 +1,7 @@
 import { SIGN_UP_SCHEMA } from "@/constants/formSchema";
 import useAxios from "@/hooks/useAxios";
 import useInput from "@/hooks/useInput";
-import { signUpConfirmModalState } from "@/states/signUpConfirmModal";
+import { signUpConfirmModalState } from "@/states/modalState/signUpConfirmModal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,7 +41,7 @@ const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
-	const { isLoading, axiosData } = useAxios();
+	const { isFetchLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const {
 		register,
@@ -283,6 +283,15 @@ const SignUpForm = () => {
 	}, [watch().id]);
 
 	useEffect(() => {
+		watch("password") !== watch("checkPassword") && watch("password")
+			? setError("checkPassword", {
+					type: "passwordMissMatch",
+					message: "비밀번호가 일치하지 않습니다.",
+				})
+			: clearErrors("checkPassword");
+	}, [watch().password, watch().checkPassword]);
+
+	useEffect(() => {
 		if (
 			watch().auth === "1" &&
 			codeDuplicateCheck.isCodeBtnDisabled &&
@@ -510,7 +519,7 @@ const SignUpForm = () => {
 			{confirmModalState.isModalOpen && (
 				<SignUpConfirmModal setIsSignUp={setIsSignUp} />
 			)}
-			{isLoading && <Spinner />}
+			{isFetchLoading && <Spinner />}
 		</>
 	);
 };
