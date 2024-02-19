@@ -2,16 +2,16 @@ import Calendar from "@assets/svg/calendar.svg?react";
 import Cancel from "@assets/svg/cancel.svg?react";
 import { DateRange, DayPicker } from "react-day-picker";
 import { addDays, format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "react-day-picker/src/style.css";
 import "@/dayPicker.css";
 import { ko } from "date-fns/locale";
 import { useRecoilState } from "recoil";
 import { calendarModalState } from "@/states/confirmModalState";
 
-interface ICalendarModalProps {
-	readonly fetchOrder: () => void;
-}
+// interface ICalendarModalProps {
+// 	readonly fetchOrder: () => void;
+// }
 
 const START_DATE = new Date();
 const defaultSelected: DateRange = {
@@ -20,11 +20,13 @@ const defaultSelected: DateRange = {
 	to: addDays(START_DATE, 4),
 };
 
-const CalendarModal = ({ fetchOrder }: ICalendarModalProps) => {
+const CalendarModal = () => {
 	const [isCalendarModalState, setIsCalendarModalState] =
 		useRecoilState(calendarModalState);
 	const handleCalendarClose = () => setIsCalendarModalState(false);
 	const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
+	const [startDate, setStartDate] = useState<string>("");
+	const [endDate, setEndDate] = useState<string>("");
 
 	let footer = "날짜를 선택해주세요.";
 	if (range?.from) {
@@ -37,6 +39,20 @@ const CalendarModal = ({ fetchOrder }: ICalendarModalProps) => {
 			)}`;
 		}
 	}
+
+	useEffect(() => {
+		if (range?.from) {
+			if (!range.to) {
+				setStartDate(format(range.from, "yyyy-MM-dd"));
+				setEndDate("");
+			} else if (range.to) {
+				setStartDate(format(range.from, "yyyy-MM-dd"));
+				setEndDate(format(range.to, "yyyy-MM-dd"));
+			}
+		}
+	}, [range]);
+
+	console.log(startDate, endDate);
 
 	return (
 		<>
@@ -72,10 +88,7 @@ const CalendarModal = ({ fetchOrder }: ICalendarModalProps) => {
 						locale={ko}
 					/>
 				</div>
-				<button
-					className="mx-4 mt-6 h-[3.25rem] w-[22.563rem] rounded bg-tekhelet text-center text-base font-bold text-white"
-					onClick={fetchOrder}
-				>
+				<button className="mx-4 mt-6 h-[3.25rem] w-[22.563rem] rounded bg-tekhelet text-center text-base font-bold text-white">
 					적용하기
 				</button>
 			</div>

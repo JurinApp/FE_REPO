@@ -2,16 +2,18 @@ import { IMyItemList } from "./MyItemContainer";
 import { useRecoilState } from "recoil";
 import { itemUseModalState } from "@/states/confirmModalState";
 import { useEffect, useRef } from "react";
+import useAxios from "@/hooks/useAxios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 type TItemBuyModalProps = {
-	readonly onConfirm: () => void;
 	readonly item: IMyItemList;
 };
 
-const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
-	// const [itemQuantity, setItemQuantity] = useState(1);
+const ItemUseModal = ({ item }: TItemBuyModalProps) => {
 	const [isItemUseModalOpen, setIsItemUseModalOpen] =
 		useRecoilState(itemUseModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -27,6 +29,36 @@ const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 	const handleModalClose = () => {
 		setIsItemUseModalOpen(false);
 	};
+	const channelId = location.pathname.substring(1, 2);
+	const useItem = async () => {
+		const apiUrl = `/students/api/v1/channels/${channelId}/items/mine/${item.id}`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: {
+				amount: 1,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
+	};
+
+	const { mutate } = useMutation({
+		mutationFn: useItem,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["myItemList"] });
+			setIsItemUseModalOpen(false);
+		},
+	});
+
+	const handleUseItem = () => {
+		mutate();
+	};
+
 	return (
 		<>
 			<div
@@ -42,7 +74,7 @@ const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 									<span className="font-bold text-tekhelet">{item.title}</span>
 									을
 									<br />
-									구매하시겠습니까?
+									사용하시겠습니까?
 								</p>
 							</div>
 							<div className="flex w-[17.813rem] flex-col">
@@ -63,9 +95,9 @@ const ItemUseModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 						</button>
 						<button
 							className="w-1/2 bg-medium-slate-blue text-[#ffffff]"
-							onClick={onConfirm}
+							onClick={handleUseItem}
 						>
-							구매
+							사용
 						</button>
 					</div>
 				</div>

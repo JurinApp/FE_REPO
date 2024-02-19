@@ -11,7 +11,12 @@ import {
 import { Line } from "react-chartjs-2";
 
 interface StockPriceChartProps {
-	readonly stockData: { day: string; date: number; price: number }[];
+	readonly stockData: {
+		tradeDate: string;
+		price: number;
+		volume: number;
+		transactionAmount: number;
+	}[];
 }
 
 const StockPriceChart: React.FC<StockPriceChartProps> = ({ stockData }) => {
@@ -27,7 +32,7 @@ const StockPriceChart: React.FC<StockPriceChartProps> = ({ stockData }) => {
 
 	// const labels = stockData.map((data) => [`${data.date}`, `${data.day}`]);
 	const labels = stockData.map((data) => {
-		const day = data.day;
+		const day = data.tradeDate;
 		let color = "black"; // 기본 색상은 검정색으로 설정
 
 		if (day === "토") {
@@ -37,7 +42,7 @@ const StockPriceChart: React.FC<StockPriceChartProps> = ({ stockData }) => {
 		}
 
 		return {
-			value: [`${data.date}`, `${data.day}`],
+			value: [`${data.tradeDate}`],
 			text: day,
 			color: color,
 		};

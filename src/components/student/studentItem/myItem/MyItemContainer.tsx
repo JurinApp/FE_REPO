@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export interface IMyItemList {
 	readonly id: number;
-	readonly imageUrl: number;
+	readonly imageUrl: string;
 	readonly isUsed: boolean;
 	readonly price: number;
 	readonly remainingAmount: number;
@@ -50,9 +50,6 @@ const MyItemContainer = () => {
 		setIsItemUseModalOpen(true);
 	};
 	const filterState = useRecoilValue(myItemFilterState);
-	const useItem = () => {
-		console.log("사용");
-	};
 	return (
 		<>
 			<div className="relative mx-auto flex h-inTrade-height w-full flex-col bg-btn-cancel-tekhelet sm:w-[24.536rem]">
@@ -79,13 +76,14 @@ const MyItemContainer = () => {
 											itemId={item.id}
 											itemName={item.title}
 											quantity={item.remainingAmount}
+											imageUrl={item.imageUrl}
 										/>
 									</div>
 								</div>
 							))}
 				</div>
 			</div>
-			{selectedItem && <ItemUseModal onConfirm={useItem} item={selectedItem} />}
+			{selectedItem && <ItemUseModal item={selectedItem} />}
 		</>
 	);
 };
