@@ -4,7 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
 	const location = useLocation();
-	const path = location.pathname === "/signUp" ? "/login" : "/mypage";
+	const path =
+		location.pathname === "/signUp" || "/mypage" ? "/login" : "/mypage";
 
 	return (
 		<header className="sticky top-0 z-[99] mx-auto h-[2.938rem] w-full border-b border-black-200 bg-white sm:w-[24.563rem]">
