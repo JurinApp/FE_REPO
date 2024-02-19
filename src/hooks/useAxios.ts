@@ -25,17 +25,28 @@ const useAxios = () => {
 
 		async (error) => {
 			const status = error.response.status;
+			const errorCode = error.response.data.code;
 
 			if (status === 401) {
 				alert("재로그인을 해주세요.");
 				navigate("/login");
 			}
 
+			if (status === 403 && errorCode === "permission_denied") {
+				alert("권한이 없습니다.");
+				navigate(-1);
+			}
+
+			if (status === 404 && errorCode === "not_channel") {
+				alert("참여중인 채널이 아닙니다.");
+				navigate("/mypage");
+			}
+
 			if (status === 500) {
 				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
 			}
 
-			return error.response;
+			return Promise.reject(error);
 		},
 	);
 
