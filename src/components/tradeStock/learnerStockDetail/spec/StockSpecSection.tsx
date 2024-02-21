@@ -4,7 +4,6 @@ import { IStockInfo } from "./StockSpecContainer";
 const StockSpecSection = ({
 	name,
 	tax,
-	id,
 	standard,
 	purchasePrice,
 	content,

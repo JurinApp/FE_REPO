@@ -135,8 +135,9 @@ const LearnerStockDetailContainer = () => {
 	const stockSpec: IStockSpecData = fetchQuery[0]?.data?.stock;
 	const priceHistory = fetchQuery[0]?.data?.dailyPrice;
 	const userPoint = fetchQuery[2]?.data?.user.point;
-	console.log(userPoint);
-	console.log(stockSpec, priceHistory);
+	const stockAmount = fetchQuery[2]?.data?.user.totalStockAmount;
+	const stockPrice = fetchQuery[0]?.data?.stock.purchasePrice;
+	const tax = fetchQuery[0]?.data?.stock.tax;
 	const isLoading = fetchQuery.some((query) => query.isLoading);
 	return (
 		<>
@@ -153,14 +154,19 @@ const LearnerStockDetailContainer = () => {
 			)}
 			{selectedTab === "buy" && (
 				<StockBuyContainer
+					userPoint={userPoint}
+					stockAmount={stockAmount}
 					stockBSHistory={SAMPLE_STOCK.stockBSHistory}
-					stockPrice={SAMPLE_STOCK.stockInfo.price}
+					stockPrice={stockPrice}
 				/>
 			)}
 			{selectedTab === "sell" && (
 				<StockSellContainer
+					userPoint={userPoint}
+					stockAmount={stockAmount}
 					stockBSHistory={SAMPLE_STOCK.stockBSHistory}
-					stockPrice={SAMPLE_STOCK.stockInfo.price}
+					stockPrice={stockPrice}
+					tax={tax}
 				/>
 			)}
 			{selectedTab === "order" && (

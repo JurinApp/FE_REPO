@@ -8,12 +8,19 @@ export interface IStockSpecProps {
 }
 
 export interface IStockInfo {
-	readonly id: number;
+	// readonly id: number;
 	readonly name: string;
 	readonly purchasePrice: number;
 	readonly tax: number;
 	readonly standard: string;
 	readonly content: string;
+}
+
+export interface IStockHistory {
+	readonly tradeDate: string;
+	readonly price: number;
+	readonly volume: number;
+	readonly transactionAmount: number;
 }
 
 const StockSpecContainer = ({
@@ -25,14 +32,14 @@ const StockSpecContainer = ({
 			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
 				<StockSpecSection
 					tax={stockSpec.tax}
-					id={stockSpec.id}
+					// id={stockSpec.id}
 					standard={stockSpec.standard}
 					name={stockSpec.name}
 					content={stockSpec.content}
 					purchasePrice={stockSpec.purchasePrice}
 				/>
 				<section id="stock-chart" className="mx-4 mt-6">
-					<StockPriceChart stockData={stockPriceHistory} />
+					<StockPriceChart dailyPrice={stockPriceHistory} />
 				</section>
 			</div>
 		</>

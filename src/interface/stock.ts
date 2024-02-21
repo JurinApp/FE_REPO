@@ -52,7 +52,7 @@ export interface IStockSpecData {
 }
 
 export interface IStockPriceHistoryData {
-	readonly dailyPrice?: {
+	readonly dailyPrice: {
 		readonly tradeDate: string;
 		readonly price: number;
 		readonly volume: number;
