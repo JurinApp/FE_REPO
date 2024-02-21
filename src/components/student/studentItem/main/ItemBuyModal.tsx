@@ -4,7 +4,7 @@ import Minus from "@assets/svg/minus.svg?react";
 import { IItem } from "./ItemContainer";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { itemBuyModalState } from "@/states/confirmModalState";
+import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface IItemBuyModalProps {
