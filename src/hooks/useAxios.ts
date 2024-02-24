@@ -37,7 +37,10 @@ const useAxios = () => {
 				navigate(-1);
 			}
 
-			if (status === 404 && errorCode === "not_channel") {
+			if (
+				status === 404 &&
+				(errorCode === "not_channel" || errorCode === "not_user_channel")
+			) {
 				alert("참여중인 채널이 아닙니다.");
 				navigate("/mypage");
 			}
