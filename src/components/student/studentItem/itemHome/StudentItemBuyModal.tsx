@@ -134,24 +134,24 @@ const ItemBuyModal = () => {
 										<button
 											type="button"
 											onClick={decreaseItemQuantity}
-											className="flex h-10 w-10 items-center justify-center border border-black-300"
+											className="flex h-10 w-10 items-center justify-center border border-black-100"
 										>
 											<Minus />
 										</button>
-										<p className="flex h-10 w-10 items-center justify-center border border-b-black-300 border-t-black-300">
+										<p className="flex h-10 w-10 items-center justify-center border border-y-black-100">
 											{itemQuantity}
 										</p>
 										<button
 											type="button"
 											onClick={increaseItemQuantity}
-											className="flex h-10 w-10 items-center justify-center border border-black-300"
+											className="flex h-10 w-10 items-center justify-center border border-black-100"
 										>
 											<Plus />
 										</button>
 									</div>
 								</div>
 								<div className="flex flex-row">
-									<p className="ml-[2.375rem] flex w-[3.904rem] items-center text-base">
+									<p className="ml-[2.375rem] flex w-[3.904rem] items-center">
 										금액
 									</p>
 									<div className="ml-[1.75rem] flex h-10 w-[7.375rem] flex-row items-center justify-end">

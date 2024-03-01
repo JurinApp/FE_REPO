@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import ItemBuyModal from "./StudentItemBuyModal";
-import ItemList from "./StudentItemList";
+import StudentItemList from "./StudentItemList";
 
 const ItemContainer = () => {
 	const { channelId } = useParams();
@@ -34,7 +34,7 @@ const ItemContainer = () => {
 	return (
 		<>
 			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				{isLoading ? <Spinner /> : <ItemList data={data.results} />}
+				{isLoading ? <Spinner /> : <StudentItemList data={data.results} />}
 				{isItemBuyModalOpen && <ItemBuyModal />}
 			</div>
 		</>

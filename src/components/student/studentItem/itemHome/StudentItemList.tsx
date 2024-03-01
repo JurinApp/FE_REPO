@@ -6,7 +6,7 @@ interface IItemList {
 	readonly data: IStudentItem[];
 }
 
-const ItemList = ({ data }: IItemList) => {
+const StudentItemList = ({ data }: IItemList) => {
 	const isExistItems = useMemo(() => {
 		return data.length !== 0;
 	}, [data]);
@@ -24,4 +24,4 @@ const ItemList = ({ data }: IItemList) => {
 	);
 };
 
-export default ItemList;
+export default StudentItemList;
