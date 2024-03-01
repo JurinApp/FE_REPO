@@ -16,3 +16,11 @@ export interface IItemResponseData {
 export interface IErrorMessages {
 	readonly [key: string]: string;
 }
+
+export interface IStudentItem {
+	readonly id: string;
+	readonly title: string;
+	readonly amount: number;
+	readonly price: number;
+	readonly imageUrl: string;
+}
