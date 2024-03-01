@@ -88,7 +88,7 @@ const Router = () => {
 							path="/:channelId/trade/todayTrade"
 							element={<TodayTradePage />}
 						/>
-						<Route path="/:channelId/item" element={<ItemPage />} />
+
 						<Route path="/:channelId/post" element={<PostPage />} />
 						<Route
 							path="/:channelId/post/detail/:postId"
@@ -96,6 +96,7 @@ const Router = () => {
 						/>
 					</Route>
 					<Route element={<EducatorRoute />}>
+						<Route path="/:channelId/item" element={<ItemPage />} />
 						<Route
 							path="/:channelId/manageLearner"
 							element={<ManageLearnerPage />}
@@ -139,8 +140,14 @@ const Router = () => {
 							path="/:channelId/stock/:stockId"
 							element={<LearnerStockDetailPage />}
 						/>
-						<Route path="/studentItem" element={<StudentItemPage />} />
-						<Route path="/studentItem/myItem" element={<StudentMyItemPage />} />
+						<Route
+							path="/:channelId/student/item"
+							element={<StudentItemPage />}
+						/>
+						<Route
+							path="/:channelId/student/myItem"
+							element={<StudentMyItemPage />}
+						/>
 					</Route>
 				</Routes>
 			</Suspense>

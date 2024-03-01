@@ -1,22 +1,26 @@
 import { withdrawalModalState } from "@/states/modalState/confirmModalState";
+import { userRoleState } from "@/states/userRoleState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { useSetRecoilState } from "recoil";
+import { Link } from "react-router-dom";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 
 const SettingSection = () => {
 	const setIsWithdrawalModalOpen = useSetRecoilState(withdrawalModalState);
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+	const resetUserRoleState = useResetRecoilState(userRoleState);
 
 	const handleWithdrawalModalOpen = () => {
 		setIsWithdrawalModalOpen(true);
 	};
 
-	const handleSignOut = () => {
-		removeCookie();
+	const handleSignOut = async () => {
 		queryClient.clear();
-		navigate("/login");
+		resetUserRoleState();
+		removeCookie();
+		navigate("/");
 	};
 
 	return (
@@ -42,9 +46,11 @@ const SettingSection = () => {
 				<section id="etc" className="mt-[1.875rem] flex h-[11.75rem] flex-col">
 					<h2 className="mb-[0.875rem] font-bold ">기타</h2>
 					<ul className="flex h-[9.625rem] flex-col justify-between gap-2">
-						<li className="flex h-[2.875rem] items-center rounded border border-black-100 py-[0.875rem] pl-[0.875rem] text-sm text-black-800">
-							FAQ
-						</li>
+						<Link to={"/manual"}>
+							<li className="flex h-[2.875rem] items-center rounded border border-black-100 py-[0.875rem] pl-[0.875rem] text-sm text-black-800">
+								도움말
+							</li>
+						</Link>
 					</ul>
 				</section>
 			</div>

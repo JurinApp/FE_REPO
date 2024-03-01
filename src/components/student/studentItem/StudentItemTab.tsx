@@ -10,30 +10,36 @@ interface ITabs {
 }
 
 const TABS = [
-	{ key: "studentItemHome", name: "홈", path: "/studentItem" },
-	{ key: "studentMyItem", name: "나의 아이템", path: "/studentItem/myItem" },
+	{ key: "studentItemHome", name: "홈", path: "/student/item" },
+	{
+		key: "studentMyItem",
+		name: "나의 아이템",
+		path: "/student/myItem",
+	},
 ];
 
 const StudentItemTab = () => {
 	const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
 	const navigate = useNavigate();
 	const location = useLocation();
+	const channelId = location.pathname.substring(1, 2);
 
 	const clickTabHandler = (tab: ITabs) => {
 		setSelectedTab(tab.key);
-		navigate(tab.path);
+		const path = `/${channelId}${tab.path}`;
+		navigate(path);
 	};
 
-	useEffect(() => {
-		const path = location.pathname;
+	// useEffect(() => {
+	// 	const path = location.pathname;
 
-		if (path === "/studentItem") {
-			setSelectedTab("studentItemHome");
-		}
-		if (path === "/studentItem/myItem") {
-			setSelectedTab("studentMyItem");
-		}
-	}, [location]);
+	// 	if (path === "/studentItem") {
+	// 		setSelectedTab("studentItemHome");
+	// 	}
+	// 	if (path === "/studentItem/myItem") {
+	// 		setSelectedTab("studentMyItem");
+	// 	}
+	// }, [location]);
 
 	useEffect(() => {
 		return () => {

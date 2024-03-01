@@ -1,33 +1,15 @@
 import { SIGN_UP_SCHEMA } from "@/constants/formSchema";
-import useAxios from "@/hooks/useAxios";
-import useInput from "@/hooks/useInput";
+import useSignUpValidate from "@/hooks/useSignUpDuplication";
 import { signUpConfirmModalState } from "@/states/modalState/signUpConfirmModal";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import ErrorMsg from "../common/errorMsg/ErrorMsg";
+import Spinner from "../common/spinner/Spinner";
 import SuccessMsg from "../common/successMsg/SuccessMsg";
 import SignUpConfirmModal from "./SignUpConfirmModal";
-import Spinner from "../common/spinner/Spinner";
-
-interface IIdDuplicateCheck {
-	readonly isIdDuplicateCheck: boolean;
-	readonly idDuplicateMsg: string;
-	readonly isIdBtnDisabled: boolean;
-}
-
-interface ICodeDuplicateCheck {
-	readonly isCodeDuplicateCheck: boolean;
-	readonly codeDuplicateMsg: string;
-	readonly isCodeBtnDisabled: boolean;
-}
-
-interface ICodeError {
-	readonly isError: boolean;
-	readonly codeErrorMsg: string;
-}
 
 interface IFormData {
 	readonly username: string;
@@ -41,7 +23,6 @@ const SignUpForm = () => {
 	const [confirmModalState, setConfirmModalState] = useRecoilState(
 		signUpConfirmModalState,
 	);
-	const { isFetchLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const {
 		register,
@@ -62,38 +43,49 @@ const SignUpForm = () => {
 		resolver: yupResolver(SIGN_UP_SCHEMA),
 		mode: "onChange",
 	});
-	const [code, onChangeCodeHandler, setCode] = useInput("");
-	const codeRef = useRef<HTMLInputElement>(null);
-	const [idDuplicateCheck, setIdDuplicateCheck] = useState<IIdDuplicateCheck>({
-		isIdDuplicateCheck: false,
-		idDuplicateMsg: "",
-		isIdBtnDisabled: true,
-	});
-	const [codeDuplicateCheck, setCodeDuplicateCheck] =
-		useState<ICodeDuplicateCheck>({
-			isCodeDuplicateCheck: false,
-			codeDuplicateMsg: "",
-			isCodeBtnDisabled: true,
-		});
-	const [codeError, setCodeError] = useState<ICodeError>({
-		isError: false,
-		codeErrorMsg: "",
-	});
 	const [isSignUp, setIsSignUp] = useState<boolean>(false);
+	const {
+		handleIdDuplicate,
+		handleCodeDuplicateCheck,
+		code,
+		codeError,
+		onChangeCodeHandler,
+		idDuplication,
+		codeDuplication,
+		codeRef,
+		axiosData,
+		isFetchLoading,
+	} = useSignUpValidate({
+		getValues,
+		watch,
+		setError,
+		clearErrors,
+		setConfirmModalState,
+	});
+
+	const isFormValidate =
+		!isValid ||
+		!idDuplication.isIdDuplicateCheck ||
+		!codeDuplication.isCodeDuplicateCheck;
 
 	const handleSubmitSignUp = async () => {
 		if (!isSignUp) return;
 
-		let formData: IFormData = {
-			username: getValues().id,
-			nickname: getValues().name,
-			password: getValues().password,
-			userRole: Number(getValues().auth),
-		};
-
-		if (Number(getValues().auth) === 1) {
-			formData.verificationCode = code;
-		}
+		let formData: IFormData =
+			Number(getValues().auth) === 1
+				? {
+						username: getValues().id,
+						nickname: getValues().name,
+						password: getValues().password,
+						userRole: Number(getValues().auth),
+						verificationCode: code,
+					}
+				: {
+						username: getValues().id,
+						nickname: getValues().name,
+						password: getValues().password,
+						userRole: Number(getValues().auth),
+					};
 
 		const response = await axiosData("default", {
 			method: "POST",
@@ -103,118 +95,18 @@ const SignUpForm = () => {
 
 		if (response) {
 			const status = response.status;
+			setIsSignUp(false);
 
 			if (status === 200) {
-				setIsSignUp(false);
 				navigate("/successSignUp");
 			}
 
 			if (status === 400) {
-				// TODO : 400에러 코드 에러 핸들링 예정
+				alert("회원가입 형식에 맞게 작성해주세요.");
 			}
 
 			if (status === 500) {
 				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const handleIdDuplicate = async () => {
-		const response = await axiosData("default", {
-			method: "POST",
-			url: "/api/v1/auth/validate",
-			data: {
-				validateValue: getValues().id,
-				validateType: "username",
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-			const isValidId = response.data.data.isValid;
-
-			if (status === 200) {
-				if (isValidId) {
-					clearErrors("id");
-					setIdDuplicateCheck({
-						isIdDuplicateCheck: true,
-						idDuplicateMsg: "사용 가능한 아이디입니다.",
-						isIdBtnDisabled: true,
-					});
-				} else {
-					setError("id", {
-						message: "사용할 수 없는 아이디입니다.",
-						type: "onChange",
-					});
-					setIdDuplicateCheck({
-						isIdDuplicateCheck: false,
-						idDuplicateMsg: "",
-						isIdBtnDisabled: false,
-					});
-				}
-			}
-
-			if (status === 400) {
-				setError("id", {
-					message: "사용할 수 없는 아이디입니다.",
-					type: "onChange",
-				});
-				setIdDuplicateCheck({
-					isIdDuplicateCheck: false,
-					idDuplicateMsg: "",
-					isIdBtnDisabled: false,
-				});
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const handleCodeDuplicateCheck = async () => {
-		const response = await axiosData("default", {
-			method: "POST",
-			url: "/api/v1/auth/validate",
-			data: {
-				validateValue: code,
-				validateType: "verification_code",
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-			const isValidCode = response.data.data.isValid;
-
-			if (status === 200) {
-				if (isValidCode) {
-					setCodeError({
-						isError: false,
-						codeErrorMsg: "",
-					});
-					setCodeDuplicateCheck({
-						isCodeDuplicateCheck: true,
-						codeDuplicateMsg: "인증이 완료되었습니다.",
-						isCodeBtnDisabled: true,
-					});
-				} else {
-					setCodeError({
-						isError: true,
-						codeErrorMsg: "인증코드가 일치하지 않습니다.",
-					});
-					setCodeDuplicateCheck({
-						isCodeDuplicateCheck: false,
-						codeDuplicateMsg: "인증코드가 일치하지 않습니다.",
-						isCodeBtnDisabled: false,
-					});
-				}
-			}
-			if (status === 400) {
-				setCodeDuplicateCheck({
-					isCodeDuplicateCheck: false,
-					codeDuplicateMsg: "인증코드가 일치하지 않습니다.",
-					isCodeBtnDisabled: false,
-				});
 			}
 		}
 	};
@@ -225,89 +117,6 @@ const SignUpForm = () => {
 			isModalOpen: true,
 		}));
 	};
-
-	useEffect(() => {
-		const auth = watch().auth;
-
-		if (auth === "2") {
-			setCodeError({
-				isError: false,
-				codeErrorMsg: "",
-			});
-			setCodeDuplicateCheck({
-				isCodeDuplicateCheck: true,
-				codeDuplicateMsg: "",
-				isCodeBtnDisabled: true,
-			});
-			setCode("");
-			if (codeRef.current) {
-				codeRef.current.value = "";
-			}
-		}
-
-		if (auth === "1") {
-			setCodeDuplicateCheck((prevState) => ({
-				...prevState,
-				isCodeDuplicateCheck: false,
-			}));
-		}
-
-		setConfirmModalState((prevState) => ({
-			...prevState,
-			selectedAuth: auth,
-		}));
-	}, [watch().auth]);
-
-	useEffect(() => {
-		const id = watch().id;
-
-		if (idDuplicateCheck.isIdBtnDisabled && id.length >= 8) {
-			setIdDuplicateCheck({
-				isIdDuplicateCheck: false,
-				idDuplicateMsg: "",
-				isIdBtnDisabled: false,
-			});
-			setError("id", {
-				message: "아이디 중복확인을 하세요.",
-				type: "onChange",
-			});
-		}
-
-		if (id.length < 8) {
-			setIdDuplicateCheck({
-				isIdDuplicateCheck: false,
-				idDuplicateMsg: "",
-				isIdBtnDisabled: true,
-			});
-		}
-	}, [watch().id]);
-
-	useEffect(() => {
-		watch("password") !== watch("checkPassword") && watch("password")
-			? setError("checkPassword", {
-					type: "passwordMissMatch",
-					message: "비밀번호가 일치하지 않습니다.",
-				})
-			: clearErrors("checkPassword");
-	}, [watch().password, watch().checkPassword]);
-
-	useEffect(() => {
-		if (
-			watch().auth === "1" &&
-			codeDuplicateCheck.isCodeBtnDisabled &&
-			code.length === 8
-		) {
-			setCodeDuplicateCheck((prevState) => ({
-				...prevState,
-				isCodeBtnDisabled: false,
-			}));
-		} else {
-			setCodeDuplicateCheck((prevState) => ({
-				...prevState,
-				isCodeBtnDisabled: true,
-			}));
-		}
-	}, [code]);
 
 	useEffect(() => {
 		if (isSignUp) {
@@ -326,7 +135,7 @@ const SignUpForm = () => {
 						</label>
 						<div
 							className={`flex items-center ${
-								(errors.id || idDuplicateCheck.isIdDuplicateCheck) && "mb-3"
+								(errors.id || idDuplication.isIdDuplicateCheck) && "mb-3"
 							}`}
 						>
 							<input
@@ -343,7 +152,7 @@ const SignUpForm = () => {
 							/>
 							<button
 								type="button"
-								disabled={idDuplicateCheck.isIdBtnDisabled}
+								disabled={idDuplication.isIdBtnDisabled}
 								className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
 								onClick={handleIdDuplicate}
 							>
@@ -353,8 +162,8 @@ const SignUpForm = () => {
 						{errors.id && errors.id.message && (
 							<ErrorMsg message={errors.id.message} />
 						)}
-						{idDuplicateCheck.isIdDuplicateCheck && (
-							<SuccessMsg message={idDuplicateCheck.idDuplicateMsg} />
+						{idDuplication.isIdDuplicateCheck && (
+							<SuccessMsg message={idDuplication.idDuplicateMsg} />
 						)}
 					</div>
 					<div className="mt-[1.875rem] flex flex-col">
@@ -466,8 +275,7 @@ const SignUpForm = () => {
 								className={`${
 									watch().auth === "2" ? "hidden" : "flex items-center"
 								} ${
-									(codeError.isError ||
-										codeDuplicateCheck.isCodeDuplicateCheck) &&
+									(codeError.isError || codeDuplication.isCodeDuplicateCheck) &&
 									"mb-3"
 								}`}
 							>
@@ -476,7 +284,7 @@ const SignUpForm = () => {
 									type="text"
 									ref={codeRef}
 									maxLength={8}
-									disabled={codeDuplicateCheck.isCodeDuplicateCheck}
+									disabled={codeDuplication.isCodeDuplicateCheck}
 									onChange={onChangeCodeHandler}
 									className={`${
 										codeError.isError
@@ -487,7 +295,7 @@ const SignUpForm = () => {
 								/>
 								<button
 									type="button"
-									disabled={codeDuplicateCheck.isCodeBtnDisabled}
+									disabled={codeDuplication.isCodeBtnDisabled}
 									className="ml-[0.813rem] h-12 w-28 rounded bg-black-800 font-medium text-white disabled:bg-black-300"
 									onClick={handleCodeDuplicateCheck}
 								>
@@ -497,19 +305,14 @@ const SignUpForm = () => {
 							{codeError.isError && codeError.codeErrorMsg && (
 								<ErrorMsg message={codeError.codeErrorMsg} />
 							)}
-							{!codeError.isError &&
-								codeDuplicateCheck.isCodeDuplicateCheck && (
-									<SuccessMsg message={codeDuplicateCheck.codeDuplicateMsg} />
-								)}
+							{!codeError.isError && codeDuplication.isCodeDuplicateCheck && (
+								<SuccessMsg message={codeDuplication.codeDuplicateMsg} />
+							)}
 						</div>
 					</div>
 					<button
 						type="submit"
-						disabled={
-							!isValid ||
-							!idDuplicateCheck.isIdDuplicateCheck ||
-							!codeDuplicateCheck.isCodeDuplicateCheck
-						}
+						disabled={isFormValidate}
 						className="mb-[2.625rem] mt-[1.5rem] h-[3.25rem] w-full rounded bg-tekhelet font-bold text-white disabled:bg-disabled-tekhelet"
 					>
 						가입하기

@@ -28,6 +28,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		setValue,
 		getValues,
 		setError,
+		clearErrors,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -46,11 +47,14 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		const numericValue = parseFloat(value.replace(/,/g, ""));
 
 		if (!isNaN(numericValue)) {
-			console.log(numericValue);
 			setValue("price", String(numericValue));
 			setReplacePrice(numericValue.toLocaleString());
+			if (errors.price) clearErrors("price");
 		} else {
 			setValue("price", "0");
+			setError("price", {
+				message: "가격 입력은 필수입니다.",
+			});
 			setReplacePrice("");
 		}
 	};

@@ -36,7 +36,14 @@ const Menu = () => {
 	const handleClickMenu = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
 		const channelId = location.pathname.substring(1, 2);
-		navigate(`/${channelId}${menu.path}`);
+
+		let path = "/";
+		if (userRole === "teacher") {
+			path = `/${channelId}${menu.path}`;
+		} else if (userRole === "student") {
+			path = `/${channelId}/student${menu.path}`;
+		}
+		navigate(path);
 	};
 
 	useEffect(() => {

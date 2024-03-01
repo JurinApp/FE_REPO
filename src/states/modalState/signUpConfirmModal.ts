@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface ISignUpConfirmModalState {
+export interface ISignUpConfirmModalState {
 	readonly selectedAuth: string;
 	readonly isModalOpen: boolean;
 }

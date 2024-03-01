@@ -49,6 +49,9 @@ export const UserinfoContainer = () => {
 			if (status === 200) {
 				return response.data.data;
 			}
+			if (status === 404) {
+				return null;
+			}
 		}
 	};
 	const results = useQueries({

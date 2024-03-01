@@ -5,12 +5,18 @@ import { IItem } from "./ItemContainer";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { itemBuyModalState } from "@/states/modalState/confirmModalState";
-type TItemBuyModalProps = {
-	readonly onConfirm: () => void;
+import useAxios from "@/hooks/useAxios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+interface IItemBuyModalProps {
 	readonly item: IItem;
-};
+	readonly channelId: string;
+}
 
-const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
+interface ISubmitData {
+	price: number;
+	amount: number;
+}
+const ItemBuyModal = ({ item, channelId }: IItemBuyModalProps) => {
 	const [itemQuantity, setItemQuantity] = useState(1);
 	const [isItemBuyModalOpen, setIsItemBuyModalOpen] =
 		useRecoilState(itemBuyModalState);
@@ -18,14 +24,48 @@ const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 	const handleModalClose = () => {
 		setIsItemBuyModalOpen(false);
 	};
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	const increaseItemQuantity = () => {
-		if (itemQuantity < item.quantity) setItemQuantity(itemQuantity + 1);
+		if (itemQuantity < item.amount) setItemQuantity((prev) => prev + 1);
 	};
 
 	const decreaseItemQuantity = () => {
 		if (itemQuantity > 0) {
-			setItemQuantity(itemQuantity - 1);
+			setItemQuantity((prev) => prev - 1);
 		}
+	};
+
+	const buyItem = async (submitData: ISubmitData) => {
+		const apiUrl = `/students/api/v1/channels/${channelId}/items/${item.id}`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: submitData,
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				setIsItemBuyModalOpen(false);
+				return response.data.data;
+			}
+		}
+	};
+
+	const { mutate } = useMutation({
+		mutationFn: buyItem,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["studentItem"] });
+			// 추후에 학생 보유 아이템 조회 쿼리 무효화 코드 추가.
+		},
+	});
+
+	const handleBuyItem = () => {
+		const submitData: ISubmitData = {
+			price: item.price,
+			amount: itemQuantity,
+		};
+		mutate(submitData);
 	};
 
 	useEffect(() => {
@@ -53,9 +93,7 @@ const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 						<div className="flex flex-col">
 							<div className="mt-12 flex h-[5.063rem] w-[17.813rem] justify-center border-b border-b-main-disabled">
 								<p className="text-lg font-medium">
-									<span className="font-bold text-tekhelet">
-										{item.itemName}
-									</span>
+									<span className="font-bold text-tekhelet">{item.title}</span>
 									을
 									<br />
 									구매하시겠습니까?
@@ -67,7 +105,7 @@ const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 										남은 수량
 									</p>
 									<p className="ml-[1.75rem] flex h-10 w-[7.375rem] items-center justify-end text-right text-base">
-										{item.quantity} 개
+										{item.amount} 개
 									</p>
 								</div>
 								<div className="flex flex-row">
@@ -110,7 +148,7 @@ const ItemBuyModal = ({ onConfirm, item }: TItemBuyModalProps) => {
 						</button>
 						<button
 							className="w-1/2 bg-medium-slate-blue text-[#ffffff]"
-							onClick={onConfirm}
+							onClick={handleBuyItem}
 						>
 							구매
 						</button>

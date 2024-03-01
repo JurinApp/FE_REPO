@@ -2,27 +2,71 @@ import PointLogo from "@assets/svg/point.svg?react";
 import Plus from "@assets/svg/plus.svg?react";
 import Minus from "@assets/svg/minus.svg?react";
 import { useState } from "react";
+import useAxios from "@/hooks/useAxios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ISellInterfaceProps {
 	readonly stockPrice: number;
+	readonly userPoint: number;
+	readonly stockAmount: number;
+	readonly tax: number;
 }
-const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
+const StockSellInterface = ({
+	stockPrice,
+	userPoint,
+	stockAmount,
+	tax,
+}: ISellInterfaceProps) => {
 	const [stockCount, setStockCount] = useState(1);
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 
 	const increaseStockCount = () => {
-		setStockCount(stockCount + 1);
+		if (stockCount < stockAmount) setStockCount(stockCount + 1);
 	};
+	const channelId = location.pathname.split("/")[1];
+	const stockId = location.pathname.split("/")[3];
+
+	const sellTax = (stockPrice * tax) / 100;
 
 	const decreaseStockCount = () => {
 		if (stockCount > 0) {
 			setStockCount(stockCount - 1);
 		}
 	};
+	console.log(stockPrice);
 
-	const sellStock = () => {
-		// TODO: 주식 판매 API
-		console.log("판매완료");
+	const sellStock = async () => {
+		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: {
+				tradeType: 2,
+				amount: stockCount,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
 	};
+
+	const { mutate } = useMutation({
+		mutationFn: sellStock,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["stockSpec"] });
+			queryClient.invalidateQueries({ queryKey: ["userStock"] });
+		},
+	});
+
+	const handleSellStock = () => {
+		mutate();
+		alert("매수가 완료되었습니다.");
+	};
+
 	return (
 		<>
 			<div
@@ -36,7 +80,7 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 					>
 						<p className="ml-[0.875rem] text-sm font-normal">내 포인트</p>
 						<p className="ml-[6.438rem] mr-[0.313rem] text-base font-bold">
-							500
+							{userPoint}
 						</p>
 						<PointLogo />
 					</div>
@@ -45,7 +89,9 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 						className="mt-1 flex h-12 w-[14.875rem] flex-row items-center rounded border border-black-100 bg-white"
 					>
 						<p className="ml-[0.875rem] text-sm font-normal">보유중인 주식</p>
-						<p className="ml-[6.063rem] mr-[0.625rem] text-base font-bold">4</p>
+						<p className="ml-[6.063rem] mr-[0.625rem] text-base font-bold">
+							{stockAmount}
+						</p>
 						<p className="text-base font-bold">주</p>
 					</div>
 					<div
@@ -90,7 +136,7 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 							<p className="text-center text-sm font-normal">세금</p>
 							<div className="ml-12 flex h-10 w-[8.25rem] flex-row items-center border-b border-b-black-300">
 								<p className="ml-[5.188rem] mr-[0.625rem] text-base font-bold">
-									0.3
+									{tax}
 								</p>
 								<p className="text-base font-bold">%</p>
 							</div>
@@ -106,14 +152,14 @@ const StockSellInterface = ({ stockPrice }: ISellInterfaceProps) => {
 							금액
 						</p>
 						<div className="ml-12 flex h-10 w-[8.25rem] flex-row items-center justify-end border-b border-b-black-300">
-							<p className="text-base font-bold">
-								{stockPrice * stockCount * (97 / 100)}
+							<p className="mr-1 text-base font-bold">
+								{Math.floor((stockPrice - sellTax) * stockCount)}
 							</p>
-							<p className="ml-[0.625rem] text-base font-bold">원</p>
+							<PointLogo />
 						</div>
 					</div>
 					<button
-						onClick={sellStock}
+						onClick={handleSellStock}
 						className="my-6 flex h-12 w-[14.875rem] flex-row items-center justify-center rounded border border-black-100 bg-stock-sell text-white "
 					>
 						<p>매도하기</p>

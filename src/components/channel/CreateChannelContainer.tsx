@@ -24,7 +24,6 @@ const CreateChannelContainer = () => {
 		if (response) {
 			const status = response.status;
 			if (status === 200) {
-				navigate("/mypage");
 				return response.data.data;
 			}
 		}
@@ -42,6 +41,7 @@ const CreateChannelContainer = () => {
 			channelName: channelName,
 		};
 		mutate(submitData);
+		navigate("/mypage");
 	};
 
 	return (
