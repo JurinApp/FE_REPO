@@ -1,30 +1,45 @@
+import { IStockPriceHistoryData, IStockSpecData } from "@/interface/stock";
 import StockPriceChart from "./StockPriceChart";
 import StockSpecSection from "./StockSpecSection";
 
 export interface IStockSpecProps {
-	readonly stockInfo: {
-		readonly name: string;
-		readonly price: number;
-		readonly tax: string;
-		readonly basis: string;
-		readonly detail: string;
-	};
-	readonly stockPriceHistory: {
-		readonly day: string;
-		readonly date: number;
-		readonly price: number;
-	}[];
+	readonly stockSpec: IStockSpecData;
+	readonly stockPriceHistory: IStockPriceHistoryData;
 }
+
+export interface IStockInfo {
+	// readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
+	readonly standard: string;
+	readonly content: string;
+}
+
+export interface IStockHistory {
+	readonly tradeDate: string;
+	readonly price: number;
+	readonly volume: number;
+	readonly transactionAmount: number;
+}
+
 const StockSpecContainer = ({
-	stockInfo,
+	stockSpec,
 	stockPriceHistory,
 }: IStockSpecProps) => {
 	return (
 		<>
 			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				<StockSpecSection stockInfo={stockInfo} />
+				<StockSpecSection
+					tax={stockSpec.tax}
+					// id={stockSpec.id}
+					standard={stockSpec.standard}
+					name={stockSpec.name}
+					content={stockSpec.content}
+					purchasePrice={stockSpec.purchasePrice}
+				/>
 				<section id="stock-chart" className="mx-4 mt-6">
-					<StockPriceChart stockData={stockPriceHistory} />
+					<StockPriceChart dailyPrice={stockPriceHistory} />
 				</section>
 			</div>
 		</>

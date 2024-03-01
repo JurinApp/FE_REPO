@@ -2,27 +2,64 @@ import PointLogo from "@assets/svg/point.svg?react";
 import Plus from "@assets/svg/plus.svg?react";
 import Minus from "@assets/svg/minus.svg?react";
 import { useState } from "react";
+import useAxios from "@/hooks/useAxios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface IBuyInterfaceProps {
-	stockPrice: number;
+	readonly stockPrice: number;
+	readonly userPoint: number;
+	readonly stockAmount: number;
 }
-const StockBuyInterface = ({ stockPrice }: IBuyInterfaceProps) => {
+const StockBuyInterface = ({
+	stockPrice,
+	userPoint,
+	stockAmount,
+}: IBuyInterfaceProps) => {
 	const [stockCount, setStockCount] = useState(1);
-
+	const { axiosData } = useAxios();
+	const queryClient = useQueryClient();
 	const increaseStockCount = () => {
 		setStockCount(stockCount + 1);
 	};
-
+	const channelId = location.pathname.split("/")[1];
+	const stockId = location.pathname.split("/")[3];
 	const decreaseStockCount = () => {
 		if (stockCount > 0) {
 			setStockCount(stockCount - 1);
 		}
 	};
 
-	const buyStock = () => {
-		// TODO: 주식 구매 API
-		console.log("구매");
+	const buyStock = async () => {
+		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}`;
+		const response = await axiosData("useToken", {
+			method: "POST",
+			url: apiUrl,
+			data: {
+				tradeType: 1,
+				amount: stockCount,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 200) {
+				return response.data.data;
+			}
+		}
 	};
+
+	const { mutate } = useMutation({
+		mutationFn: buyStock,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["stockSpec"] });
+			queryClient.invalidateQueries({ queryKey: ["userStock"] });
+		},
+	});
+
+	const handleBuyStock = () => {
+		mutate();
+		alert("매수가 완료되었습니다.");
+	};
+
 	return (
 		<>
 			<div
@@ -36,7 +73,7 @@ const StockBuyInterface = ({ stockPrice }: IBuyInterfaceProps) => {
 					>
 						<p className="ml-[0.875rem] text-sm font-normal">내 포인트</p>
 						<p className="ml-[6.438rem] mr-[0.313rem] text-base font-bold">
-							500
+							{userPoint}
 						</p>
 						<PointLogo />
 					</div>
@@ -45,7 +82,9 @@ const StockBuyInterface = ({ stockPrice }: IBuyInterfaceProps) => {
 						className="mt-1 flex h-12 w-[14.875rem] flex-row items-center rounded border border-black-100 bg-white"
 					>
 						<p className="ml-[0.875rem] text-sm font-normal">보유중인 주식</p>
-						<p className="ml-[6.063rem] mr-[0.625rem] text-base font-bold">4</p>
+						<p className="ml-[6.063rem] mr-[0.625rem] text-base font-bold">
+							{stockAmount}
+						</p>
 						<p className="text-base font-bold">주</p>
 					</div>
 					<div
@@ -99,7 +138,7 @@ const StockBuyInterface = ({ stockPrice }: IBuyInterfaceProps) => {
 						</div>
 					</div>
 					<button
-						onClick={buyStock}
+						onClick={handleBuyStock}
 						className="my-6 flex h-12 w-[14.875rem] flex-row items-center justify-center rounded border border-black-100 bg-stock-buy text-white "
 					>
 						<p>매수하기</p>

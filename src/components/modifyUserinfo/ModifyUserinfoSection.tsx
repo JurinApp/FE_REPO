@@ -134,10 +134,19 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 					)}
 				</form>
 				<button
-					className={`mx-4 flex h-[3.188rem] items-center justify-center rounded border border-danger bg-white`}
+					className={`mx-4 flex h-[3.188rem] items-center justify-center rounded border  ${
+						!channel
+							? "border-black-300 bg-black-100"
+							: "border-danger bg-white"
+					} `}
 					onClick={handleQuitChannelModal}
+					disabled={!channel}
 				>
-					<p className={`font-medium text-danger`}>
+					<p
+						className={`font-medium ${
+							!channel ? "text-black-700" : "text-danger"
+						}`}
+					>
 						{role === "teacher" ? "채널 삭제" : "채널 탈퇴"}
 					</p>
 				</button>

@@ -41,3 +41,37 @@ export interface ITodayTradeStockResponseData {
 	readonly previous: string;
 	readonly results: ITodayTradeStockItem[];
 }
+
+export interface IStockSpecData {
+	readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
+	readonly standard: string;
+	readonly content: string;
+}
+
+export interface IStockPriceHistoryData {
+	readonly dailyPrice: {
+		readonly tradeDate: string;
+		readonly price: number;
+		readonly volume: number;
+		readonly transactionAmount: number;
+	}[];
+}
+
+export interface IBuyListHistoryData {
+	buyList: {
+		tradeDate: string;
+		amount: number;
+		price: number;
+	}[];
+}
+
+export interface ISellListHistoryData {
+	sellList: {
+		tradeDate: string;
+		amount: number;
+		price: number;
+	}[];
+}
