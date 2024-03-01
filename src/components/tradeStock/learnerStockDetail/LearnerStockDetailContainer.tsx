@@ -143,7 +143,7 @@ const LearnerStockDetailContainer = () => {
 		<>
 			<GoBackButton
 				name={SAMPLE_STOCK.stockInfo.name}
-				backNavigationPath={`/${channelId}/stock/${stockId}`}
+				backNavigationPath={`/${channelId}/trade/home`}
 			/>
 			<StockTab />
 			{selectedTab === "spec" && !isLoading && (
