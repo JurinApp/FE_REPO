@@ -48,7 +48,7 @@ const ItemList = ({
 
 	return (
 		<div
-			className={`place mt-2 h-[calc(100vh-16rem)] max-h-[36rem] overflow-y-auto ${
+			className={`mt-2 h-[calc(100vh-16rem)] max-h-[36rem] overflow-y-auto ${
 				isExist && "flex items-center justify-center"
 			}`}
 		>

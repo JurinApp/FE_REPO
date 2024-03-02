@@ -48,14 +48,14 @@ const MyItemList = ({
 
 	return (
 		<div
-			className={`h-[calc(100vh-16rem)] max-h-[36rem] overflow-y-auto ${
+			className={`h-[calc(100vh-16rem)] max-h-[40rem] overflow-y-auto ${
 				isExistMyItemList && "flex items-center justify-center"
 			}`}
 		>
 			{isExistMyItemList ? (
 				<p className="text-black-700">{isNotExistText}</p>
 			) : (
-				<div className="mx-4 mt-[1.5rem] grid grid-cols-1 gap-1 gap-y-[0.875rem] overflow-auto rounded-[0.25rem] sm:grid-cols-3 xs:grid-cols-2">
+				<div className="mx-4 mt-[1.5rem] grid grid-cols-1 gap-1 overflow-auto rounded-[0.25rem] sm:grid-cols-3 xs:grid-cols-2">
 					{flatMyItemList.map((myItem) =>
 						myItem.remainingAmount === 0 ? (
 							<ConsumedMyItem key={myItem.id} myItem={myItem} />
