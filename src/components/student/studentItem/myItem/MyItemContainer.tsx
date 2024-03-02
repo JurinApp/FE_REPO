@@ -1,90 +1,79 @@
-import { useState } from "react";
-import ItemFilterButton from "./ItemFilterButton";
-import MyItem from "./MyItem";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { myItemFilterState } from "@/states/filterState/myItemFilterState";
-import ItemUseModal from "./ItemUseModal";
-import { itemUseModalState } from "@/states/modalState/confirmModalState";
+import Spinner from "@/components/common/spinner/Spinner";
 import useAxios from "@/hooks/useAxios";
-import { useQuery } from "@tanstack/react-query";
+import { useIntersectionObserver } from "@/hooks/useObserver";
+import { myItemFilterState } from "@/states/filterState/myItemFilterState";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import ItemFilterButton from "./MyItemFilter";
+import MyItemList from "./MyItemList";
+import ItemUseModal from "./modal/ItemUseModal";
+import {
+	itemHistoryModalState,
+	itemUseModalState,
+} from "@/states/modalState/confirmModalState";
+import ItemHistoryModal from "./modal/ItemHistoryModal";
 
-export interface IMyItemList {
-	readonly id: number;
-	readonly imageUrl: string;
-	readonly isUsed: boolean;
-	readonly price: number;
-	readonly remainingAmount: number;
-	readonly title: string;
+interface IApiUrl {
+	[key: string]: string;
 }
+
 const MyItemContainer = () => {
-	const setIsItemUseModalOpen = useSetRecoilState(itemUseModalState);
-	const [selectedItem, setSelectedItem] = useState<IMyItemList | null>(null);
+	const filterState = useRecoilValue(myItemFilterState);
+	const isOpenMyItemUseModal = useRecoilValue(itemUseModalState);
+	const isOpenMyItemHistoryModal = useRecoilValue(itemHistoryModalState);
+	const { channelId } = useParams();
 	const { axiosData } = useAxios();
-	const channelId = location.pathname.substring(1, 2);
-	const fetchMyItem = async (is_used?: boolean) => {
-		let apiUrl = `/students/api/v1/channels/${channelId}/items/mine`;
-		if (is_used !== undefined) {
-			apiUrl += `?is_used=${is_used}`;
-		}
+
+	const fetchMyItem = async (pageParam: number) => {
+		const apiUrl: IApiUrl = {
+			all: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}`,
+			available: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}&is_used=false`,
+			used: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}&is_used=true`,
+		};
+
+		console.log(apiUrl[filterState]);
+
 		const response = await axiosData("useToken", {
 			method: "GET",
-			url: apiUrl,
+			url: apiUrl[filterState],
 		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data.results;
-			}
-		}
+
+		return response?.data.data;
 	};
 
-	const myItemQuery = useQuery({
-		queryKey: ["myItemList"],
-		queryFn: () => fetchMyItem(),
+	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+		useInfiniteQuery({
+			queryKey: ["myItemList", channelId],
+			queryFn: ({ pageParam }) => fetchMyItem(pageParam as number),
+			initialPageParam: 0,
+			getNextPageParam: (lastPage) => {
+				return lastPage.next !== null ? lastPage.offset + 15 : undefined;
+			},
+		});
+
+	const observeTargetRef = useIntersectionObserver({
+		hasNextPage,
+		fetchNextPage,
 	});
 
-	const myItemList: IMyItemList[] = myItemQuery.data;
-
-	const handleModalOpen = (item: IMyItemList) => {
-		setSelectedItem(item);
-		setIsItemUseModalOpen(true);
-	};
-	const filterState = useRecoilValue(myItemFilterState);
 	return (
-		<>
-			<div className="relative mx-auto flex h-inTrade-height w-full flex-col bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				<ItemFilterButton />
-				<div className="mx-4 mt-[1.5rem] grid h-[34.563rem] grid-cols-1 gap-x-2 gap-y-[0.875rem] overflow-scroll sm:grid-cols-3 xs:grid-cols-2">
-					{myItemList &&
-						myItemList
-							.filter((item) => {
-								if (filterState === "all") return true;
-								if (filterState === "available")
-									return item.remainingAmount > 0;
-								if (filterState === "used") return item.remainingAmount === 0;
-							})
-							.map((item) => (
-								<div key={item.id}>
-									<div
-										onClick={
-											item.remainingAmount !== 0
-												? () => handleModalOpen(item)
-												: undefined
-										}
-									>
-										<MyItem
-											itemId={item.id}
-											itemName={item.title}
-											quantity={item.remainingAmount}
-											imageUrl={item.imageUrl}
-										/>
-									</div>
-								</div>
-							))}
-				</div>
-			</div>
-			{selectedItem && <ItemUseModal item={selectedItem} />}
-		</>
+		<div className="relative mx-auto flex h-inTrade-height w-full flex-col bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+			{isLoading || !data ? (
+				<Spinner />
+			) : (
+				<>
+					<ItemFilterButton />
+					<MyItemList
+						responseData={data.pages}
+						observeTargetRef={observeTargetRef}
+						isFetching={isFetching}
+					/>
+				</>
+			)}
+			{isOpenMyItemUseModal && <ItemUseModal />}
+			{isOpenMyItemHistoryModal && <ItemHistoryModal />}
+		</div>
 	);
 };
 

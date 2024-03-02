@@ -1,6 +1,6 @@
 import { IStudentItem } from "@/interface/item";
 import { itemBuyModalState } from "@/states/modalState/confirmModalState";
-import { studentSelectedItem } from "@/states/studentSelectedItem";
+import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import { useSetRecoilState } from "recoil";
 
 interface IStudentItemCardProps {

@@ -1,6 +1,6 @@
 import useAxios from "@/hooks/useAxios";
 import { itemBuyModalState } from "@/states/modalState/confirmModalState";
-import { studentSelectedItem } from "@/states/studentSelectedItem";
+import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import Minus from "@assets/svg/minus.svg?react";
 import Plus from "@assets/svg/plus.svg?react";
 import PointLogo from "@assets/svg/point.svg?react";
@@ -31,7 +31,7 @@ const ItemBuyModal = () => {
 	};
 
 	const increaseItemQuantity = () => {
-		if (item && itemQuantity >= item?.amount) return;
+		if (item && item.amount && itemQuantity >= item?.amount) return;
 		setItemQuantity((prev) => prev + 1);
 	};
 
