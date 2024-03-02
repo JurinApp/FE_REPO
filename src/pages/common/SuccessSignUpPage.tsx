@@ -11,6 +11,7 @@ const SuccessSignUpPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

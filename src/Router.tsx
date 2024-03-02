@@ -11,6 +11,7 @@ import IsLoginRoute from "@components/common/permissionRoute/IsLoginRoute";
 import Menu from "@components/common/menu/Menu";
 import Header from "@components/common/header/Header";
 import TradeTab from "@components/tradeStock/TradeTab";
+import StudentItemTab from "./components/common/studentItemTab/StudentItemTab";
 
 const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
@@ -65,7 +66,7 @@ const queryClient = new QueryClient({
 });
 
 const Router = () => {
-	const { isUseHeader, isUseMenu, isUseTab } =
+	const { isUseHeader, isUseMenu, isUseTab, isUseItemTab } =
 		useRecoilValue(headerMenuUseState);
 
 	return (
@@ -73,6 +74,7 @@ const Router = () => {
 			<ReactQueryDevtools initialIsOpen={true} />
 			{isUseHeader && <Header />}
 			{isUseTab && <TradeTab />}
+			{isUseItemTab && <StudentItemTab />}
 			<Suspense fallback={<Spinner />}>
 				<Routes>
 					<Route path="/" element={<SplashPage />} />

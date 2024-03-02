@@ -11,6 +11,7 @@ const ModifyUserinfoPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 	return (

@@ -1,4 +1,3 @@
-import StudentItemTab from "@/components/student/studentItem/StudentItemTab";
 import ItemContainer from "@/components/student/studentItem/itemHome/StudentItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
@@ -11,11 +10,12 @@ const StudentItemPage = () => {
 			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: false,
+			isUseItemTab: true,
 		});
 	}, []);
+
 	return (
 		<div>
-			<StudentItemTab />
 			<ItemContainer />
 		</div>
 	);

@@ -11,6 +11,7 @@ const SettingPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

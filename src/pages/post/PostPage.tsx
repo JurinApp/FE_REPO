@@ -11,6 +11,7 @@ const PostPage = () => {
 			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

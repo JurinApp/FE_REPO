@@ -11,6 +11,7 @@ const DetailItemPage = () => {
 			isUseHeader: false,
 			isUseMenu: true,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

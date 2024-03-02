@@ -11,6 +11,7 @@ const LoginPage = () => {
 			isUseHeader: false,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

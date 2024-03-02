@@ -11,6 +11,7 @@ const CreateChannelPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 	return (
