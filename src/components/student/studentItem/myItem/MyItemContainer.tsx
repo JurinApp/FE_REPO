@@ -32,8 +32,6 @@ const MyItemContainer = () => {
 			used: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}&is_used=true`,
 		};
 
-		console.log(apiUrl[filterState]);
-
 		const response = await axiosData("useToken", {
 			method: "GET",
 			url: apiUrl[filterState],
@@ -44,7 +42,7 @@ const MyItemContainer = () => {
 
 	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
 		useInfiniteQuery({
-			queryKey: ["myItemList", channelId],
+			queryKey: ["myItemList", channelId, filterState],
 			queryFn: ({ pageParam }) => fetchMyItem(pageParam as number),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => {
