@@ -42,7 +42,7 @@ const MyItemContainer = () => {
 
 	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
 		useInfiniteQuery({
-			queryKey: ["myItemList", channelId, filterState],
+			queryKey: ["studentItem", "myItem", channelId, filterState],
 			queryFn: ({ pageParam }) => fetchMyItem(pageParam as number),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => {

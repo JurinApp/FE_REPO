@@ -27,7 +27,7 @@ const ItemContainer = () => {
 	};
 
 	const { data, isLoading } = useQuery({
-		queryKey: ["studentItem", channelId],
+		queryKey: ["studentItem", "home", channelId],
 		queryFn: fetchItem,
 	});
 

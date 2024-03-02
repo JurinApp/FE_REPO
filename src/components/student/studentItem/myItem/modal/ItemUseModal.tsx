@@ -42,7 +42,9 @@ const ItemUseModal = () => {
 		mutationFn: useItem,
 		onSuccess: () => {
 			alert(`${selectedMyItem?.title}아이템 사용이 되었습니다.`);
-			queryClient.invalidateQueries({ queryKey: ["myItemList"] });
+			queryClient.invalidateQueries({
+				queryKey: ["studentItem", "myItem"],
+			});
 			setIsItemUseModalOpen(false);
 		},
 	});
