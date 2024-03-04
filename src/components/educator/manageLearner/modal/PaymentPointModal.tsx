@@ -71,7 +71,7 @@ const PaymentPointModal = () => {
 
 		if (response) {
 			const status = response.status;
-			console.log(response);
+
 			if (status === 200) {
 				alert("포인트 지급이 완료 되었습니다.");
 				setSelectedLearners([]);
