@@ -21,8 +21,8 @@ export const changeDateFormat = (paramDate: string) => {
 	return replaceDate;
 };
 
-export const changeFormDateFormat = () => {
-	const todayDate = new Date();
+export const changeFormDateFormat = (targetDate: Date | null = null) => {
+	const todayDate = targetDate === null ? new Date() : new Date(targetDate);
 	const month =
 		todayDate.getMonth() < 10
 			? `0${todayDate.getMonth() + 1}`
@@ -30,6 +30,5 @@ export const changeFormDateFormat = () => {
 	const date =
 		todayDate.getDate() < 10 ? `0${todayDate.getDate()}` : todayDate.getDate();
 	const replaceDate = `${todayDate.getFullYear()}-${month}-${date}`;
-
 	return replaceDate;
 };

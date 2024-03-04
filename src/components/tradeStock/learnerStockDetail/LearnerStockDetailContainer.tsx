@@ -56,23 +56,6 @@ const SAMPLE = [
 ];
 
 const SAMPLE_STOCK = {
-	stockInfo: {
-		name: "선생님의 몸무게",
-		price: 700,
-		tax: "0.3%",
-		basis: "가나다",
-		detail: "라마바사",
-	},
-	stockPriceHistory: [
-		{ day: "일", date: 14, price: 500 },
-		{ day: "월", date: 15, price: 200 },
-		{ day: "화", date: 16, price: 300 },
-		{ day: "수", date: 17, price: 400 },
-		{ day: "목", date: 18, price: 600 },
-		{ day: "금", date: 19, price: 1800 },
-		{ day: "토", date: 20, price: 600 },
-		{ day: "일", date: 21, price: 300 },
-	],
 	stockBSHistory: {
 		sellList: [
 			{ tradeDate: "2024-03-03", price: 4900, amount: 7 },
@@ -101,7 +84,7 @@ const LearnerStockDetailContainer = () => {
 	const queries = useStockTradeInfoAndHistory();
 
 	return (
-		<>
+		<div>
 			{queries[0].isLoading ? (
 				<Spinner />
 			) : (
@@ -135,7 +118,7 @@ const LearnerStockDetailContainer = () => {
 					{selectedTab === "order" && <StockOrderContainer />}
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 

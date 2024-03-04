@@ -98,3 +98,18 @@ export interface IStockPriceInfo {
 	readonly purchasePrice: number;
 	readonly tax: number;
 }
+
+export interface IOrderExecution {
+	readonly tradeDate: string;
+	readonly name: string;
+	readonly amount: number;
+	readonly price: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
+	readonly tradeType: string;
+}
+
+export interface IOrderExecutionDate {
+	readonly startDate: string;
+	readonly endDate: string;
+}

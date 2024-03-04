@@ -37,7 +37,7 @@ const StockInfo = ({ stockInfo }: IStockInfoProps) => {
 					<ul>
 						{STOCK_INFO_LABELS.map(
 							(info: { label: string; value: number | string }) => (
-								<li className="mt-[0.375rem] flex flex-row">
+								<li key={info.label} className="mt-[0.375rem] flex flex-row">
 									<p className="font-normal text-black-800">{info.label}</p>
 									<p className="ml-[0.625rem] font-medium">{info.value}</p>
 								</li>
