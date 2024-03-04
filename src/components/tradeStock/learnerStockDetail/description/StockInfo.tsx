@@ -1,44 +1,52 @@
 import { IStockInfo } from "@/interface/stock";
+import { useMemo } from "react";
 
 interface IStockInfoProps {
 	readonly stockInfo: IStockInfo;
 }
 
 const StockInfo = ({ stockInfo }: IStockInfoProps) => {
+	const STOCK_INFO_LABELS = useMemo(() => {
+		return [
+			{
+				label: "가격",
+				value: stockInfo.purchasePrice,
+			},
+			{
+				label: "세금",
+				value: stockInfo.tax,
+			},
+			{
+				label: "기준",
+				value: stockInfo.standard,
+			},
+			{
+				label: "내용",
+				value: stockInfo.content,
+			},
+		];
+	}, []);
+
 	return (
-		<>
-			<section id="stock-spec" className="mx-4 flex flex-col">
-				<div className="mt-6 bg-white">
-					<div id="stock-name" className="mx-6 mt-6">
-						<p className="mb-6 border-b font-bold">{stockInfo.name}</p>
-					</div>
-					<div id="stock-detail" className="mx-6 mb-6">
-						<ul>
-							<li className="flex flex-row">
-								<p className="font-normal">가격</p>
-								<p className="ml-[0.625rem] font-medium">
-									{stockInfo.purchasePrice}
-								</p>
-							</li>
-							<li className="flex flex-row">
-								<p className="font-normal">세금</p>
-								<p className="ml-[0.625rem] font-medium">{stockInfo.tax}</p>
-							</li>
-							<li className="flex flex-row">
-								<p className="font-normal">기준</p>
-								<p className="ml-[0.625rem] font-medium">
-									{stockInfo.standard}
-								</p>
-							</li>
-							<li className="flex flex-row">
-								<p className="font-normal">내용</p>
-								<p className="ml-[0.625rem] font-medium">{stockInfo.content}</p>
-							</li>
-						</ul>
-					</div>
+		<section className="mx-4 flex flex-col">
+			<div className="mt-6 bg-white">
+				<div className="mx-6 my-6 h-10 border-b ">
+					<p className="font-bold">{stockInfo.name}</p>
 				</div>
-			</section>
-		</>
+				<div className="mx-6 mb-6">
+					<ul>
+						{STOCK_INFO_LABELS.map(
+							(info: { label: string; value: number | string }) => (
+								<li className="mt-[0.375rem] flex flex-row">
+									<p className="font-normal text-black-800">{info.label}</p>
+									<p className="ml-[0.625rem] font-medium">{info.value}</p>
+								</li>
+							),
+						)}
+					</ul>
+				</div>
+			</div>
+		</section>
 	);
 };
 

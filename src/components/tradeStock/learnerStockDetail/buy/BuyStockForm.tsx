@@ -57,7 +57,9 @@ const BuyStockForm = ({
 		>
 			<div className="mt-4 flex h-[7.5rem] w-[14.875rem] flex-col items-center rounded border border-stock-buy bg-white">
 				<div className="mt-[0.875rem] flex h-10 w-[13.125rem] items-center">
-					<p className="text-center text-sm font-normal">주식 개수</p>
+					<p className="text-center text-sm font-normal text-black-800">
+						주식 개수
+					</p>
 					<button
 						type="button"
 						onClick={decreaseStockCount}
@@ -66,7 +68,7 @@ const BuyStockForm = ({
 						<Minus />
 					</button>
 					<p className="flex h-10 w-[3.375rem] items-center justify-center border border-b-black-100 border-t-black-100">
-						{stockCount} 주
+						{stockCount}주
 					</p>
 					<button
 						type="button"
@@ -77,7 +79,7 @@ const BuyStockForm = ({
 					</button>
 				</div>
 				<div className="mt-3 flex h-10 w-[13.125rem] items-center">
-					<p className="text-center text-sm font-normal">금액</p>
+					<p className="text-center text-sm font-normal text-black-800">금액</p>
 					<div className="ml-12 flex h-10 w-32 grow items-center justify-end border-b border-b-black-100">
 						<input
 							type="text"
@@ -91,7 +93,9 @@ const BuyStockForm = ({
 			</div>
 			<div className="flex flex-col">
 				<div className=" flex w-[14.875rem] flex-row items-center ">
-					<p className="ml-[0.875rem] text-center text-sm font-normal">금액</p>
+					<p className="ml-[0.875rem] text-center text-sm font-normal text-black-800">
+						금액
+					</p>
 					<div className="ml-12 flex h-10 w-[8.25rem] grow flex-row items-center justify-end border-b border-b-black-100">
 						<p className="mr-2 text-base font-bold">
 							{stockPriceInfo.purchasePrice * stockCount}
