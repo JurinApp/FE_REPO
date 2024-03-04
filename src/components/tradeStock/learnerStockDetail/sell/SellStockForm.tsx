@@ -84,7 +84,7 @@ const SellStockForm = ({
 					<div className="ml-12 flex h-10 w-32 grow flex-row items-center border-b border-b-black-100">
 						<p className="w-full text-right text-base font-bold">
 							{stockPriceInfo.tax}
-							<span className="ml-2">%</span>
+							<span className="ml-3 mr-1">%</span>
 						</p>
 					</div>
 				</div>

@@ -8,7 +8,7 @@ import StockTab from "./StockTab";
 import BuyStockContainer from "./buy/BuyStockContainer";
 import StockDescriptionContainer from "./description/StockDescriptionContainer";
 import StockOrderContainer from "./order/StockOrderContainer";
-import StockSellContainer from "./sell/StockSellContainer";
+import SellStockContainer from "./sell/StockSellContainer";
 
 const SAMPLE = [
 	{
@@ -126,7 +126,7 @@ const LearnerStockDetailContainer = () => {
 						/>
 					)}
 					{selectedTab === "sell" && (
-						<StockSellContainer
+						<SellStockContainer
 							userPointInfo={queries[2].data.user}
 							stockPriceInfo={queries[0].data.stock}
 							stockBSHistory={SAMPLE_STOCK.stockBSHistory}

@@ -13,7 +13,7 @@ interface ISellStockContainerProps {
 	readonly stockBSHistory: IStockBSHistory;
 }
 
-const StockSellContainer = ({
+const SellStockContainer = ({
 	userPointInfo,
 	stockPriceInfo,
 	stockBSHistory,
@@ -36,4 +36,4 @@ const StockSellContainer = ({
 	);
 };
 
-export default StockSellContainer;
+export default SellStockContainer;
