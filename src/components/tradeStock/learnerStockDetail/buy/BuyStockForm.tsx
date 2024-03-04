@@ -60,7 +60,7 @@ const BuyStockForm = ({
 					<p className="text-left text-sm font-normal text-black-800">
 						주식 개수
 					</p>
-					<div className="flex sm:w-[8.375rem]">
+					<div className="flex w-full sm:w-[8.375rem]">
 						<button
 							type="button"
 							onClick={decreaseStockCount}
@@ -71,11 +71,7 @@ const BuyStockForm = ({
 						<p className="flex h-8 w-8 items-center justify-center border border-b-black-100 border-t-black-100 sm:h-10 sm:w-[3.375rem]">
 							{stockCount}주
 						</p>
-						<button
-							type="button"
-							onClick={increaseStockCount}
-							className="flex h-8 w-8 items-center justify-center border border-black-100 sm:h-10 sm:w-10"
-						>
+						<button type="button" onClick={increaseStockCount} className="">
 							<Plus />
 						</button>
 					</div>
@@ -95,8 +91,8 @@ const BuyStockForm = ({
 					</div>
 				</div>
 			</div>
-			<div className="flex w-full flex-col">
-				<div className=" flex w-full flex-row items-center sm:w-[14.875rem] ">
+			<div className="my-6 flex w-full flex-col">
+				<div className="flex w-full flex-row items-center sm:w-[14.875rem]">
 					<p className="ml-[0.875rem] text-center text-sm font-normal text-black-800">
 						금액
 					</p>
@@ -109,7 +105,7 @@ const BuyStockForm = ({
 				</div>
 				<button
 					type="submit"
-					className="my-6 flex h-12 w-full flex-row items-center justify-center rounded border border-black-100 bg-stock-buy text-white sm:w-[14.875rem] "
+					className="mt-6 flex h-12 w-full flex-row items-center justify-center rounded border border-black-100 bg-stock-buy text-white sm:w-[14.875rem]"
 				>
 					매수하기
 				</button>

@@ -52,15 +52,30 @@ const useStockTradeInfoAndHistory = () => {
 	return useQueries({
 		queries: [
 			{
-				queryKey: ["stockInfoAndTradeHistory", channelId, stockId],
+				queryKey: [
+					"tradeStockDetail",
+					"stockInfoAndTradeHistory",
+					channelId,
+					stockId,
+				],
 				queryFn: getStockInfoAndTradeHistory,
 			},
 			{
-				queryKey: ["stockSellAndBuyHistory", channelId, stockId],
+				queryKey: [
+					"tradeStockDetail",
+					"stockSellAndBuyHistory",
+					channelId,
+					stockId,
+				],
 				queryFn: getStockSellAndBuyHistory,
 			},
 			{
-				queryKey: ["stockOrderExecution", channelId, stockId],
+				queryKey: [
+					"tradeStockDetail",
+					"stockOrderExecution",
+					channelId,
+					stockId,
+				],
 				queryFn: getStockOrderExecution,
 			},
 		],

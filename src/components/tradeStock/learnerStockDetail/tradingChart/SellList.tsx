@@ -6,11 +6,7 @@ interface ISellListProps {
 
 const SellList = ({ sellList }: ISellListProps) => {
 	return (
-		<ul
-			className={`flex flex-grow flex-col bg-stock-red ${
-				sellList.length === 0 && "items-center justify-center"
-			}`}
-		>
+		<ul className="grid grow grid-cols-1 grid-rows-7 border-t border-black-300 bg-stock-red">
 			{sellList.length === 0 ? (
 				<p className="px-2 text-xs">거래된 내역이 없습니다.</p>
 			) : (
@@ -19,7 +15,8 @@ const SellList = ({ sellList }: ISellListProps) => {
 						return (
 							<li
 								key={index}
-								className="flex flex-grow items-center justify-between border-t border-black-300 px-2 font-medium"
+								className={`flex flex-grow items-center justify-between 
+                ${index !== 6 && "border-b border-black-300"} px-2 font-medium`}
 							>
 								<p>
 									{transaction.price}

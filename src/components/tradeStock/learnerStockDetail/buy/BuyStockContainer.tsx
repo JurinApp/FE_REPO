@@ -20,16 +20,14 @@ const BuyStockContainer = ({
 }: IStockBuyContainerProps) => {
 	return (
 		<>
-			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet">
-				<div className="flex flex-row">
-					<TradingChart stockBSHistory={stockBSHistory} />
-					<div className="mx-4 flex w-full flex-col items-center pt-6 sm:w-[14.875rem]">
-						<MyPoint userPointInfo={userPointInfo} />
-						<BuyStockForm
-							stockPriceInfo={stockPriceInfo}
-							userPointInfo={userPointInfo}
-						/>
-					</div>
+			<div className="relative mx-auto flex h-inTrade-height w-full flex-row overflow-y-auto  bg-btn-cancel-tekhelet">
+				<TradingChart stockBSHistory={stockBSHistory} />
+				<div className="mx-4 flex h-full w-full flex-col items-center pt-6 sm:w-[14.875rem]">
+					<MyPoint userPointInfo={userPointInfo} />
+					<BuyStockForm
+						stockPriceInfo={stockPriceInfo}
+						userPointInfo={userPointInfo}
+					/>
 				</div>
 			</div>
 		</>

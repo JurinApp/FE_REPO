@@ -29,8 +29,7 @@ const useBuyStock = (stockCount: number) => {
 		mutationFn: () => buyStock(),
 		onSuccess: () => {
 			alert("매수가 완료되었습니다.");
-			queryClient.invalidateQueries({ queryKey: ["stockSpec"] });
-			queryClient.invalidateQueries({ queryKey: ["userStock"] });
+			queryClient.invalidateQueries({ queryKey: ["tradeStockDetail"] });
 		},
 	});
 };

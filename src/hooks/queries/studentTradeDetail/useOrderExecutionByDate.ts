@@ -21,6 +21,7 @@ const useOrderExecutionByDate = (date: IDate) => {
 
 	return useInfiniteQuery({
 		queryKey: [
+			"tradeStockDetail",
 			"orderExecutionByDateList",
 			channelId,
 			stockId,

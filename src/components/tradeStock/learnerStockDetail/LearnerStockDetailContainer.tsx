@@ -59,9 +59,9 @@ const LearnerStockDetailContainer = () => {
 	const selectedTab = useRecoilValue(selectedStockTabState);
 	const { channelId } = useParams();
 	const queries = useStockTradeInfoAndHistory();
-	console.log(queries[1].data);
+
 	return (
-		<div className="h-[calc(100vh - 10.689rem)] mx-auto w-full sm:w-[24.536rem]">
+		<div className="mx-auto w-full sm:w-[24.536rem]">
 			{queries[0].isLoading ? (
 				<Spinner />
 			) : (

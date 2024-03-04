@@ -8,11 +8,9 @@ interface ITradingChartProps {
 
 const TradingChart = ({ stockBSHistory }: ITradingChartProps) => {
 	return (
-		<div>
-			<div className="flex h-inTrade-height w-[7.688rem] flex-col bg-white">
-				<BuyList buyList={stockBSHistory.buyList} />
-				<SellList sellList={stockBSHistory.sellList} />
-			</div>
+		<div className="flex min-h-[27rem] w-[7.688rem] flex-col bg-white">
+			<BuyList buyList={stockBSHistory.buyList} />
+			<SellList sellList={stockBSHistory.sellList} />
 		</div>
 	);
 };
