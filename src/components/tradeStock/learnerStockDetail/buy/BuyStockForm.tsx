@@ -62,27 +62,27 @@ const BuyStockForm = ({
 						<button
 							type="button"
 							onClick={decreaseStockCount}
-							className="ml-5 flex h-10 w-10 items-center justify-center border border-black-300"
+							className="ml-5 flex h-10 w-10 items-center justify-center border border-black-100"
 						>
 							<Minus />
 						</button>
-						<p className="flex h-10 w-[3.375rem] items-center justify-center border border-b-black-300 border-t-black-300">
+						<p className="flex h-10 w-[3.375rem] items-center justify-center border border-b-black-100 border-t-black-100">
 							{stockCount} 주
 						</p>
 						<button
 							type="button"
 							onClick={increaseStockCount}
-							className="flex h-10 w-10 items-center justify-center border border-black-300"
+							className="flex h-10 w-10 items-center justify-center border border-black-100"
 						>
 							<Plus />
 						</button>
 					</div>
 					<div className="mt-3 flex h-10 w-[13.125rem] items-center">
 						<p className="text-center text-sm font-normal">금액</p>
-						<div className="ml-12 flex h-10 w-32 items-center justify-end border-b border-b-black-300">
+						<div className="border-b-black-10 ml-12 flex h-10 w-32 items-center justify-end border-b">
 							<input
 								type="text"
-								className="w-24 text-base font-bold outline-none"
+								className="mr-2 w-24 text-right text-base font-bold outline-none"
 								readOnly
 								value={stockPriceInfo.purchasePrice * stockCount}
 							/>
