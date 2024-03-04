@@ -1,10 +1,13 @@
 import { enterChannelModalState } from "@/states/modalState/confirmModalState";
-import { useSetRecoilState } from "recoil";
-import MoveCreateChannelBtn from "./MoveCreateChannelBtn";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router";
+import { userRoleState } from "@/states/userRoleState";
+import { useMemo } from "react";
+import ChannelInfo from "./ChannelInfo";
+import UserInfo from "./UserInfo";
 
 export interface IUserinfoProps {
-	readonly userinfo: {
+	readonly userInfo: {
 		user: {
 			id: number;
 			nickname: string;
@@ -21,91 +24,52 @@ export interface IUserinfoProps {
 		entryCode: string;
 	};
 }
-const UserinfoSection = ({ userinfo, channel }: IUserinfoProps) => {
+
+const UserinfoSection = ({ userInfo, channel }: IUserinfoProps) => {
+	const userRole = useRecoilValue(userRoleState);
 	const setIsEnterChannelModalOpen = useSetRecoilState(enterChannelModalState);
 	const navigate = useNavigate();
-	const handleModalOpen = () => {
-		setIsEnterChannelModalOpen(true);
-	};
-	const movePage = () => {
-		if (userinfo.user.userRole === "teacher") {
-			navigate(`/${channel?.id}/manageLearner`);
+
+	const buttonText: string = useMemo(() => {
+		let text = "";
+
+		if (userRole === "teacher") {
+			text = !channel ? (text = "채널 생성") : (text = "채널 입장");
 		}
-		if (userinfo.user.userRole === "student") {
-			navigate(`/${channel?.id}/trade/home`);
+
+		if (userRole === "student") {
+			text = !channel ? "채널 참여" : (text = "채널 입장");
+		}
+
+		return text;
+	}, [channel, userRole]);
+
+	const handleClickChannelBtn = () => {
+		if (userRole === "teacher") {
+			!channel
+				? navigate("/createChannel")
+				: navigate(`/${channel?.id}/manageLearner`);
+		}
+
+		if (userRole === "student") {
+			!channel
+				? setIsEnterChannelModalOpen(true)
+				: navigate(`/${channel?.id}/trade/home`);
 		}
 	};
+
 	return (
-		<>
-			<div
-				className="ml-4 flex h-[8.5rem] w-[361px] flex-col justify-center rounded border border-black border-opacity-10 bg-white "
-				id="userinfoSection"
+		<div>
+			<UserInfo userInfo={userInfo} />
+			<ChannelInfo channel={channel} />
+			<button
+				className="mx-auto mb-8 flex h-[3.188rem] w-full items-center justify-center rounded bg-tekhelet sm:w-[22.563rem]"
+				id="button"
+				onClick={handleClickChannelBtn}
 			>
-				<div className="my-2 ml-4 flex items-center gap-4">
-					<label className="text-black text-opacity-80" htmlFor="name">
-						이름
-					</label>
-					<p className="font-medium">{userinfo.user.nickname}</p>
-				</div>
-				<div className="my-2 ml-4 flex gap-4">
-					<label className="text-black text-opacity-80" htmlFor="school">
-						학교
-					</label>
-					<p className="font-medium">{userinfo.user.schoolName}</p>
-				</div>
-				<div className="my-2 ml-4 flex gap-4">
-					<label className="text-black text-opacity-80" htmlFor="authority">
-						권한
-					</label>
-					<p className="font-medium">{userinfo.user.userRole}</p>
-				</div>
-			</div>
-			{channel ? (
-				<div
-					className="ml-4 flex h-[6.375rem] w-[361px] flex-col  justify-center rounded border border-black border-opacity-10 bg-white "
-					id="channelSection"
-				>
-					<div className="my-2 ml-4 flex gap-4">
-						<label className="text-black text-opacity-80" htmlFor="school">
-							채널
-						</label>
-						<p className="font-medium">{channel.channelName}</p>
-					</div>
-					<div className="my-2 ml-4 flex gap-4">
-						<label className="text-black text-opacity-80" htmlFor="authority">
-							코드
-						</label>
-						<p className="font-medium">{channel.entryCode}</p>
-					</div>
-				</div>
-			) : (
-				<div
-					className="ml-4 flex h-[6.375rem] w-[361px] flex-col items-center justify-center rounded border border-black-100 bg-black-100"
-					id="channelSection"
-				>
-					<p className="font-medium">채널 정보가 존재하지 않습니다.</p>
-				</div>
-			)}
-			{userinfo.user.userRole === "teacher" && !channel ? (
-				<MoveCreateChannelBtn />
-			) : userinfo.user.userRole === "student" && !channel ? (
-				<button
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
-					id="button"
-					onClick={handleModalOpen}
-				>
-					<p className="font-medium text-white">채널 참여</p>
-				</button>
-			) : (
-				<button
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
-					id="button"
-					onClick={movePage}
-				>
-					<p className="font-medium text-white">채널 입장</p>
-				</button>
-			)}
-		</>
+				<p className="font-medium text-white">{buttonText}</p>
+			</button>
+		</div>
 	);
 };
 

@@ -39,10 +39,9 @@ export const UserinfoContainer = () => {
 		}
 	};
 	const fetchChannel = async () => {
-		const apiUrl = `/${role}s/api/v1/channels`;
 		const response = await axiosData("useToken", {
 			method: "GET",
-			url: apiUrl,
+			url: `/${role}s/api/v1/channels`,
 		});
 		if (response) {
 			const status = response.status;
@@ -71,11 +70,12 @@ export const UserinfoContainer = () => {
 	return (
 		<div className="mx-auto flex h-[calc(100vh-2.938rem)] flex-col justify-end gap-4 bg-btn-cancel-tekhelet sm:w-[24.563rem]">
 			<MoveModifyBtn />
-			{!isLoading && (
-				<UserinfoSection userinfo={results[0].data} channel={results[1].data} />
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<UserinfoSection userInfo={results[0].data} channel={results[1].data} />
 			)}
 			<EnterChannelModal />
-			{isLoading && <Spinner />}
 		</div>
 	);
 };
