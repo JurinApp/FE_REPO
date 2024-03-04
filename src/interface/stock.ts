@@ -1,4 +1,4 @@
-interface IStockTransaction {
+export interface IStockTransaction {
 	readonly tradeDate: string;
 	readonly price: number;
 	readonly amount: number;

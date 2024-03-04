@@ -4,7 +4,7 @@ import {
 	IUserPointInfo,
 } from "@/interface/stock";
 import MyPoint from "../MyPoint";
-import TradingChart from "../TradingChart";
+import TradingChart from "../tradingChart/TradingChart";
 import SellStockForm from "./SellStockForm";
 
 interface ISellStockContainerProps {

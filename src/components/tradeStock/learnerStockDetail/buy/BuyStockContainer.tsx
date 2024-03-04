@@ -3,7 +3,7 @@ import {
 	IStockPriceInfo,
 	IUserPointInfo,
 } from "@/interface/stock";
-import TradingChart from "../TradingChart";
+import TradingChart from "../tradingChart/TradingChart";
 import BuyStockForm from "./BuyStockForm";
 import MyPoint from "../MyPoint";
 

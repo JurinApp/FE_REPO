@@ -55,34 +55,11 @@ const SAMPLE = [
 	},
 ];
 
-const SAMPLE_STOCK = {
-	stockBSHistory: {
-		sellList: [
-			{ tradeDate: "2024-03-03", price: 4900, amount: 7 },
-			{ tradeDate: "2024-03-03", price: 4200, amount: 6 },
-			{ tradeDate: "2024-03-03", price: 3500, amount: 5 },
-			{ tradeDate: "2024-03-03", price: 2800, amount: 4 },
-			{ tradeDate: "2024-03-03", price: 2100, amount: 3 },
-			{ tradeDate: "2024-03-03", price: 1400, amount: 2 },
-			{ tradeDate: "2024-03-03", price: 700, amount: 1 },
-		],
-		buyList: [
-			{ tradeDate: "2024-03-03", price: 700, amount: 1 },
-			{ tradeDate: "2024-03-03", price: 1400, amount: 2 },
-			{ tradeDate: "2024-03-03", price: 2100, amount: 3 },
-			{ tradeDate: "2024-03-03", price: 2800, amount: 4 },
-			{ tradeDate: "2024-03-03", price: 3500, amount: 5 },
-			{ tradeDate: "2024-03-03", price: 4200, amount: 6 },
-			{ tradeDate: "2024-03-03", price: 4900, amount: 7 },
-		],
-	},
-};
-
 const LearnerStockDetailContainer = () => {
 	const selectedTab = useRecoilValue(selectedStockTabState);
 	const { channelId } = useParams();
 	const queries = useStockTradeInfoAndHistory();
-
+	console.log(queries[1].data);
 	return (
 		<div className="h-[calc(100vh - 10.689rem)] mx-auto w-full sm:w-[24.536rem]">
 			{queries[0].isLoading ? (
@@ -105,14 +82,14 @@ const LearnerStockDetailContainer = () => {
 						<BuyStockContainer
 							userPointInfo={queries[2].data.user}
 							stockPriceInfo={queries[0].data.stock}
-							stockBSHistory={SAMPLE_STOCK.stockBSHistory}
+							stockBSHistory={queries[1].data}
 						/>
 					)}
 					{selectedTab === "sell" && (
 						<SellStockContainer
 							userPointInfo={queries[2].data.user}
 							stockPriceInfo={queries[0].data.stock}
-							stockBSHistory={SAMPLE_STOCK.stockBSHistory}
+							stockBSHistory={queries[1].data}
 						/>
 					)}
 					{selectedTab === "order" && <StockOrderContainer />}
