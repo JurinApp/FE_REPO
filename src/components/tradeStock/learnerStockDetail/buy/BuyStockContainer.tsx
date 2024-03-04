@@ -5,7 +5,7 @@ import {
 } from "@/interface/stock";
 import TradingChart from "../TradingChart";
 import BuyStockForm from "./BuyStockForm";
-import MyPoint from "./MyPoint";
+import MyPoint from "../MyPoint";
 
 interface IStockBuyContainerProps {
 	readonly userPointInfo: IUserPointInfo;

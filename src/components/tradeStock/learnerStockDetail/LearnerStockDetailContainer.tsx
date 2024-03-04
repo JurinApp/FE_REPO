@@ -100,12 +100,6 @@ const LearnerStockDetailContainer = () => {
 	const { channelId } = useParams();
 	const queries = useStockTradeInfoAndHistory();
 
-	const userPoint = queries[2]?.data?.user.point;
-	const stockAmount = queries[2]?.data?.user.totalStockAmount;
-	const stockPrice = queries[0]?.data?.stock.purchasePrice;
-	const tax = queries[0]?.data?.stock.tax;
-	console.log(queries);
-
 	return (
 		<>
 			{queries[0].isLoading ? (
@@ -133,11 +127,9 @@ const LearnerStockDetailContainer = () => {
 					)}
 					{selectedTab === "sell" && (
 						<StockSellContainer
-							userPoint={userPoint}
-							stockAmount={stockAmount}
+							userPointInfo={queries[2].data.user}
+							stockPriceInfo={queries[0].data.stock}
 							stockBSHistory={SAMPLE_STOCK.stockBSHistory}
-							stockPrice={stockPrice}
-							tax={tax}
 						/>
 					)}
 					{selectedTab === "order" && <StockOrderContainer />}

@@ -2,18 +2,18 @@ import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
-const useBuyStock = (stockCount: number) => {
+const useSellStock = (stockCount: number) => {
 	const { axiosData } = useAxios();
 	const { channelId, stockId } = useParams();
 	const queryClient = useQueryClient();
 
-	const buyStock = async () => {
+	const sellStock = async () => {
 		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}`;
 		const response = await axiosData("useToken", {
 			method: "POST",
 			url: apiUrl,
 			data: {
-				tradeType: 1,
+				tradeType: 2,
 				amount: stockCount,
 			},
 		});
@@ -26,13 +26,13 @@ const useBuyStock = (stockCount: number) => {
 	};
 
 	return useMutation({
-		mutationFn: () => buyStock(),
+		mutationFn: sellStock,
 		onSuccess: () => {
-			alert("매수가 완료되었습니다.");
+			alert("매도가 완료되었습니다.");
 			queryClient.invalidateQueries({ queryKey: ["stockSpec"] });
 			queryClient.invalidateQueries({ queryKey: ["userStock"] });
 		},
 	});
 };
 
-export default useBuyStock;
+export default useSellStock;
