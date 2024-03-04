@@ -23,7 +23,7 @@ const StockDescriptionContainer = ({
 }: IStockSpecProps) => {
 	return (
 		<>
-			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet">
 				{isLoading ? (
 					<Spinner />
 				) : (

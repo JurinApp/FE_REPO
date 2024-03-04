@@ -24,7 +24,7 @@ const StockOrderContainer = () => {
 	});
 
 	return (
-		<div className="relative mx-auto h-inTrade-height bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
+		<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet px-4">
 			<SelectDateButton date={date} />
 			{isLoading || !data ? (
 				<Spinner />

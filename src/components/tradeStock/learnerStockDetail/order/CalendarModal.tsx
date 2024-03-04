@@ -50,6 +50,13 @@ const CalendarModal = ({ todayDate, setDate }: ICalendarModalProps) => {
 	};
 
 	const handleApplyDateRange = () => {
+		if (!range?.from || !range?.to) {
+			alert(
+				!range?.from ? "시작날짜를 선택해주세요." : "종료날짜를 선택해주세요.",
+			);
+			return;
+		}
+
 		const stringDate = Object.values({ ...range }).map((element) => {
 			return changeFormDateFormat(element);
 		});
