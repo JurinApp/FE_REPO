@@ -28,7 +28,9 @@ const UserInfo = ({ userInfo }: IUserInfoProps) => {
 				<label className="text-black text-opacity-80" htmlFor="authority">
 					권한
 				</label>
-				<p className="font-medium">{userInfo.user.userRole}</p>
+				<p className="font-medium">
+					{userInfo.user.userRole === "teacher" ? "선생님" : "학생"}
+				</p>
 			</div>
 		</div>
 	);
