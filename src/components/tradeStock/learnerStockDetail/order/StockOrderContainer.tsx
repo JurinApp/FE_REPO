@@ -6,13 +6,11 @@ import useAxios from "@/hooks/useAxios";
 import { endDateState, startDateState } from "@/states/stockOrderState";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
-interface IStockOrderProps {
-	channelId: string;
-	stockId: string;
-}
+const StockOrderContainer = () => {
+	const { stockId, channelId } = useParams();
 
-const StockOrderContainer = ({ channelId, stockId }: IStockOrderProps) => {
 	const setIsCalendarModalState = useSetRecoilState(calendarModalState);
 	const handleCalendarOpen = () => {
 		setIsCalendarModalState(true);

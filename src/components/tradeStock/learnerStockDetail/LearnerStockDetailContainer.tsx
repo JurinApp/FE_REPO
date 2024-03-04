@@ -1,14 +1,59 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
-import StockTab from "./StockTab";
-import { useRecoilValue } from "recoil";
+import Spinner from "@/components/common/spinner/Spinner";
+import useStockTradeInfoAndHistory from "@/hooks/queries/useStockTradeInfoAndHistory";
 import { selectedStockTabState } from "@/states/selectedTabState/selectedStockTabState";
-import StockSpecContainer from "./spec/StockSpecContainer";
-import StockBuyContainer from "./buy/StockBuyContainer";
-import StockSellContainer from "./sell/StockSellContainer";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import StockTab from "./StockTab";
+import BuyStockContainer from "./buy/BuyStockContainer";
+import StockDescriptionContainer from "./description/StockDescriptionContainer";
 import StockOrderContainer from "./order/StockOrderContainer";
-import useAxios from "@/hooks/useAxios";
-import { useQueries } from "@tanstack/react-query";
-import { IStockSpecData } from "@/interface/stock";
+import StockSellContainer from "./sell/StockSellContainer";
+
+const SAMPLE = [
+	{
+		tradeDate: "2024-03-03",
+		price: 3000,
+		volume: 0,
+		transactionAmount: 2,
+	},
+	{
+		tradeDate: "2024-03-04",
+		price: 1200,
+		volume: 0,
+		transactionAmount: 3,
+	},
+	{
+		tradeDate: "2024-03-05",
+		price: 1000,
+		volume: 0,
+		transactionAmount: 4,
+	},
+	{
+		tradeDate: "2024-03-06",
+		price: 3000,
+		volume: 0,
+		transactionAmount: 2,
+	},
+	{
+		tradeDate: "2024-03-07",
+		price: 1500,
+		volume: 0,
+		transactionAmount: 2,
+	},
+	{
+		tradeDate: "2024-03-08",
+		price: 6000,
+		volume: 0,
+		transactionAmount: 4,
+	},
+	{
+		tradeDate: "2024-03-09",
+		price: 1000,
+		volume: 0,
+		transactionAmount: 2,
+	},
+];
 
 const SAMPLE_STOCK = {
 	stockInfo: {
@@ -19,7 +64,7 @@ const SAMPLE_STOCK = {
 		detail: "라마바사",
 	},
 	stockPriceHistory: [
-		{ day: "일", date: 14, price: 100 },
+		{ day: "일", date: 14, price: 500 },
 		{ day: "월", date: 15, price: 200 },
 		{ day: "화", date: 16, price: 300 },
 		{ day: "수", date: 17, price: 400 },
@@ -29,148 +74,74 @@ const SAMPLE_STOCK = {
 		{ day: "일", date: 21, price: 300 },
 	],
 	stockBSHistory: {
-		buy: [
-			{ price: 4900, quantity: 7 },
-			{ price: 4200, quantity: 6 },
-			{ price: 3500, quantity: 5 },
-			{ price: 2800, quantity: 4 },
-			{ price: 2100, quantity: 3 },
-			{ price: 1400, quantity: 2 },
-			{ price: 700, quantity: 1 },
+		sellList: [
+			{ tradeDate: "2024-03-03", price: 4900, amount: 7 },
+			{ tradeDate: "2024-03-03", price: 4200, amount: 6 },
+			{ tradeDate: "2024-03-03", price: 3500, amount: 5 },
+			{ tradeDate: "2024-03-03", price: 2800, amount: 4 },
+			{ tradeDate: "2024-03-03", price: 2100, amount: 3 },
+			{ tradeDate: "2024-03-03", price: 1400, amount: 2 },
+			{ tradeDate: "2024-03-03", price: 700, amount: 1 },
 		],
-		sell: [
-			{ price: 700, quantity: 1 },
-			{ price: 1400, quantity: 2 },
-			{ price: 2100, quantity: 3 },
-			{ price: 2800, quantity: 4 },
-			{ price: 3500, quantity: 5 },
-			{ price: 4200, quantity: 6 },
-			{ price: 4900, quantity: 7 },
+		buyList: [
+			{ tradeDate: "2024-03-03", price: 700, amount: 1 },
+			{ tradeDate: "2024-03-03", price: 1400, amount: 2 },
+			{ tradeDate: "2024-03-03", price: 2100, amount: 3 },
+			{ tradeDate: "2024-03-03", price: 2800, amount: 4 },
+			{ tradeDate: "2024-03-03", price: 3500, amount: 5 },
+			{ tradeDate: "2024-03-03", price: 4200, amount: 6 },
+			{ tradeDate: "2024-03-03", price: 4900, amount: 7 },
 		],
 	},
 };
 
 const LearnerStockDetailContainer = () => {
 	const selectedTab = useRecoilValue(selectedStockTabState);
-	const { axiosData } = useAxios();
+	const { channelId } = useParams();
+	const queries = useStockTradeInfoAndHistory();
 
-	const channelId = location.pathname.split("/")[1];
-	const stockId = location.pathname.split("/")[3];
+	const userPoint = queries[2]?.data?.user.point;
+	const stockAmount = queries[2]?.data?.user.totalStockAmount;
+	const stockPrice = queries[0]?.data?.stock.purchasePrice;
+	const tax = queries[0]?.data?.stock.tax;
+	console.log(queries);
 
-	// 상세 주식 내용 조회
-	const fetchStockSpec = async () => {
-		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}`;
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-	// 보유 주식 목록 조회 (나의 주식 메뉴 눌렀을 때, 사용될 데이터)
-	// const fetchMyStockList = async () => {
-	// 	const apiUrl = `/students/api/v1/channels/${channelId}/stocks/mine`;
-	// 	const response = await axiosData("useToken", {
-	// 		method: "GET",
-	// 		url: apiUrl,
-	// 	});
-	// 	if (response) {
-	// 		const status = response.status;
-	// 		if (status === 200) {
-	// 			return response.data.data;
-	// 		}
-	// 	}
-	// };
-
-	// 학생 주식 종목 상세 거래 정보 조회 (매수, 매도 페이지)
-	const fetchTradeHistory = async () => {
-		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}/trades`;
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-
-	// 학생 보유 주식 상세 조회
-	const fetchUserStock = async () => {
-		const apiUrl = `/students/api/v1/channels/${channelId}/stocks/${stockId}/mine`;
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-
-	const fetchQuery = useQueries({
-		queries: [
-			{
-				queryKey: ["stockSpec", channelId, stockId],
-				queryFn: fetchStockSpec,
-			},
-			{
-				queryKey: ["tradeHistory", channelId, stockId],
-				queryFn: fetchTradeHistory,
-			},
-			{
-				queryKey: ["userStock", stockId],
-				queryFn: fetchUserStock,
-			},
-		],
-	});
-	const stockSpec: IStockSpecData = fetchQuery[0]?.data?.stock;
-	const priceHistory = fetchQuery[0]?.data?.dailyPrice;
-	const userPoint = fetchQuery[2]?.data?.user.point;
-	const stockAmount = fetchQuery[2]?.data?.user.totalStockAmount;
-	const stockPrice = fetchQuery[0]?.data?.stock.purchasePrice;
-	const tax = fetchQuery[0]?.data?.stock.tax;
-	const isLoading = fetchQuery.some((query) => query.isLoading);
 	return (
 		<>
-			<GoBackButton
-				name={SAMPLE_STOCK.stockInfo.name}
-				backNavigationPath={`/${channelId}/trade/home`}
-			/>
-			<StockTab />
-			{selectedTab === "spec" && !isLoading && (
-				<StockSpecContainer
-					stockSpec={stockSpec}
-					stockPriceHistory={priceHistory}
-				/>
-			)}
-			{selectedTab === "buy" && (
-				<StockBuyContainer
-					userPoint={userPoint}
-					stockAmount={stockAmount}
-					stockBSHistory={SAMPLE_STOCK.stockBSHistory}
-					stockPrice={stockPrice}
-				/>
-			)}
-			{selectedTab === "sell" && (
-				<StockSellContainer
-					userPoint={userPoint}
-					stockAmount={stockAmount}
-					stockBSHistory={SAMPLE_STOCK.stockBSHistory}
-					stockPrice={stockPrice}
-					tax={tax}
-				/>
-			)}
-			{selectedTab === "order" && (
-				<StockOrderContainer channelId={channelId} stockId={stockId} />
+			{queries[0].isLoading ? (
+				<Spinner />
+			) : (
+				<>
+					<GoBackButton
+						name={queries[0].data.stock.name}
+						backNavigationPath={`/${channelId}/trade/home`}
+					/>
+					<StockTab />
+					{selectedTab === "spec" && (
+						<StockDescriptionContainer
+							stockInfo={queries[0].data.stock}
+							isLoading={queries[0].isLoading}
+							stockPriceHistory={SAMPLE}
+						/>
+					)}
+					{selectedTab === "buy" && (
+						<BuyStockContainer
+							userPointInfo={queries[2].data.user}
+							stockPriceInfo={queries[0].data.stock}
+							stockBSHistory={SAMPLE_STOCK.stockBSHistory}
+						/>
+					)}
+					{selectedTab === "sell" && (
+						<StockSellContainer
+							userPoint={userPoint}
+							stockAmount={stockAmount}
+							stockBSHistory={SAMPLE_STOCK.stockBSHistory}
+							stockPrice={stockPrice}
+							tax={tax}
+						/>
+					)}
+					{selectedTab === "order" && <StockOrderContainer />}
+				</>
 			)}
 		</>
 	);

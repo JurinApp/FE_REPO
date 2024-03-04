@@ -1,11 +1,12 @@
 interface IStockTransaction {
+	readonly tradeDate: string;
 	readonly price: number;
-	readonly quantity: number;
+	readonly amount: number;
 }
 
 export interface IStockBSHistory {
-	buy: IStockTransaction[];
-	sell: IStockTransaction[];
+	buyList: IStockTransaction[];
+	sellList: IStockTransaction[];
 }
 
 export interface IStockItem {
@@ -74,4 +75,26 @@ export interface ISellListHistoryData {
 		amount: number;
 		price: number;
 	}[];
+}
+
+// 학생권한 주식상세조회
+export interface IStockInfo {
+	readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
+	readonly standard: string;
+	readonly content: string;
+}
+
+export interface IUserPointInfo {
+	readonly point: number;
+	readonly totalStockAmount: number;
+}
+
+export interface IStockPriceInfo {
+	readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
 }
