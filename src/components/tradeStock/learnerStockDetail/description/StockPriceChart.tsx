@@ -11,18 +11,6 @@ import {
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 
-interface IStockPriceChartProps {
-	tradeDate: string;
-	price: number;
-	volume: number;
-	transactionAmount: number;
-}
-
-interface IStockPriceArray extends Array<IStockPriceChartProps> {}
-
-// labels : X축 기준 항목들
-// data : y축 기준 데이터 숫자들
-
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -33,101 +21,135 @@ ChartJS.register(
 	Legend,
 );
 
-const StockPriceChart = ({ dailyPrice }: { dailyPrice: IStockPriceArray }) => {
-	// const labels = stockData.map((data) => [`${data.date}`, `${data.day}`]);
+interface IStockHistory {
+	readonly tradeDate: string;
+	readonly price: number;
+	readonly volume: number;
+	readonly transactionAmount: number;
+}
 
-	// const labels = dailyPrice.map((data) => {
-	// 	const day = data.tradeDate;
-	// 	let color = "black"; // 기본 색상은 검정색으로 설정
+const DAY: { [key: number]: string } = {
+	0: "일",
+	1: "월",
+	2: "화",
+	3: "수",
+	4: "목",
+	5: "금",
+	6: "토",
+};
 
-	// 	if (day === "토") {
-	// 		color = "blue"; // "토"인 경우 파란색으로 설정
-	// 	} else if (day === "일") {
-	// 		color = "red"; // "일"인 경우 빨간색으로 설정
-	// 	}
+interface ITick {
+	readonly value: number;
+	readonly label: string;
+}
 
-	// 	return {
-	// 		value: [`${data.tradeDate}`],
-	// 		text: day,
-	// 		color: color,
-	// 	};
-	// });
+const StockPriceChart = ({
+	stockPriceHistory,
+}: {
+	stockPriceHistory: IStockHistory[];
+}) => {
+	const labels = useMemo(() => {
+		const newLabels = stockPriceHistory.map((data) => {
+			const date = new Date(data.tradeDate);
+			const replaceDate = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+			const day = date.getDay();
+			let color = "black"; // 기본 색상은 검정색으로 설정
 
-	const labels = ["1", "2", "3", "4", "5", "6", "7"];
+			if (day === 6) {
+				color = "blue"; // "토"인 경우 파란색으로 설정
+			} else if (day === 0) {
+				color = "red"; // "일"인 경우 빨간색으로 설정
+			}
 
-	const prices = dailyPrice.map((data) => data.price);
+			return {
+				value: [`${replaceDate}`],
+				text: DAY[day],
+				color: color,
+			};
+		});
 
-	const data = {
-		//x축
-		labels: labels,
-		datasets: [
-			{
-				//y축
-				label: "거래 기록",
-				data: prices,
-				backgroundColor: "rgba(207, 208, 247, 1.00)",
-				borderColor: "rgba(61, 52, 139, 1)",
-				borderWidth: 2,
-				tension: 0.1,
-				pointRadius: 3,
-			},
-		],
-	};
+		return newLabels;
+	}, [stockPriceHistory]);
+
+	const chartData = useMemo(() => {
+		return {
+			labels: labels.map((label) => `${label.value} ${label.text}`),
+			datasets: [
+				{
+					label: "주식 가격",
+					data: stockPriceHistory.map((data) => data.price),
+					backgroundColor: "rgba(207, 208, 247, 1.00)",
+					borderColor: "rgba(61, 52, 139, 1)",
+					borderWidth: 2,
+					tension: 0.1,
+					pointRadius: 3,
+				},
+			],
+		};
+	}, [labels]);
 
 	const options = useMemo(() => {
-		const chartOption = {
-			response: true,
-			interaction: {
-				mode: "index" as const,
-				intersect: false,
-			},
+		return {
 			scales: {
+				x: { beginAtZero: true },
 				y: {
-					stacked: true,
+					beginAtZero: true,
+					afterTickToLabelConversion: (scaleInstance: any) => {
+						const ticks = scaleInstance.ticks;
+						const newTicks = ticks.map((tick: ITick, index: number) => {
+							if (index === 0) {
+								return {
+									...tick,
+									label: "최소값",
+								};
+							}
+
+							if (index === ticks.length - 1) {
+								return {
+									...tick,
+									label: "최대값",
+								};
+							}
+
+							return {
+								...tick,
+								label: "",
+							};
+						});
+
+						scaleInstance.ticks = newTicks;
+					},
 				},
 			},
-			title: {
-				display: false,
-				text: "Chart.js Line Chart",
+			tooltip: {
+				backgroundColor: "rgba(0, 0, 0, 0.7)",
+				padding: 10,
+			},
+			responsive: true,
+			plugins: {
+				legend: {
+					labels: {
+						usePointStyle: true,
+						padding: 10,
+					},
+				},
+				tooltip: {
+					backgroundColor: "rgba(0, 0, 0, 0.7)",
+					padding: 10,
+					bodySpacing: 5,
+				},
 			},
 		};
-
-		return chartOption;
 	}, []);
-
-	// const options = {
-	// 	scales: {
-	// 		x: { beginAtZero: true },
-	// 		y: {
-	// 			beginAtZero: true,
-	// 			ticks: {
-	// 				callback: function (index: number, values: any) {
-	// 					if (index === 0) {
-	// 						return "최소값";
-	// 					} else if (index === values.length - 1) {
-	// 						return "최대값";
-	// 					}
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// 	responsive: true,
-	// 	plugins: {
-	// 		legend: {
-	// 			display: false,
-	// 		},
-	// 		title: {
-	// 			display: false,
-	// 			text: "Chart.js Line Chart",
-	// 		},
-	// 	},
-	// };
 
 	return (
 		<section id="stock-chart" className="mx-4 mt-6">
-			<div className="h-[22.563rem] w-full bg-white">
-				<p>주식 거래 정보가 없습니다.</p>
-				{dailyPrice !== undefined && <Line data={data} options={options} />}
+			<div className="flex min-h-[15rem] w-full items-center justify-center rounded border border-black-100 bg-white">
+				{stockPriceHistory.length === 0 ? (
+					<p className="text-sm text-black-800">주식 거래 정보가 없습니다.</p>
+				) : (
+					<Line data={chartData} options={options} />
+				)}
 			</div>
 		</section>
 	);

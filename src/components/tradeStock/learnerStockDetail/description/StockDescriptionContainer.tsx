@@ -23,13 +23,13 @@ const StockDescriptionContainer = ({
 }: IStockSpecProps) => {
 	return (
 		<>
-			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet">
+			<div className="relative mx-auto h-inTrade-height w-full overflow-y-auto bg-btn-cancel-tekhelet py-6">
 				{isLoading ? (
 					<Spinner />
 				) : (
 					<>
 						<StockInfo stockInfo={stockInfo} />
-						<StockPriceChart dailyPrice={stockPriceHistory} />
+						<StockPriceChart stockPriceHistory={stockPriceHistory} />
 					</>
 				)}
 			</div>

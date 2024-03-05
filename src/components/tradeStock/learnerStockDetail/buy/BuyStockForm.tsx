@@ -71,7 +71,11 @@ const BuyStockForm = ({
 						<p className="flex h-8 w-8 items-center justify-center border border-b-black-100 border-t-black-100 sm:h-10 sm:w-[3.375rem]">
 							{stockCount}주
 						</p>
-						<button type="button" onClick={increaseStockCount} className="">
+						<button
+							type="button"
+							onClick={increaseStockCount}
+							className="flex h-8 w-8 items-center justify-center border border-black-100 sm:h-10 sm:w-10"
+						>
 							<Plus />
 						</button>
 					</div>

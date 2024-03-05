@@ -10,51 +10,6 @@ import StockDescriptionContainer from "./description/StockDescriptionContainer";
 import StockOrderContainer from "./order/StockOrderContainer";
 import SellStockContainer from "./sell/StockSellContainer";
 
-const SAMPLE = [
-	{
-		tradeDate: "2024-03-03",
-		price: 3000,
-		volume: 0,
-		transactionAmount: 2,
-	},
-	{
-		tradeDate: "2024-03-04",
-		price: 1200,
-		volume: 0,
-		transactionAmount: 3,
-	},
-	{
-		tradeDate: "2024-03-05",
-		price: 1000,
-		volume: 0,
-		transactionAmount: 4,
-	},
-	{
-		tradeDate: "2024-03-06",
-		price: 3000,
-		volume: 0,
-		transactionAmount: 2,
-	},
-	{
-		tradeDate: "2024-03-07",
-		price: 1500,
-		volume: 0,
-		transactionAmount: 2,
-	},
-	{
-		tradeDate: "2024-03-08",
-		price: 6000,
-		volume: 0,
-		transactionAmount: 4,
-	},
-	{
-		tradeDate: "2024-03-09",
-		price: 1000,
-		volume: 0,
-		transactionAmount: 2,
-	},
-];
-
 const LearnerStockDetailContainer = () => {
 	const selectedTab = useRecoilValue(selectedStockTabState);
 	const { channelId } = useParams();
@@ -75,7 +30,7 @@ const LearnerStockDetailContainer = () => {
 						<StockDescriptionContainer
 							stockInfo={queries[0].data.stock}
 							isLoading={queries[0].isLoading}
-							stockPriceHistory={SAMPLE}
+							stockPriceHistory={queries[0].data.dailyPrice}
 						/>
 					)}
 					{selectedTab === "buy" && (

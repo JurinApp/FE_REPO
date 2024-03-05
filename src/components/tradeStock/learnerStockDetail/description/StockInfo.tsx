@@ -29,7 +29,7 @@ const StockInfo = ({ stockInfo }: IStockInfoProps) => {
 
 	return (
 		<section className="mx-4 flex flex-col">
-			<div className="mt-6 bg-white">
+			<div className="rounded border border-black-100 bg-white">
 				<div className="mx-6 my-6 h-10 border-b ">
 					<p className="font-bold">{stockInfo.name}</p>
 				</div>
