@@ -1,47 +1,16 @@
-import useAxios from "@/hooks/useAxios";
+import useCreateChannel from "@/hooks/mutations/myPage/useCreateChannel";
 import useInput from "@/hooks/useInput";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
-
-interface createChannelData {
-	channelName: string;
-}
+import { FormEvent } from "react";
 
 const CreateChannelContainer = () => {
-	const { axiosData } = useAxios();
-
 	const [channelName, setChannelName] = useInput("");
-	const navigate = useNavigate();
-	const queryClient = useQueryClient();
+	const { mutate } = useCreateChannel();
 
-	const createChannel = async (submitData: createChannelData) => {
-		const apiUrl = "/teachers/api/v1/channels";
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: apiUrl,
-			data: submitData,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-
-	const { mutate } = useMutation({
-		mutationFn: createChannel,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
-		},
-	});
-
-	const handleCreateChannel = () => {
-		const submitData: createChannelData = {
-			channelName: channelName,
-		};
-		mutate(submitData);
-		navigate("/mypage");
+	const handleCreateChannel = (e: FormEvent) => {
+		e.preventDefault();
+		const result = confirm("채널 생성을 하시겠습니까?");
+		if (!result) return;
+		mutate({ channelName: channelName });
 	};
 
 	return (
@@ -49,8 +18,8 @@ const CreateChannelContainer = () => {
 			<div className="flex h-full flex-col justify-end gap-4">
 				<h1 className=" ml-4 text-[1.625rem] font-bold">채널 생성</h1>
 				<form
+					onSubmit={handleCreateChannel}
 					className="mx-4 mt-4 flex h-auto w-[361px] flex-col gap-4 rounded"
-					id="channelSection"
 				>
 					<label htmlFor="channel-name" className="font-bold">
 						채널 이름
@@ -68,11 +37,10 @@ const CreateChannelContainer = () => {
 					</p>
 				</form>
 				<button
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet"
-					id="button"
-					onClick={handleCreateChannel}
+					type="submit"
+					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet font-medium text-white"
 				>
-					<p className="font-[500] text-white">생성</p>
+					생성
 				</button>
 			</div>
 		</div>

@@ -1,21 +1,29 @@
-import { IChannel } from "@/interface/userinfo";
-import { IUserinfo } from "../MyPageContainer";
+import useUserInfo from "@/hooks/queries/myPage/useUserInfo";
 import ModifyUserInfo from "./ModifyUserInfo";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import Spinner from "@/components/common/spinner/Spinner";
+import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 
 const ModifyInfoContainer = () => {
-	const queryClient = useQueryClient();
+	const queries = useUserInfo();
 
-	const userData: IUserinfo | undefined = queryClient.getQueryData([
-		"userinfo",
-	]);
-	const channelInfo: IChannel | undefined = queryClient.getQueryData([
-		"channelInfo",
-	]);
+	const isLoading = useMemo(() => {
+		return queries.some((query) => query.isLoading);
+	}, [queries]);
 
 	return (
-		<div className="mx-auto h-[calc(100vh-2.938rem)] bg-white sm:w-[23.563rem] ">
-			<ModifyUserInfo userinfo={userData} channel={channelInfo} />
+		<div className="mx-auto flex h-screen flex-col justify-between sm:w-[24.563rem]">
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<>
+					<GoBackButton backNavigationPath={"/mypage"} />
+					<ModifyUserInfo
+						userInfo={queries[0].data}
+						channel={queries[1].data}
+					/>
+				</>
+			)}
 		</div>
 	);
 };

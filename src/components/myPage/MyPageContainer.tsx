@@ -1,81 +1,26 @@
-import useAxios from "@/hooks/useAxios";
-import { EnterChannelModal } from "./channel/EnterChannelModal";
-import MoveModifyBtn from "./userAndChannelInfo/MoveModifyBtn";
-import UserAndChannelInfoSection from "./userAndChannelInfo/UserAndChannelInfoSection";
-import { useRecoilValue } from "recoil";
-import { userRoleState } from "@/states/userRoleState";
+import useUserInfo from "@/hooks/queries/myPage/useUserInfo";
+import { useMemo } from "react";
 import Spinner from "../common/spinner/Spinner";
-import { useQueries } from "@tanstack/react-query";
-
-export interface IUserinfo {
-	readonly user: {
-		id: number;
-		nickname: string;
-		schoolName: string;
-		userRole: string;
-	};
-	readonly channel?: {
-		name: string;
-	};
-}
+import { EnterChannelModal } from "./channel/EnterChannelModal";
+import ModifyBtn from "./userAndChannelInfo/ModifyBtn";
+import UserAndChannelInfoSection from "./userAndChannelInfo/UserAndChannelInfoSection";
 
 const MyPageContainer = () => {
-	const { axiosData } = useAxios();
-	const role = useRecoilValue(userRoleState);
+	const queries = useUserInfo();
 
-	const fetchUserinfo = async () => {
-		const apiUrl = `/${role}s/api/v1/users/profile`;
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: apiUrl,
-		});
-		if (response) {
-			if (role === "student") {
-				return { user: response.data.data, channel: "" };
-			}
-			if (role === "teacher") {
-				return response.data.data;
-			}
-		}
-	};
-	const fetchChannel = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/${role}s/api/v1/channels`,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-			if (status === 404) {
-				return null;
-			}
-		}
-	};
-	const results = useQueries({
-		queries: [
-			{
-				queryKey: ["userinfo"],
-				queryFn: fetchUserinfo,
-			},
-			{
-				queryKey: ["channelInfo"],
-				queryFn: fetchChannel,
-			},
-		],
-	});
-	const isLoading = results.some((query) => query.isLoading);
+	const isLoading = useMemo(() => {
+		return queries.some((query) => query.isLoading);
+	}, [queries]);
 
 	return (
 		<div className="mx-auto flex h-[calc(100vh-2.938rem)] flex-col justify-end gap-4 bg-btn-cancel-tekhelet sm:w-[24.563rem]">
-			<MoveModifyBtn />
+			<ModifyBtn />
 			{isLoading ? (
 				<Spinner />
 			) : (
 				<UserAndChannelInfoSection
-					userInfo={results[0].data}
-					channel={results[1].data}
+					userInfo={queries[0].data}
+					channel={queries[1].data}
 				/>
 			)}
 			<EnterChannelModal />

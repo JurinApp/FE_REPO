@@ -8,12 +8,13 @@ const ModifyInfoPage = () => {
 
 	useLayoutEffect(() => {
 		setIsUseHeader({
-			isUseHeader: true,
+			isUseHeader: false,
 			isUseMenu: false,
 			isUseTab: false,
 			isUseItemTab: false,
 		});
 	}, []);
+
 	return (
 		<div>
 			<ModifyInfoContainer />

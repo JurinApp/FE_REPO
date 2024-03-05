@@ -1,87 +1,51 @@
-import useAxios from "@/hooks/useAxios";
-import { IChannel } from "@/interface/userinfo";
+import useDeleteAndQuitChannel from "@/hooks/queries/myPage/useDeleteAndQuitChannel";
 import { quitChannelModalState } from "@/states/modalState/confirmModalState";
 import { userRoleState } from "@/states/userRoleState";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect, useMemo, useRef } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
-const ChannelQuitModal = () => {
-	const { axiosData } = useAxios();
-	const navigate = useNavigate();
-	const queryClient = useQueryClient();
-	const [isQuitChannelModalOpen, setIsQuitChannelModalOpen] = useRecoilState(
-		quitChannelModalState,
-	);
-	const fetchChannel = async () => {
-		const apiUrl = `/${role}s/api/v1/channels`;
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-	const channelInfoQuery = useQuery({
-		queryKey: ["channelInfo"],
-		queryFn: fetchChannel,
-	});
-	const role = useRecoilValue(userRoleState);
+interface ChannelQuitModalProps {
+	readonly channelId: number;
+	readonly channelName: string;
+}
 
-	const channelInfo: IChannel = channelInfoQuery.data;
-	const channelId = channelInfo.id;
-	const channelName = channelInfo.channelName;
+const ChannelQuitModal = ({
+	channelId,
+	channelName,
+}: ChannelQuitModalProps) => {
+	const userRole = useRecoilValue(userRoleState);
+	const setIsQuitChannelModalOpen = useSetRecoilState(quitChannelModalState);
+	const modalRef = useRef<HTMLDivElement>(null);
+	const { mutate } = useDeleteAndQuitChannel();
 
-	const modalRef = useRef(null);
-
-	const deleteOrQuitChannel = async (channelId: number) => {
-		const apiUrl = `${role}s/api/v1/channels/${channelId}`;
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: apiUrl,
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 204) {
-				return response.data.data;
-			}
-		}
-	};
-
-	const { mutate } = useMutation({
-		mutationFn: deleteOrQuitChannel,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
-			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
-		},
-	});
+	const message = useMemo(() => {
+		return userRole === "teacher" ? "삭제하시겠습니까?" : "탈퇴하시겠습니까?";
+	}, [userRole]);
 
 	const handleDeleteOrQuitChannel = () => {
-		if (channelId) {
-			mutate(channelId);
-			navigate("/mypage");
-			setIsQuitChannelModalOpen(false);
-		}
+		mutate(channelId);
 	};
 
 	const handleModalClose = () => {
 		setIsQuitChannelModalOpen(false);
 	};
 
-	let message = role === "teacher" ? "삭제하시겠습니까?" : "탈퇴하시겠습니까?";
+	useEffect(() => {
+		const handleOutSideClick = (e: Event) => {
+			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				setIsQuitChannelModalOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleOutSideClick);
+
+		return () => {
+			document.removeEventListener("mousedown", handleOutSideClick);
+		};
+	}, [modalRef]);
 
 	return (
 		<>
-			<div
-				className={`fixed left-0 top-0 z-[100] ${
-					isQuitChannelModalOpen ? "flex" : "hidden"
-				} h-full w-full flex-col items-center justify-center bg-black-700`}
-			>
+			<div className="fixed left-0 top-0 z-[100] flex h-full w-full flex-col items-center justify-center bg-black-700">
 				<div ref={modalRef} className="w-[20rem]">
 					<div className="bg-opacity-2 flex h-[11.75rem] flex-col items-center justify-center bg-white">
 						<p className="font-medium text-black">
@@ -100,7 +64,7 @@ const ChannelQuitModal = () => {
 							className="w-1/2 bg-danger text-white"
 							onClick={handleDeleteOrQuitChannel}
 						>
-							{role === "teacher" ? "삭제" : "탈퇴"}
+							{userRole === "teacher" ? "삭제" : "탈퇴"}
 						</button>
 					</div>
 				</div>

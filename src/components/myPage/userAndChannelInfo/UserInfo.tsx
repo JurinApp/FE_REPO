@@ -1,12 +1,7 @@
+import { IUser } from "@/interface/userAndChannelInfo";
+
 interface IUserInfoProps {
-	readonly userInfo: {
-		readonly user: {
-			readonly id: number;
-			readonly nickname: string;
-			readonly schoolName: string;
-			readonly userRole: string;
-		};
-	};
+	readonly userInfo: IUser;
 }
 
 const UserInfo = ({ userInfo }: IUserInfoProps) => {
