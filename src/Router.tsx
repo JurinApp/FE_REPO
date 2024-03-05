@@ -56,6 +56,7 @@ const PostPage = lazy(() => import("@pages/post/PostPage"));
 const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
+const MyStockPage = lazy(() => import("@pages/student/stock/MyStockPage"));
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -150,6 +151,7 @@ const Router = () => {
 							path="/:channelId/student/myItem"
 							element={<StudentMyItemPage />}
 						/>
+						<Route path="/:channelId/trade/myStock" element={<MyStockPage />} />
 					</Route>
 				</Routes>
 			</Suspense>

@@ -62,19 +62,36 @@ export interface IStockPriceHistoryData {
 }
 
 export interface IBuyListHistoryData {
-	buyList: {
-		tradeDate: string;
-		amount: number;
-		price: number;
+	readonly buyList: {
+		readonly tradeDate: string;
+		readonly amount: number;
+		readonly price: number;
 	}[];
 }
 
 export interface ISellListHistoryData {
-	sellList: {
-		tradeDate: string;
-		amount: number;
-		price: number;
+	readonly sellList: {
+		readonly tradeDate: string;
+		readonly amount: number;
+		readonly price: number;
 	}[];
+}
+
+export interface IMyStock {
+	readonly id: number;
+	readonly name: string;
+	readonly totalStockAmount: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
+}
+
+export interface IMyStockResponseData {
+	readonly limit: number;
+	readonly offset: number;
+	readonly count: number;
+	readonly next: string | null;
+	readonly previous: string | null;
+	readonly results: IMyStock[];
 }
 
 // 학생권한 주식상세조회
