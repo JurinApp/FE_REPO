@@ -26,7 +26,9 @@ const ModifyUserInfo = ({ userInfo, channel }: IModifyUserinfoProps) => {
 	const userRole = useRecoilValue(userRoleState);
 	const [name, setName] = useInput(userInfo.user.nickname);
 	const [schoolName, setSchoolName] = useInput(userInfo.user.schoolName);
-	const [channelName, setChannelName] = useInput(channel.channelName);
+	const [channelName, setChannelName] = useInput(
+		channel === null ? "" : channel.channelName,
+	);
 	const { mutate } = useModifyInfo();
 
 	const [isModifyUserInfoModalOpen, setIsModifyUserInfoModalOpen] =

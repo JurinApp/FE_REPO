@@ -1,11 +1,12 @@
 import { getCookie } from "@/utils/cookies";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const useAxios = () => {
 	const [isFetchLoading, setIsFetchLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const defaultAxios: AxiosInstance = axios.create({
 		baseURL: import.meta.env.VITE_DEV_SERVER_PATH,
@@ -39,7 +40,10 @@ const useAxios = () => {
 
 			if (
 				status === 404 &&
-				(errorCode === "not_channel" || errorCode === "not_user_channel")
+				((location.pathname !== "/modifyUserinfo" &&
+					location.pathname !== "/mypage" &&
+					errorCode === "not_channel") ||
+					errorCode === "not_user_channel")
 			) {
 				alert("참여중인 채널이 아닙니다.");
 				navigate("/mypage");
