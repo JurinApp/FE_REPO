@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
-import { UserinfoContainer } from "@/components/userinfo/UserinfoContainer";
+import { UserinfoContainer } from "@/components/myPage/userinfo/UserinfoContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 
 const MyPage = () => {

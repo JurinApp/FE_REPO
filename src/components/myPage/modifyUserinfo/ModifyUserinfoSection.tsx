@@ -57,6 +57,7 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 		if (response) {
 			const status = response.status;
 			if (status === 200) {
+				alert("정보 수정이 완료 되었습니다.");
 				navigate("/mypage");
 				setIsModifyUserinfoModalOpen(false);
 				return response.data.data;

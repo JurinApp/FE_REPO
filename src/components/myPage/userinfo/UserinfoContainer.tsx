@@ -4,7 +4,7 @@ import MoveModifyBtn from "./MoveModifyBtn";
 import UserinfoSection from "./UserinfoSection";
 import { useRecoilValue } from "recoil";
 import { userRoleState } from "@/states/userRoleState";
-import Spinner from "../common/spinner/Spinner";
+import Spinner from "../../common/spinner/Spinner";
 import { useQueries } from "@tanstack/react-query";
 
 export interface IUserinfo {

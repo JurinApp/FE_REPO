@@ -1,4 +1,4 @@
-import { ModifyUserinfoContainer } from "@/components/modifyUserinfo/ModifyUserinfoContainer";
+import { ModifyUserinfoContainer } from "@/components/myPage/modifyUserinfo/ModifyUserinfoContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
