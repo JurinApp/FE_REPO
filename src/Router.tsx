@@ -19,9 +19,7 @@ const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
 const SuccessSignUpPage = lazy(() => import("@pages/common/SuccessSignUpPage"));
 const MyPage = lazy(() => import("@pages/common/MyPage"));
 const CreateChannelPage = lazy(() => import("@pages/common/CreateChannelPage"));
-const ModifyUserinfoPage = lazy(
-	() => import("@pages/common/ModifyUserinfoPage"),
-);
+const ModifyInfoPage = lazy(() => import("@/pages/common/ModifyInfoPage"));
 const ManageLearnerPage = lazy(
 	() => import("@pages/educator/manageLearner/ManageLearnerPage"),
 );
@@ -85,7 +83,7 @@ const Router = () => {
 					<Route element={<IsLoginRoute />}>
 						<Route path="/mypage" element={<MyPage />} />
 						<Route path="/setting" element={<SettingPage />} />
-						<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
+						<Route path="/modifyUserinfo" element={<ModifyInfoPage />} />
 						<Route path="/:channelId/trade/home" element={<TradeHomePage />} />
 						<Route
 							path="/:channelId/trade/todayTrade"

@@ -9,7 +9,7 @@ import ChannelQuitModal from "./ChannelQuitModal";
 import { userRoleState } from "@/states/userRoleState";
 import useAxios from "@/hooks/useAxios";
 import { IChannel } from "@/interface/userinfo";
-import { IUserinfo } from "../userinfo/UserinfoContainer";
+import { IUserinfo } from "../MyPageContainer";
 import { useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -23,7 +23,7 @@ interface ISubmitData {
 	readonly schoolName: string;
 	readonly channelName?: string;
 }
-const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
+const ModifyUserInfo = ({ userinfo, channel }: IModifyUserinfoProps) => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const role = useRecoilValue(userRoleState);
@@ -164,4 +164,4 @@ const ModifyUserinfoSection = ({ userinfo, channel }: IModifyUserinfoProps) => {
 	);
 };
 
-export default ModifyUserinfoSection;
+export default ModifyUserInfo;

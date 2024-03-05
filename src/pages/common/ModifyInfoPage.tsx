@@ -1,9 +1,9 @@
-import { ModifyUserinfoContainer } from "@/components/myPage/modifyUserinfo/ModifyUserinfoContainer";
+import ModifyInfoContainer from "@/components/myPage/modifyInfo/ModifyInfoContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const ModifyUserinfoPage = () => {
+const ModifyInfoPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
 
 	useLayoutEffect(() => {
@@ -16,9 +16,9 @@ const ModifyUserinfoPage = () => {
 	}, []);
 	return (
 		<div>
-			<ModifyUserinfoContainer />
+			<ModifyInfoContainer />
 		</div>
 	);
 };
 
-export default ModifyUserinfoPage;
+export default ModifyInfoPage;

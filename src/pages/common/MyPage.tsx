@@ -1,7 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
-import { UserinfoContainer } from "@/components/myPage/userinfo/UserinfoContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
+import MyPageContainer from "@/components/myPage/MyPageContainer";
 
 const MyPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
@@ -17,7 +17,7 @@ const MyPage = () => {
 
 	return (
 		<div>
-			<UserinfoContainer />
+			<MyPageContainer />
 		</div>
 	);
 };

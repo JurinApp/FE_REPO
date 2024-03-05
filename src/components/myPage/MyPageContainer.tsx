@@ -1,10 +1,10 @@
 import useAxios from "@/hooks/useAxios";
-import { EnterChannelModal } from "../channel/EnterChannelModal";
-import MoveModifyBtn from "./MoveModifyBtn";
-import UserinfoSection from "./UserinfoSection";
+import { EnterChannelModal } from "./channel/EnterChannelModal";
+import MoveModifyBtn from "./userAndChannelInfo/MoveModifyBtn";
+import UserAndChannelInfoSection from "./userAndChannelInfo/UserAndChannelInfoSection";
 import { useRecoilValue } from "recoil";
 import { userRoleState } from "@/states/userRoleState";
-import Spinner from "../../common/spinner/Spinner";
+import Spinner from "../common/spinner/Spinner";
 import { useQueries } from "@tanstack/react-query";
 
 export interface IUserinfo {
@@ -19,7 +19,7 @@ export interface IUserinfo {
 	};
 }
 
-export const UserinfoContainer = () => {
+const MyPageContainer = () => {
 	const { axiosData } = useAxios();
 	const role = useRecoilValue(userRoleState);
 
@@ -73,9 +73,14 @@ export const UserinfoContainer = () => {
 			{isLoading ? (
 				<Spinner />
 			) : (
-				<UserinfoSection userInfo={results[0].data} channel={results[1].data} />
+				<UserAndChannelInfoSection
+					userInfo={results[0].data}
+					channel={results[1].data}
+				/>
 			)}
 			<EnterChannelModal />
 		</div>
 	);
 };
+
+export default MyPageContainer;

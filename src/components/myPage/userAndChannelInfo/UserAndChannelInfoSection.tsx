@@ -25,7 +25,7 @@ export interface IUserinfoProps {
 	};
 }
 
-const UserinfoSection = ({ userInfo, channel }: IUserinfoProps) => {
+const UserAndChannelInfoSection = ({ userInfo, channel }: IUserinfoProps) => {
 	const userRole = useRecoilValue(userRoleState);
 	const setIsEnterChannelModalOpen = useSetRecoilState(enterChannelModalState);
 	const navigate = useNavigate();
@@ -73,4 +73,4 @@ const UserinfoSection = ({ userInfo, channel }: IUserinfoProps) => {
 	);
 };
 
-export default UserinfoSection;
+export default UserAndChannelInfoSection;
