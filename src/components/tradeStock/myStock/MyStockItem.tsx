@@ -28,10 +28,10 @@ const MyStockItem = ({ myStock }: IMyStockItem) => {
 							<p
 								className={`mr-[0.125rem] ${
 									isLow
-										? "text-stock-blue"
+										? "text-stock-sell"
 										: isEqual
 											? "text-black-800"
-											: "text-stock-red"
+											: "text-stock-buy"
 								}`}
 							>
 								{myStock.daysRangePrice}
@@ -49,10 +49,10 @@ const MyStockItem = ({ myStock }: IMyStockItem) => {
 						<p
 							className={`ml-[0.125rem] w-12 text-right ${
 								isLow
-									? "text-stock-blue"
+									? "text-stock-sell"
 									: isEqual
 										? "text-black-800"
-										: "text-stock-red"
+										: "text-stock-buy"
 							}`}
 						>
 							{myStock.daysRangeRate}

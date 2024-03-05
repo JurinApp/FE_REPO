@@ -5,15 +5,15 @@ export interface IStockTransaction {
 }
 
 export interface IStockBSHistory {
-	buyList: IStockTransaction[];
-	sellList: IStockTransaction[];
+	readonly buyList: IStockTransaction[];
+	readonly sellList: IStockTransaction[];
 }
 
 export interface IStockItem {
 	readonly id: string;
 	readonly name: string;
-	readonly daysRangeRate: number;
-	readonly daysRangePrice: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
 }
 
 export interface IStockHomeResponseData {
