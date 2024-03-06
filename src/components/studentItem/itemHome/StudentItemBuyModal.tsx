@@ -1,12 +1,10 @@
-import useAxios from "@/hooks/useAxios";
+import useBuyItem from "@/hooks/mutations/item/useBuyItem";
 import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import Minus from "@assets/svg/minus.svg?react";
 import Plus from "@assets/svg/plus.svg?react";
 import PointLogo from "@assets/svg/point.svg?react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 interface ISubmitData {
@@ -22,9 +20,6 @@ const ItemBuyModal = () => {
 	const resetSelectedStudentItem = useResetRecoilState(studentSelectedItem);
 	const [itemQuantity, setItemQuantity] = useState(1);
 	const modalRef = useRef<HTMLFormElement>(null);
-	const { channelId } = useParams();
-	const { axiosData } = useAxios();
-	const queryClient = useQueryClient();
 
 	const handleModalClose = () => {
 		setIsItemBuyModalOpen(false);
@@ -41,38 +36,12 @@ const ItemBuyModal = () => {
 		}
 	};
 
-	const buyItem = async (submitData: ISubmitData) => {
-		if (item) {
-			const apiUrl = `/students/api/v1/channels/${channelId}/items/${item.id}`;
-			const response = await axiosData("useToken", {
-				method: "POST",
-				url: apiUrl,
-				data: submitData,
-			});
-			if (response) {
-				const status = response.status;
-
-				if (status === 200) {
-					alert("구매가 완료되었습니다.");
-					queryClient.invalidateQueries({ queryKey: ["studentItem"] });
-				}
-
-				if (status === 400) {
-					alert("포인트가 부족합니다.");
-				}
-
-				setIsItemBuyModalOpen(false);
-			}
-		}
-	};
-
-	const { mutate } = useMutation({
-		mutationFn: buyItem,
-	});
+	const { mutate } = useBuyItem();
 
 	const handleBuyItem = (e: FormEvent) => {
 		e.preventDefault();
-		if (item) {
+
+		if (item && item.price) {
 			const submitData: ISubmitData = {
 				price: item.price,
 				amount: itemQuantity,
@@ -156,7 +125,7 @@ const ItemBuyModal = () => {
 									</p>
 									<div className="ml-[1.75rem] flex h-10 w-[7.375rem] flex-row items-center justify-end">
 										<p className="mr-2 flex items-center justify-end">
-											{item && item?.price * itemQuantity}
+											{item?.price && item?.price * itemQuantity}
 										</p>
 										<PointLogo />
 									</div>

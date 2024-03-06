@@ -1,18 +1,16 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
+import Spinner from "@/components/common/spinner/Spinner";
 import { POST_SCHEMA } from "@/constants/formSchema";
-import useAxios from "@/hooks/useAxios";
+import useRegisterPost from "@/hooks/mutations/post/useRegisterPost";
 import { registerPostModalState } from "@/states/modalState/confirmModalState";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
 	changeDateFormat,
 	changeFormDateFormat,
 } from "@/utils/changeDateFormat";
-import Spinner from "@/components/common/spinner/Spinner";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 
 interface IRegisterPostFormProps {
 	readonly isRegister: boolean;
@@ -20,10 +18,6 @@ interface IRegisterPostFormProps {
 
 const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	const setIsOpenModal = useSetRecoilState(registerPostModalState);
-	const navigate = useNavigate();
-	const { channelId } = useParams();
-	const { axiosData, isFetchLoading } = useAxios();
-	const queryClient = useQueryClient();
 	const [replaceDate, setReplaceDate] = useState<string>("");
 	const {
 		register,
@@ -41,46 +35,11 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 		resolver: yupResolver(POST_SCHEMA),
 		mode: "onChange",
 	});
+	const { mutate, isPending } = useRegisterPost();
 
 	const handleClickRegisterBtn = () => {
 		setIsOpenModal(true);
 	};
-
-	const registerPostData = async () => {
-		if (!isValid) return;
-
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: `/teachers/api/v1/channels/${channelId}/posts`,
-			data: {
-				mainTitle: getValues("itemName"),
-				subTitle: getValues("title"),
-				date: getValues("registerDate"),
-				content: getValues("content"),
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 201) {
-				alert("게시글 등록이 완료 되었습니다.");
-				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
-				navigate(`/${channelId}/post`);
-			}
-
-			if (status === 403) {
-				alert(
-					"해당 채널의 게시글 생성 권한이 없거나 게시글 등록 형식이 잘못되었습니다.",
-				);
-			}
-		}
-	};
-
-	const registerPostMutation = useMutation({
-		mutationKey: ["registerPost"],
-		mutationFn: registerPostData,
-	});
 
 	const initChangeDateFormat = () => {
 		const formDate = changeFormDateFormat();
@@ -91,8 +50,15 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 	};
 
 	useEffect(() => {
-		if (isRegister) {
-			registerPostMutation.mutate();
+		if (isRegister && isValid) {
+			const submitData = {
+				mainTitle: getValues("itemName"),
+				subTitle: getValues("title"),
+				date: getValues("registerDate"),
+				content: getValues("content"),
+			};
+
+			mutate(submitData);
 		}
 	}, [isRegister]);
 
@@ -102,7 +68,7 @@ const RegisterPostForm = ({ isRegister }: IRegisterPostFormProps) => {
 
 	return (
 		<>
-			{isFetchLoading ? (
+			{isPending ? (
 				<Spinner />
 			) : (
 				<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">

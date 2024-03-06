@@ -1,11 +1,11 @@
-import { IStudentItem } from "@/interface/item";
+import { IExtendItem } from "@/interface/item";
 import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
 
 interface IStudentItemCardProps {
-	readonly item: IStudentItem;
+	readonly item: IExtendItem;
 }
 
 const StudentItemCard = ({ item }: IStudentItemCardProps) => {

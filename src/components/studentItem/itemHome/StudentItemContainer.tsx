@@ -1,12 +1,14 @@
 import Spinner from "@/components/common/spinner/Spinner";
 import useAllItemList from "@/hooks/queries/item/useAllItemList";
 import { useIntersectionObserver } from "@/hooks/useObserver";
-import DeleteItemModal from "./DeleteItemModal";
-import DeleteRegisterButton from "./DeleteRegisterButton";
-import ItemHeadingTitle from "./ItemHeadingTitle";
-import ItemList from "./ItemList";
+import { itemBuyModalState } from "@/states/modalState/confirmModalState";
+import { useRecoilValue } from "recoil";
+import ItemBuyModal from "./StudentItemBuyModal";
+import StudentItemList from "./StudentItemList";
 
 const ItemContainer = () => {
+	const isItemBuyModalOpen = useRecoilValue(itemBuyModalState);
+
 	const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
 		useAllItemList();
 
@@ -16,22 +18,20 @@ const ItemContainer = () => {
 	});
 
 	return (
-		<div className="relative mx-auto h-body-height w-full bg-btn-cancel-tekhelet px-4 sm:w-[24.563rem]">
-			{isLoading || !data ? (
-				<Spinner />
-			) : (
-				<>
-					<ItemHeadingTitle responseData={data.pages} />
-					<ItemList
+		<>
+			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+				{isLoading || !data ? (
+					<Spinner />
+				) : (
+					<StudentItemList
 						responseData={data.pages}
 						isFetching={isFetching}
 						observeTargetRef={observeTargetRef}
 					/>
-					<DeleteRegisterButton />
-					<DeleteItemModal />
-				</>
-			)}
-		</div>
+				)}
+				{isItemBuyModalOpen && <ItemBuyModal />}
+			</div>
+		</>
 	);
 };
 

@@ -1,53 +1,20 @@
-import useAxios from "@/hooks/useAxios";
+import useItemUse from "@/hooks/mutations/item/useItemUse";
 import { itemUseModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const ItemUseModal = () => {
 	const selectedMyItem = useRecoilValue(studentSelectedItem);
 	const resetSelectedMyItem = useResetRecoilState(studentSelectedItem);
-
 	const [isItemUseModalOpen, setIsItemUseModalOpen] =
 		useRecoilState(itemUseModalState);
-	const { channelId } = useParams();
-	const { axiosData } = useAxios();
 	const modalRef = useRef<HTMLDivElement>(null);
-	const queryClient = useQueryClient();
+	const { mutate } = useItemUse();
 
 	const handleModalClose = () => {
 		setIsItemUseModalOpen(false);
 	};
-
-	const useItem = async () => {
-		const apiUrl = `/students/api/v1/channels/${channelId}/items/mine/${selectedMyItem?.id}`;
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: apiUrl,
-			data: {
-				amount: 1,
-			},
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-
-	const { mutate } = useMutation({
-		mutationFn: useItem,
-		onSuccess: () => {
-			alert(`${selectedMyItem?.title}아이템 사용이 되었습니다.`);
-			queryClient.invalidateQueries({
-				queryKey: ["studentItem", "myItem"],
-			});
-			setIsItemUseModalOpen(false);
-		},
-	});
 
 	const handleUseItem = () => {
 		mutate();

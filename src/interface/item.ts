@@ -1,8 +1,14 @@
-/********** 선생님 권한 *********/
 export interface IItem {
-	readonly id: string;
+	readonly id: number;
 	readonly title: string;
 	readonly imageUrl: string;
+	readonly amount?: number;
+	readonly price?: number;
+}
+
+export interface IExtendItem extends IItem {
+	readonly isUsed?: boolean;
+	readonly remainingAmount?: number;
 }
 
 export interface IItemResponseData {
@@ -11,7 +17,7 @@ export interface IItemResponseData {
 	readonly count: number;
 	readonly next: string | null;
 	readonly previous: string | null;
-	readonly results: IItem[];
+	readonly results: IExtendItem[];
 }
 
 export interface IErrorMessages {
@@ -19,18 +25,6 @@ export interface IErrorMessages {
 }
 
 /********* 학생 권한 **********/
-export interface IStudentItem {
-	readonly id: number;
-	readonly title: string;
-	readonly amount?: number;
-	readonly price: number;
-	readonly imageUrl: string;
-}
-
-export interface IStudentMyItem extends IStudentItem {
-	readonly isUsed?: boolean;
-	readonly remainingAmount?: number;
-}
 
 export interface MyItem {
 	readonly id: number;

@@ -1,28 +1,21 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { POST_SCHEMA } from "@/constants/formSchema";
-import useAxios from "@/hooks/useAxios";
+import useEditPost from "@/hooks/mutations/post/useEditPost";
+import useEditDetailPost from "@/hooks/queries/post/useEditDetailPost";
 import { editPostModalState } from "@/states/modalState/confirmModalState";
-import { userRoleState } from "@/states/userRoleState";
 import { changeDateFormat } from "@/utils/changeDateFormat";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 interface IEditPostFormProps {
 	readonly isEdit: boolean;
 }
 
 const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
-	const userRole = useRecoilValue(userRoleState);
 	const setIsOpenModal = useSetRecoilState(editPostModalState);
-	const navigate = useNavigate();
-	const { channelId, postId } = useParams();
-	const { axiosData, isFetchLoading } = useAxios();
-	const queryClient = useQueryClient();
 	const [replaceFormDate, setReplaceFormDate] = useState<string>("");
 	const {
 		register,
@@ -41,79 +34,21 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 		mode: "onChange",
 	});
 
-	const getPostData = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/${userRole}s/api/v1/channels/${channelId}/posts/${postId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				return response.data.data;
-			}
-
-			if (status === 403) {
-				alert(
-					"해당 채널의 게시글 생성 권한이 없거나 게시글 등록 형식이 잘못되었습니다.",
-				);
-			}
-
-			if (status === 404) {
-				alert("존재하지 않는 게시글입니다.");
-				navigate(`/${channelId}/post`);
-			}
-		}
-	};
-
-	const { data, isLoading } = useQuery({
-		queryKey: ["detailPost", channelId, postId],
-		queryFn: getPostData,
-	});
-
-	const editPostData = async () => {
-		const response = await axiosData("useToken", {
-			method: "PUT",
-			url: `/teachers/api/v1/channels/${channelId}/posts/${postId}`,
-			data: {
-				mainTitle: getValues("itemName"),
-				subTitle: getValues("title"),
-				date: getValues("registerDate"),
-				content: getValues("content"),
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				alert("수정이 완료되었습니다.");
-				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
-				queryClient.invalidateQueries({
-					queryKey: ["posts", channelId],
-				});
-				navigate(`/${channelId}/post/detail/${postId}`);
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const editMutation = useMutation({
-		mutationKey: ["editPost"],
-		mutationFn: editPostData,
-	});
+	const { data, isLoading } = useEditDetailPost();
+	const { mutate, isPending } = useEditPost();
 
 	const handleClickEditBtn = () => {
 		setIsOpenModal(true);
 	};
 
 	const handleSubmitEdit = () => {
-		if (!isValid) return;
-		editMutation.mutate();
+		const submitData = {
+			mainTitle: getValues("itemName"),
+			subTitle: getValues("title"),
+			date: getValues("registerDate"),
+			content: getValues("content"),
+		};
+		mutate(submitData);
 	};
 
 	const setFormValue = () => {
@@ -133,14 +68,14 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 	}, [data]);
 
 	useEffect(() => {
-		if (isEdit) {
+		if (isEdit && isValid) {
 			handleSubmitEdit();
 		}
 	}, [isEdit]);
 
 	return (
 		<div className="h-[calc(100vh-7.125rem)] w-full px-4 pt-6">
-			{isLoading || isFetchLoading ? (
+			{isLoading || isPending ? (
 				<Spinner />
 			) : (
 				<form onSubmit={handleSubmit(handleClickEditBtn)}>

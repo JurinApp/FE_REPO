@@ -27,7 +27,7 @@ const MyStockList = ({
 
 	return (
 		<div
-			className={`"h-[calc(100vh-22rem)]" overflow-y-auto pt-2 ${
+			className={`h-[calc(100vh-22rem)] overflow-y-auto pt-2 ${
 				isExist && "flex items-center justify-center"
 			}`}
 		>

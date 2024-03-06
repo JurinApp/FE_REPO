@@ -1,18 +1,12 @@
-import { userRoleState } from "@/states/userRoleState";
-import { useRecoilValue } from "recoil";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import useAxios from "@/hooks/useAxios";
 import Spinner from "@/components/common/spinner/Spinner";
+import useDetailPost from "@/hooks/queries/post/useDetailPost";
+import { userRoleState } from "@/states/userRoleState";
 import { changeDateFormat } from "@/utils/changeDateFormat";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const DetailPostInfo = () => {
 	const userRole = useRecoilValue(userRoleState);
-	const { channelId, postId } = useParams();
-	const { axiosData } = useAxios();
-	const navigate = useNavigate();
-	const queryClient = useQueryClient();
 	const [replaceRegisterDate, setReplaceRegisterDate] = useState<string>("");
 
 	const replacePostDate = (postRegisterDate: string) => {
@@ -20,34 +14,7 @@ const DetailPostInfo = () => {
 		setReplaceRegisterDate(replaceDate);
 	};
 
-	const getPostDetailData = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/${userRole}s/api/v1/channels/${channelId}/posts/${postId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				replacePostDate(response.data.data.date);
-				return response.data.data;
-			}
-
-			if (status === 404) {
-				alert("존재하지 않는 게시글입니다.");
-				queryClient.cancelQueries({
-					queryKey: ["detailPost", channelId, postId],
-				});
-				navigate(`/${channelId}/post`);
-			}
-		}
-	};
-
-	const { data, isLoading } = useQuery({
-		queryKey: ["detailPost", channelId, postId],
-		queryFn: getPostDetailData,
-	});
+	const { data, isLoading } = useDetailPost(replacePostDate);
 
 	return (
 		<div className={`${userRole === "student" && "pt-6"} px-4 sm:px-0`}>

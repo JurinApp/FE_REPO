@@ -1,4 +1,4 @@
-import ItemContainer from "@/components/student/studentItem/itemHome/StudentItemContainer";
+import ItemContainer from "@/components/studentItem/itemHome/StudentItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
