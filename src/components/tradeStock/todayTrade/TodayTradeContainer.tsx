@@ -1,5 +1,5 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useTodayTradeStockList from "@/hooks/queries/tradeStock/useTodayTradeStockList";
+import useTodayTradeStockList from "@/hooks/queries/stock/useTodayTradeStockList";
 import { useIntersectionObserver } from "@/hooks/useObserver";
 import FilterButton from "./FilterButton";
 import TodayTradeStockList from "./TodayTradeStockList";

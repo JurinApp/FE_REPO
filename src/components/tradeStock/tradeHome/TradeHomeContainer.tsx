@@ -1,5 +1,5 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useAllStockList from "@/hooks/queries/tradeStock/useAllStockList";
+import useAllStockList from "@/hooks/queries/stock/useAllStockList";
 import { useIntersectionObserver } from "@/hooks/useObserver";
 import DeleteRegisterButton from "./DeleteRegisterButton";
 import DeleteStocksModal from "./DeleteStocksModal";

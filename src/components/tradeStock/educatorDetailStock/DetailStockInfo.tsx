@@ -1,41 +1,8 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useAxios from "@/hooks/useAxios";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import useDetailStock from "@/hooks/queries/stock/useDetailStock";
 
 const DetailStockInfo = () => {
-	const { channelId, stockId } = useParams();
-	const { axiosData } = useAxios();
-	const navigate = useNavigate();
-
-	const getDetailStock = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				const stockData = response.data.data;
-				return {
-					...stockData,
-					purchasePrice: stockData.purchasePrice.toLocaleString(),
-				};
-			}
-
-			if (status === 404) {
-				alert("존재하지 않는 주식거래 상품입니다.");
-				navigate(`/${channelId}/trade/home`);
-			}
-		}
-	};
-
-	const { data, isLoading } = useQuery({
-		queryKey: ["detailStock", channelId, stockId],
-		queryFn: getDetailStock,
-	});
+	const { data, isLoading } = useDetailStock();
 
 	return (
 		<div className="px-4 sm:px-0">

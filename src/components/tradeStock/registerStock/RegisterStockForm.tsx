@@ -1,13 +1,11 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
-import useAxios from "@/hooks/useAxios";
+import useRegisterStock from "@/hooks/mutations/stock/useRegisterStock";
 import { registerTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 interface IRegisterTradeStockFormProps {
@@ -15,10 +13,6 @@ interface IRegisterTradeStockFormProps {
 }
 
 const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
-	const { channelId } = useParams();
-	const { axiosData, isFetchLoading } = useAxios();
-	const queryClient = useQueryClient();
-	const navigate = useNavigate();
 	const [replacePrice, setReplacePrice] = useState<string>("");
 	const {
 		register,
@@ -41,47 +35,17 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 	});
 	const setIsOpenModal = useSetRecoilState(registerTradeStockModalState);
 
-	const registerTradeStock = async () => {
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: `/teachers/api/v1/channels/${channelId}/stocks`,
-			data: {
-				name: getValues().stockName,
-				purchasePrice: getValues().price,
-				tax: getValues().tax,
-				standard: getValues().standard,
-				content: getValues().content,
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 201) {
-				const stockId = response.data.data.id;
-
-				alert("등록이 완료 되었습니다.");
-				queryClient.invalidateQueries({ queryKey: ["stocks", channelId] });
-				navigate(`/${channelId}/trade/stock/detail/${stockId}`);
-			}
-
-			if (status === 400) {
-				alert("알맞은 형식으로 등록해주세요.");
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const registerTradeStockMutation = useMutation({
-		mutationKey: ["registerTradeStock"],
-		mutationFn: registerTradeStock,
-	});
+	const { mutate, isPending } = useRegisterStock();
 
 	const handleSubmitRegisterTradeStockForm = () => {
-		registerTradeStockMutation.mutate();
+		const submitData = {
+			name: getValues().stockName,
+			purchasePrice: getValues().price,
+			tax: getValues().tax,
+			standard: getValues().standard,
+			content: getValues().content,
+		};
+		mutate(submitData);
 	};
 
 	const handleClickRegisterBtn = () => {
@@ -255,7 +219,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 					</button>
 				</form>
 			</div>
-			{isFetchLoading && <Spinner />}
+			{isPending && <Spinner />}
 		</>
 	);
 };
