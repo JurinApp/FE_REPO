@@ -72,13 +72,11 @@ export const EnterChannelModal = () => {
 		>
 			<form onSubmit={handleEnterChannel} ref={modalRef} className="w-[20rem]">
 				<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
-					<p className="text-lg font-medium text-black">
+					<p className="mb-4 text-lg font-medium text-black">
 						채널 코드를 입력하세요.
 					</p>
 					{isError.error && (
-						<p className="my-[0.938rem] text-sm text-danger">
-							{isError.errorMsg}
-						</p>
+						<p className="mb-4 text-sm text-danger">{isError.errorMsg}</p>
 					)}
 					<input
 						type="text"

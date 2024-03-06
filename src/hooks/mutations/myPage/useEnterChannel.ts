@@ -12,9 +12,10 @@ const useEnterChannel = (
 	const { axiosData } = useAxios();
 
 	const enterChannel = async (code: string) => {
+		console.log(code);
 		const response = await axiosData("useToken", {
 			method: "POST",
-			url: "`/students/api/v1/channels`",
+			url: "/students/api/v1/channels",
 			data: {
 				entryCode: code,
 			},
