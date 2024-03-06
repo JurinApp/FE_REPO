@@ -4,19 +4,19 @@ import { userRoleState } from "@/states/userRoleState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const WithdrawalModal = () => {
+	const role = useRecoilValue(userRoleState);
+	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
+		useRecoilState(withdrawalModalState);
+	const resetOpenWithdrawalModal = useResetRecoilState(withdrawalModalState);
 	const navigate = useNavigate();
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
-	const modalRef = useRef<HTMLDivElement>(null);
-	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
-		useRecoilState(withdrawalModalState);
-	const resetOpenWithdrwalModal = useResetRecoilState(withdrawalModalState);
-	const role = useRecoilValue(userRoleState);
+	const modalRef = useRef<HTMLFormElement>(null);
 
 	const [password, setPassword] = useState<string>("");
 	const [validatePW, setValidatePW] = useState<boolean>(false);
@@ -32,9 +32,10 @@ const WithdrawalModal = () => {
 		const result = regex.test(password);
 		setValidatePW(result);
 	};
+
 	const debounceValidation = debounce(validatePasswordFormat, 1000);
 
-	const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handlePassword = (event: ChangeEvent<HTMLInputElement>) => {
 		const password = event.target.value;
 		setPassword(password);
 		debounceValidation(password);
@@ -44,6 +45,28 @@ const WithdrawalModal = () => {
 		setPassword("");
 		setVerifiedPW(true);
 		setValidatePW(false);
+	};
+
+	const handleDeleteUser = async (e: FormEvent) => {
+		e.preventDefault();
+		const apiUrl = `/${role}s/api/v1/users/profile`;
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: apiUrl,
+			data: {
+				password: password,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 204) {
+				removeCookie();
+				queryClient.clear();
+				navigate("/login");
+			} else {
+				alert("비밀번호를 확인해주세요.");
+			}
+		}
 	};
 
 	useEffect(() => {
@@ -62,28 +85,9 @@ const WithdrawalModal = () => {
 
 	useEffect(() => {
 		return () => {
-			resetOpenWithdrwalModal();
+			resetOpenWithdrawalModal();
 		};
 	}, []);
-
-	const handleDeleteUser = async () => {
-		const apiUrl = `/${role}s/api/v1/users/profile`;
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: apiUrl,
-			data: {
-				password: password,
-			},
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 204) {
-				removeCookie();
-				queryClient.clear();
-				navigate("/login");
-			}
-		}
-	};
 
 	return (
 		<>
@@ -92,7 +96,7 @@ const WithdrawalModal = () => {
 					isOpenWithdrawalModal ? "flex" : "hidden"
 				} h-full w-full flex-col items-center justify-center bg-black-700`}
 			>
-				<div ref={modalRef}>
+				<form onSubmit={handleDeleteUser} ref={modalRef}>
 					<div className="left-0 top-0 flex h-[17.625rem] flex-col bg-[#ffffff]">
 						<div className="mx-6 mt-12 flex h-[5.625rem] flex-col items-center justify-between">
 							<div className="text-lg">비밀번호를 입력하세요</div>
@@ -119,20 +123,24 @@ const WithdrawalModal = () => {
 						)}
 					</div>
 					<div className="flex h-[3.75rem] flex-row">
-						<button className="w-1/2 bg-btn-cancel" onClick={handleModalClose}>
+						<button
+							type="button"
+							className="w-1/2 bg-btn-cancel"
+							onClick={handleModalClose}
+						>
 							취소
 						</button>
 						<button
+							type="submit"
 							className={`w-1/2 text-[#ffffff] ${
 								validatePW ? "bg-danger" : "bg-disabled-danger"
 							}`}
-							onClick={handleDeleteUser}
 							disabled={!validatePW}
 						>
 							확인
 						</button>
 					</div>
-				</div>
+				</form>
 			</div>
 		</>
 	);
