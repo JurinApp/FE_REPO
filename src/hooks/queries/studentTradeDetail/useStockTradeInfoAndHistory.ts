@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import useAxios from "../useAxios";
+import useAxios from "../../useAxios";
 import { useQueries } from "@tanstack/react-query";
 
 const useStockTradeInfoAndHistory = () => {

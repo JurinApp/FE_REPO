@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import useAxios from "../useAxios";
+import useAxios from "../../useAxios";
 
 const useMyItemHistory = (id: number | undefined) => {
 	const { channelId } = useParams();

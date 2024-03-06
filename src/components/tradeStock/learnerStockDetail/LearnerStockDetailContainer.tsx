@@ -1,6 +1,6 @@
 import GoBackButton from "@/components/common/GoBackButton/GoBackButton";
 import Spinner from "@/components/common/spinner/Spinner";
-import useStockTradeInfoAndHistory from "@/hooks/queries/useStockTradeInfoAndHistory";
+import useStockTradeInfoAndHistory from "@/hooks/queries/studentTradeDetail/useStockTradeInfoAndHistory";
 import { selectedStockTabState } from "@/states/selectedTabState/selectedStockTabState";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";

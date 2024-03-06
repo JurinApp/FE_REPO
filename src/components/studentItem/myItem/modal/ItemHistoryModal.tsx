@@ -1,5 +1,5 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useMyItemHistory from "@/hooks/queries/useMyItemHistory";
+import useMyItemHistory from "@/hooks/queries/stock/useMyItemHistory";
 import { itemHistoryModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import Cancel from "@assets/svg/cancel.svg?react";
