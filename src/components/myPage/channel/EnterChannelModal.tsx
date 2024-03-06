@@ -1,83 +1,60 @@
-import useAxios from "@/hooks/useAxios";
+import useEnterChannel from "@/hooks/mutations/myPage/useEnterChannel";
 import { enterChannelModalState } from "@/states/modalState/confirmModalState";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { debounce } from "lodash";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
+
+export interface IIsError {
+	readonly error: boolean;
+	readonly errorMsg: string;
+}
 
 export const EnterChannelModal = () => {
 	const [isEnterChannelModalOpen, setIsEnterChannelModalOpen] = useRecoilState(
 		enterChannelModalState,
 	);
 	const [code, setCode] = useState<string>("");
-	const [validateCode, setValidateCode] = useState<boolean>(false);
-	const [verifiedCode, setVerifiedCode] = useState<boolean>(true);
-	const modalRef = useRef<HTMLDivElement>(null);
-	const navigate = useNavigate();
-	const { axiosData } = useAxios();
-	const queryClient = useQueryClient();
+	const [isError, setIsError] = useState<IIsError>({
+		error: true,
+		errorMsg: "",
+	});
+	const modalRef = useRef<HTMLFormElement>(null);
+	const { mutate } = useEnterChannel(setIsError);
 
-	// 코드 양식 유효성 검증 함수
-	const validateCodeFormat = (code: string) => {
-		const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6}$/;
-		const result = regex.test(code);
-		setValidateCode(result);
-	};
-	const debounceValidation = debounce(validateCodeFormat, 1000);
-
-	const handleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const code = event.target.value;
-		setCode(code);
-		debounceValidation(code);
+	const handleChangeCode = (e: ChangeEvent<HTMLInputElement>) => {
+		setCode(e.target.value);
 	};
 
-	const handleResetModal = () => {
-		setCode("");
-		setValidateCode(false);
-		setVerifiedCode(true);
-	};
-
-	const handleModalClose = () => {
+	const handleCloseModal = () => {
 		setIsEnterChannelModalOpen(false);
 	};
 
-	const enterChannel = async (code: string) => {
-		const apiUrl = `/students/api/v1/channels`;
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: apiUrl,
-			data: {
-				entryCode: code,
-			},
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 200) {
-				navigate("/mypage");
-				setIsEnterChannelModalOpen(false);
-				return response.data.data;
-			}
-		}
-	};
-	const { mutate } = useMutation({
-		mutationFn: enterChannel,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
-			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
-		},
-	});
-
-	const handleEnterChannel = () => {
+	const handleEnterChannel = (e: FormEvent) => {
+		e.preventDefault();
 		const entryCode = code;
 		mutate(entryCode);
 	};
 
 	useEffect(() => {
+		if (code.length < 6) {
+			setIsError({
+				error: true,
+				errorMsg: "코드를 입력해주세요",
+			});
+		}
+
+		if (code.length >= 6 && isError.error) {
+			setIsError({
+				error: false,
+				errorMsg: "",
+			});
+		}
+	}, [code]);
+
+	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {
 			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				setCode("");
 				setIsEnterChannelModalOpen(false);
-				handleResetModal();
 			}
 		};
 		document.addEventListener("mousedown", handleOutSideClick);
@@ -88,55 +65,52 @@ export const EnterChannelModal = () => {
 	}, [modalRef]);
 
 	return (
-		<>
-			<div
-				className={`fixed left-0 top-0 z-[100] ${
-					isEnterChannelModalOpen ? "flex" : "hidden"
-				} h-full w-full flex-col items-center justify-center bg-black-700`}
-			>
-				<div ref={modalRef} className="w-[20rem]">
-					<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
-						<p className="text-lg font-medium text-black">
-							채널 코드를 입력하세요.
+		<div
+			className={`fixed left-0 top-0 z-[100] ${
+				isEnterChannelModalOpen ? "flex" : "hidden"
+			} h-full w-full flex-col items-center justify-center bg-black-700`}
+		>
+			<form onSubmit={handleEnterChannel} ref={modalRef} className="w-[20rem]">
+				<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
+					<p className="text-lg font-medium text-black">
+						채널 코드를 입력하세요.
+					</p>
+					{isError.error && (
+						<p className="my-[0.938rem] text-sm text-danger">
+							{isError.errorMsg}
 						</p>
-						{!verifiedCode ? (
-							<p className="my-[0.938rem] text-sm text-danger">
-								유효하지 않은 코드입니다.
-							</p>
-						) : (
-							<div className="h-12 "></div>
-						)}
-						<label htmlFor="channel-code"></label>
-						<input
-							type="text"
-							id="channel-code"
-							name="channel-code"
-							value={code}
-							onChange={handleCode}
-							className={`border-b pb-2 text-base placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none ${
-								!verifiedCode ? "border-danger" : ""
-							}`}
-						/>
-					</div>
-					<div className="flex h-[3.75rem] flex-row">
-						<button
-							className="w-1/2 bg-btn-cancel text-black"
-							onClick={handleModalClose}
-						>
-							취소
-						</button>
-						<button
-							className={`w-1/2 text-white ${
-								validateCode ? "bg-iris" : "bg-disabled-tekhelet"
-							}`}
-							disabled={!validateCode}
-							onClick={handleEnterChannel}
-						>
-							입장
-						</button>
-					</div>
+					)}
+					<input
+						type="text"
+						id="channel-code"
+						name="channel-code"
+						value={code}
+						onChange={handleChangeCode}
+						className={`border-b pb-2 text-base placeholder-gray-300 outline-none ${
+							isError.error ? "border-danger" : "focus:border-gray-700 "
+						}`}
+					/>
 				</div>
-			</div>
-		</>
+				<div className="flex h-[3.75rem] flex-row">
+					<button
+						type="button"
+						className="w-1/2 bg-btn-cancel text-black"
+						onClick={handleCloseModal}
+					>
+						취소
+					</button>
+					<button
+						type="submit"
+						className={`w-1/2 text-white ${
+							code.length >= 6 ? "bg-iris" : "bg-disabled-tekhelet"
+						}`}
+						disabled={!(code.length >= 6)}
+						onClick={handleEnterChannel}
+					>
+						입장
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 };

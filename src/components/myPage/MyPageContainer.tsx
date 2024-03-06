@@ -4,9 +4,12 @@ import Spinner from "../common/spinner/Spinner";
 import { EnterChannelModal } from "./channel/EnterChannelModal";
 import ModifyBtn from "./userAndChannelInfo/ModifyBtn";
 import UserAndChannelInfoSection from "./userAndChannelInfo/UserAndChannelInfoSection";
+import { useRecoilValue } from "recoil";
+import { enterChannelModalState } from "@/states/modalState/confirmModalState";
 
 const MyPageContainer = () => {
 	const queries = useUserInfo();
+	const isEnterChannelModalOpen = useRecoilValue(enterChannelModalState);
 
 	const isLoading = useMemo(() => {
 		return queries.some((query) => query.isLoading);
@@ -23,7 +26,7 @@ const MyPageContainer = () => {
 					channel={queries[1].data}
 				/>
 			)}
-			<EnterChannelModal />
+			{isEnterChannelModalOpen && <EnterChannelModal />}
 		</div>
 	);
 };
