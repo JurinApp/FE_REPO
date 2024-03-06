@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import Spinner from "../common/spinner/Spinner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ILoginFormValues {
 	readonly id: string;
@@ -22,6 +23,7 @@ interface IError {
 }
 
 const LoginFormSection = () => {
+	const queryClient = useQueryClient();
 	const { isFetchLoading, axiosData } = useAxios();
 	const navigate = useNavigate();
 	const setUserRole = useSetRecoilState(userRoleState);
@@ -77,6 +79,7 @@ const LoginFormSection = () => {
 				setUserRole(role);
 				setCookie("accessToken", response.data.data.accessToken);
 				setCookie("refreshToken", response.data.data.refreshToken);
+				queryClient.clear();
 				navigate("/mypage");
 			}
 
