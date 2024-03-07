@@ -49,10 +49,10 @@ const WithdrawalModal = () => {
 
 	const handleDeleteUser = async (e: FormEvent) => {
 		e.preventDefault();
-		const apiUrl = `/${role}s/api/v1/users/profile`;
+
 		const response = await axiosData("useToken", {
 			method: "DELETE",
-			url: apiUrl,
+			url: `/${role}s/api/v1/users/profile`,
 			data: {
 				password: password,
 			},
@@ -60,12 +60,15 @@ const WithdrawalModal = () => {
 		if (response) {
 			const status = response.status;
 			if (status === 204) {
+				alert("회원 탈퇴가 완료되었습니다.");
 				removeCookie();
 				queryClient.clear();
 				navigate("/login");
 			} else {
 				alert("비밀번호를 확인해주세요.");
 			}
+		} else {
+			alert("회원탈퇴가 되지 않았습니다. 잠시 후에 다시 시도해주세요");
 		}
 	};
 
