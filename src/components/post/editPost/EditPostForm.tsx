@@ -166,6 +166,7 @@ const EditPostForm = ({ isEdit }: IEditPostFormProps) => {
 									내용
 								</label>
 								<textarea
+									rows={8}
 									className={`w-full resize-none rounded-none border-b outline-none ${
 										errors.content
 											? "border-danger"

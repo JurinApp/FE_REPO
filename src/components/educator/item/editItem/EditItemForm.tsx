@@ -342,7 +342,8 @@ const EditItemForm = () => {
 								</label>
 								<textarea
 									id="content"
-									className={`grow resize-none rounded-none border-b outline-none ${
+									rows={8}
+									className={`w-full grow resize-none rounded-none border-b outline-none ${
 										errors.contentError.isError
 											? "border-danger"
 											: "border-black-100 focus:border-black-300"
