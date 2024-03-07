@@ -1,5 +1,6 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface createChannelData {
 	channelName: string;
@@ -8,28 +9,27 @@ interface createChannelData {
 const useCreateChannel = () => {
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const createChannel = async (submitData: createChannelData) => {
-		const apiUrl = "/teachers/api/v1/channels";
 		const response = await axiosData("useToken", {
 			method: "POST",
-			url: apiUrl,
+			url: "/teachers/api/v1/channels",
 			data: submitData,
 		});
 		if (response) {
 			const status = response.status;
-			if (status === 200) {
-				return response.data.data;
+			if (status === 201) {
+				const channelId = response.data.data.id;
+				alert("채널 생성이 완료 되었습니다.");
+				queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
+				navigate(`/${channelId}/trade/home`);
 			}
 		}
 	};
 
 	return useMutation({
 		mutationFn: createChannel,
-		onSuccess: () => {
-			alert("채널 생성이 완료 되었습니다.");
-			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
-		},
 		onError: () => {
 			alert("채널 생성이 되지 않았습니다. 잠시 후에 다시 시도해주세요.");
 		},

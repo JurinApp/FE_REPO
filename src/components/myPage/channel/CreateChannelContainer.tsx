@@ -15,7 +15,7 @@ const CreateChannelContainer = () => {
 
 	return (
 		<div className="mx-auto h-[calc(100vh-2.938rem)] w-[393px] bg-white">
-			<div className="flex h-full flex-col justify-end gap-4">
+			<div className="flex h-full w-full flex-col justify-end gap-4">
 				<h1 className=" ml-4 text-[1.625rem] font-bold">채널 생성</h1>
 				<form
 					onSubmit={handleCreateChannel}
@@ -35,13 +35,13 @@ const CreateChannelContainer = () => {
 					<p className="mx-auto mt-16 text-sm font-normal text-tekhelet">
 						채널 생성 시 코드가 랜덤으로 부여됩니다.
 					</p>
+					<button
+						type="submit"
+						className="mb-8 flex h-[3.188rem] w-full items-center justify-center rounded bg-tekhelet font-medium text-white"
+					>
+						생성
+					</button>
 				</form>
-				<button
-					type="submit"
-					className="mb-8 ml-4 flex h-[3.188rem] w-[361px] items-center justify-center rounded bg-tekhelet font-medium text-white"
-				>
-					생성
-				</button>
 			</div>
 		</div>
 	);
