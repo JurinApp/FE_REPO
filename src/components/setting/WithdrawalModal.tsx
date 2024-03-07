@@ -110,7 +110,7 @@ const WithdrawalModal = () => {
 								type="password"
 								placeholder="비밀번호"
 								className={`w-[17.813rem] border-b pb-2 text-center text-base placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none ${
-									verifiedPW ? "border-danger" : ""
+									verifiedPW && "border-danger"
 								}`}
 								value={password}
 								onChange={handlePassword}
@@ -132,8 +132,8 @@ const WithdrawalModal = () => {
 						</button>
 						<button
 							type="submit"
-							className={`w-1/2 text-[#ffffff] ${
-								validatePW ? "bg-danger" : "bg-disabled-danger"
+							className={`w-1/2 text-white ${
+								validatePW ? "bg-danger" : "bg-gray-500"
 							}`}
 							disabled={!validatePW}
 						>
