@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
-const useDetailPost = (replacePostDate: (postRegisterDate: string) => void) => {
+const useDetailPost = () => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId, postId } = useParams();
 	const { axiosData } = useAxios();
@@ -21,7 +21,6 @@ const useDetailPost = (replacePostDate: (postRegisterDate: string) => void) => {
 			const status = response.status;
 
 			if (status === 200) {
-				replacePostDate(response.data.data.date);
 				return response.data.data;
 			}
 

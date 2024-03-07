@@ -29,7 +29,7 @@ const useEditPost = () => {
 				alert("수정이 완료되었습니다.");
 				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
 				queryClient.invalidateQueries({
-					queryKey: ["posts", channelId],
+					queryKey: ["detailPost", channelId, postId],
 				});
 				navigate(`/${channelId}/post/detail/${postId}`);
 			}
