@@ -1,29 +1,20 @@
 import { searchKeyword } from "@/states/searchKeyword";
 import SearchIcon from "@assets/svg/searchIcon.svg?react";
-import { ChangeEvent, FormEvent, useEffect } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 
 const LearnerSearch = () => {
 	const [keyword, setKeyword] = useRecoilState(searchKeyword);
-
-	const searchLearner = async () => {
-		setKeyword(keyword);
-	};
+	const [searchInput, setSearchInput] = useState<string>("");
 
 	const handleChangeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
-		setKeyword(e.target.value);
+		setSearchInput(e.target.value);
 	};
 
 	const handleSearchLearner = (e: FormEvent) => {
 		e.preventDefault();
-		searchLearner();
+		setKeyword(searchInput);
 	};
-
-	useEffect(() => {
-		return () => {
-			setKeyword("");
-		};
-	}, []);
 
 	return (
 		<form
