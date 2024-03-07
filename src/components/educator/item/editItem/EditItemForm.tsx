@@ -178,7 +178,8 @@ const EditItemForm = () => {
 			itemName: itemFormValue.itemName.length === 0,
 			price: itemFormValue.price === 0,
 			content: itemFormValue.content.length === 0,
-			itemImage: itemFormValue.imageFile === null,
+			itemImage:
+				itemFormValue.imageFile === null && itemFormValue.imageUrl.length === 0,
 		};
 
 		Object.keys(validations).forEach((key) => {
