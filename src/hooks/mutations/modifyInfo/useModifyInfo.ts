@@ -36,7 +36,7 @@ const useModifyInfo = () => {
 		mutationFn: modifyUserInfo,
 		onSuccess: () => {
 			alert("정보 수정이 완료 되었습니다.");
-			queryClient.invalidateQueries({ queryKey: ["userinfo"] });
+			queryClient.invalidateQueries({ queryKey: ["userInfo"] });
 			queryClient.invalidateQueries({ queryKey: ["channelInfo"] });
 			navigate("/mypage");
 		},

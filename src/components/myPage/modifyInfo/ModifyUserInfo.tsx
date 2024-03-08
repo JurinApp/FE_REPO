@@ -107,8 +107,14 @@ const ModifyUserInfo = ({ userInfo, channel }: IModifyUserinfoProps) => {
 					)}
 					<div className="flex grow flex-col">
 						<button
+							className="mb-4 mt-20 flex h-[3.188rem] items-center justify-center rounded bg-tekhelet font-medium text-white"
+							type="submit"
+						>
+							수정 완료
+						</button>
+						<button
 							type="button"
-							className={`mb-4 mt-20 flex h-[3.188rem] items-center justify-center rounded border font-medium ${
+							className={`flex h-[3.188rem] items-center justify-center rounded border font-medium ${
 								!channel
 									? "border-black-300 bg-black-100 text-black-700"
 									: "border-danger bg-white text-danger"
@@ -117,12 +123,6 @@ const ModifyUserInfo = ({ userInfo, channel }: IModifyUserinfoProps) => {
 							disabled={!channel}
 						>
 							{userRole === "teacher" ? "채널 삭제" : "채널 탈퇴"}
-						</button>
-						<button
-							className="flex h-[3.188rem] items-center justify-center rounded bg-tekhelet font-medium text-white"
-							type="submit"
-						>
-							수정 완료
 						</button>
 					</div>
 				</form>
