@@ -102,10 +102,14 @@ const WithdrawalModal = () => {
 				<form onSubmit={handleDeleteUser} ref={modalRef}>
 					<div className="left-0 top-0 flex h-[17.625rem] flex-col bg-[#ffffff]">
 						<div className="mx-6 mt-12 flex h-[5.625rem] flex-col items-center justify-between">
-							<div className="text-lg">비밀번호를 입력하세요</div>
-							<p className="flex items-center justify-center text-center text-sm text-danger">
-								회원 탈퇴 시 기존에 있던 상품 및 정보들은
-								<br /> 삭제 처리되어 복구가 불가능합니다.
+							<p className="text-lg">비밀번호를 입력하세요</p>
+							<p className="flex w-64 items-center justify-center text-center text-sm text-danger">
+								회원 탈퇴 시 기존에 있던 상품 및 정보들은 삭제 처리되어 복구가
+								불가능합니다.
+							</p>
+							<p className="mt-4 flex w-64 items-center justify-center text-center text-xs text-danger">
+								* 회원 탈퇴 시 7일 이후에 계정이 자동으로 삭제됩니다. 회원 탈퇴
+								후 로그인 시 회원탈퇴를 다시 진행해야합니다. *
 							</p>
 						</div>
 						<div className="mx-6 mt-12 flex h-12 flex-row">
