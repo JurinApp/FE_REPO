@@ -42,20 +42,27 @@ const useEditItem = () => {
 			if (status === 200) {
 				result.imageUrl = response.data.data.fileUrl;
 				result.isUpload = true;
+			} else {
+				alert("업로드 중 문제가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
 			}
-
 			return result;
 		}
 	};
 
 	const editItemData = async () => {
-		let result = await uploadImage();
+		let result = {
+			imageUrl: "",
+			isUpload: false,
+		};
 
 		if (itemFormValue.imageFile === null) {
 			result = {
 				imageUrl: itemFormValue.imageUrl,
 				isUpload: true,
 			};
+		} else {
+			result = (await uploadImage()) as IResult;
+			if (!result.isUpload) return;
 		}
 
 		if (result && result.isUpload) {
