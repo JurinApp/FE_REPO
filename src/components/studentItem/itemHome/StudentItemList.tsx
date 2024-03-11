@@ -28,7 +28,7 @@ const StudentItemList = ({
 	return (
 		<div
 			className={`mt-10 h-[calc(100vh-16rem)] max-h-[40rem] overflow-y-auto ${
-				!isExistItems && "flex items-center justify-center"
+				!isExistItems && "mx-auto flex items-center justify-center"
 			}`}
 		>
 			{isExistItems ? (
