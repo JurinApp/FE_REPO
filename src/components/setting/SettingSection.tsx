@@ -17,10 +17,10 @@ const SettingSection = () => {
 	};
 
 	const handleSignOut = async () => {
+		navigate("/login");
 		queryClient.clear();
 		resetUserRoleState();
 		removeCookie();
-		navigate("/");
 	};
 
 	return (

@@ -13,6 +13,7 @@ const WithdrawalModal = () => {
 	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
 		useRecoilState(withdrawalModalState);
 	const resetOpenWithdrawalModal = useResetRecoilState(withdrawalModalState);
+	const resetUserRoleState = useResetRecoilState(userRoleState);
 	const navigate = useNavigate();
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
@@ -61,9 +62,10 @@ const WithdrawalModal = () => {
 			const status = response.status;
 			if (status === 204) {
 				alert("회원 탈퇴가 완료되었습니다.");
-				removeCookie();
-				queryClient.clear();
 				navigate("/login");
+				queryClient.clear();
+				resetUserRoleState();
+				removeCookie();
 			} else {
 				alert("비밀번호를 확인해주세요.");
 			}
