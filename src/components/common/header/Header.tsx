@@ -11,22 +11,17 @@ const Header = () => {
 
 	const path = useMemo(() => {
 		const pathName = location.pathname;
-		const channelId = location.pathname.substring(1, 2);
-
-		if (pathName === "/mypage") {
-			return "/mypage";
-		}
 
 		if (pathName === "/signUp") {
 			return "/login";
 		}
 
-		if (userRole === "teacher") {
-			return `/${channelId}/manageLearner`;
-		}
-
-		if (userRole === "student") {
-			return `/${channelId}/trade/home`;
+		if (
+			userRole === "teacher" ||
+			userRole === "student" ||
+			pathName === "/mypage"
+		) {
+			return `/mypage`;
 		}
 
 		return "";
