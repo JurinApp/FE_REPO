@@ -9,7 +9,7 @@ const GoBackButton = ({ name, backNavigationPath }: StockHeaderProps) => {
 	const navigate = useNavigate();
 
 	const handleGoBack = () => {
-		navigate(backNavigationPath);
+		backNavigationPath === "back" ? navigate(-1) : navigate(backNavigationPath);
 	};
 
 	return (
