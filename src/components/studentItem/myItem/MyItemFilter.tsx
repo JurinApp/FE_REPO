@@ -9,9 +9,9 @@ const MyItemFilter = () => {
 	};
 
 	return (
-		<div className="px-6 pt-6 text-center text-sm">
+		<div className="px-4 pt-6 text-center text-sm">
 			<ul className="grid grid-cols-3">
-				<li className="w-full px-1">
+				<li className="mr-[0.313rem]">
 					<button
 						type="button"
 						onClick={() => clickFilterHandler("all")}
@@ -24,7 +24,7 @@ const MyItemFilter = () => {
 						전체
 					</button>
 				</li>
-				<li className="w-full px-1">
+				<li className="mr-[0.313rem]">
 					<button
 						type="button"
 						onClick={() => clickFilterHandler("available")}
@@ -37,7 +37,7 @@ const MyItemFilter = () => {
 						사용 가능
 					</button>
 				</li>
-				<li className="w-full px-1">
+				<li>
 					<button
 						type="button"
 						onClick={() => clickFilterHandler("used")}

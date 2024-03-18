@@ -44,7 +44,11 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 
 	return (
 		<div className="mt-2 flex h-[2.875rem] items-center">
-			<div className="mr-3 flex h-full items-center">
+			<div
+				className={`mr-3 h-full ${
+					userRole === "teacher" ? "flex items-center" : "hidden"
+				}`}
+			>
 				<label className="hidden" htmlFor="checkLearner">
 					주식선택
 				</label>
@@ -52,9 +56,7 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 					onChange={handleCheckStock}
 					type="checkbox"
 					id="checkLearner"
-					className={`${
-						userRole === "teacher" ? "inline-block" : "hidden"
-					} custom-checkBox cursor-pointer`}
+					className="custom-checkBox hidden cursor-pointer"
 					checked={selectedStocks.includes(stockItem.id) ? true : false}
 				/>
 			</div>
