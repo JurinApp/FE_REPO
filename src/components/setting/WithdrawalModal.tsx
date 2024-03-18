@@ -110,8 +110,7 @@ const WithdrawalModal = () => {
 								불가능합니다.
 							</p>
 							<p className="mt-4 flex w-64 items-center justify-center text-center text-xs text-danger">
-								* 회원 탈퇴 시 7일 이후에 계정이 자동으로 삭제됩니다. 회원 탈퇴
-								후 로그인 시 회원탈퇴를 다시 진행해야합니다. *
+								* 회원 탈퇴 시 7일 이후에 계정이 자동으로 삭제됩니다.*
 							</p>
 						</div>
 						<div className="mx-6 mt-12 flex h-12 flex-row">

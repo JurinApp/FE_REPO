@@ -70,8 +70,12 @@ export const EnterChannelModal = () => {
 				isEnterChannelModalOpen ? "flex" : "hidden"
 			} h-full w-full flex-col items-center justify-center bg-black-700`}
 		>
-			<form onSubmit={handleEnterChannel} ref={modalRef} className="w-[20rem]">
-				<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center bg-white">
+			<form
+				onSubmit={handleEnterChannel}
+				ref={modalRef}
+				className="w-[20rem] rounded-[0.25rem] bg-white"
+			>
+				<div className="left-0 top-0 flex h-[13.75rem] flex-col items-center justify-center">
 					<p className="mb-4 text-lg font-medium text-black">
 						채널 코드를 입력하세요.
 					</p>
@@ -92,7 +96,7 @@ export const EnterChannelModal = () => {
 				<div className="flex h-[3.75rem] flex-row">
 					<button
 						type="button"
-						className="w-1/2 bg-btn-cancel text-black"
+						className="w-1/2 rounded-b-[0.25rem] bg-btn-cancel text-black"
 						onClick={handleCloseModal}
 					>
 						취소
@@ -100,7 +104,9 @@ export const EnterChannelModal = () => {
 					<button
 						type="submit"
 						className={`w-1/2 text-white ${
-							code.length >= 6 ? "bg-iris" : "bg-disabled-tekhelet"
+							code.length >= 6
+								? "bg-iris"
+								: "rounded-b-[0.25rem] bg-disabled-tekhelet"
 						}`}
 						disabled={!(code.length >= 6)}
 						onClick={handleEnterChannel}

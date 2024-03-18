@@ -17,14 +17,14 @@ const SettingSection = () => {
 	};
 
 	const handleSignOut = async () => {
-		navigate("/login");
 		queryClient.clear();
+		navigate("/login");
 		resetUserRoleState();
 		removeCookie();
 	};
 
 	return (
-		<div className="mx-4 flex h-[calc(100vh-2.938rem)] flex-col justify-between text-base">
+		<div className="mx-4 flex h-[calc(100vh-6rem)] flex-col justify-between text-base">
 			<div>
 				<section
 					id="app-version"
