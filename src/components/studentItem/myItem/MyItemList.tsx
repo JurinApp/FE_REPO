@@ -27,15 +27,7 @@ const MyItemList = ({ data }: IMyItemListProps) => {
 		});
 
 		const usedItems = data.usedItem.map((item: IMyItem) => {
-			const isAllUsed =
-				availableItems.length === 0
-					? true
-					: availableItems.some(
-							(availableItem) =>
-								availableItem.hasOwnProperty("id") &&
-								availableItem.id !== item.id,
-						);
-			return { ...item, type: "used", isAllUsed };
+			return { ...item, type: "used" };
 		});
 
 		return [...usedItems, ...availableItems];

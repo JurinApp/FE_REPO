@@ -31,7 +31,6 @@ const MyItem = ({ myItem }: IMyItemProps) => {
 			<div className="flex h-[4.563rem] flex-col rounded-b border-t bg-white py-[0.875rem]">
 				<p className="ml-[0.625rem] text-sm font-normal">{myItem.title}</p>
 				<p className="ml-[0.625rem] text-sm font-medium">
-					<span className="text-black-800">사용 가능 : </span>
 					{myItem.remainingAmount} 개
 				</p>
 			</div>
