@@ -1,9 +1,12 @@
-import { getCookie } from "@/utils/cookies";
+import { userRoleState } from "@/states/userRoleState";
+import { getCookie, removeCookie } from "@/utils/cookies";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 const useAxios = () => {
+	const setUserRole = useSetRecoilState(userRoleState);
 	const [isFetchLoading, setIsFetchLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -29,6 +32,8 @@ const useAxios = () => {
 			const errorCode = error.response.data.code;
 
 			if (status === 401) {
+				setUserRole("anonymous");
+				removeCookie();
 				alert("재로그인을 해주세요.");
 				navigate("/login");
 			}
