@@ -1,7 +1,6 @@
-import StudentItemTab from "@/components/student/studentItem/StudentItemTab";
-import MyItemContainer from "@/components/student/studentItem/myItem/MyItemContainer";
+import MyItemContainer from "@/components/studentItem/myItem/MyItemContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
-import React, { useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 const StudentMyItemPage = () => {
@@ -12,11 +11,11 @@ const StudentMyItemPage = () => {
 			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: false,
+			isUseItemTab: true,
 		});
 	}, []);
 	return (
 		<div>
-			<StudentItemTab />
 			<MyItemContainer />
 		</div>
 	);

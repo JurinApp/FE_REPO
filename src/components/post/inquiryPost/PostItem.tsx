@@ -48,7 +48,7 @@ const PostItem = ({ post }: IPostItemProps) => {
 					<p className="mb-[0.375rem] ml-[0.875rem] truncate font-bold text-black-800">
 						{post.mainTitle}
 					</p>
-					<p className="ml-[0.875rem] truncate text-sm text-black-800">
+					<p className="ml-[0.875rem] max-w-24 truncate text-sm text-black-800 sm:max-w-48">
 						{post.subTitle}
 					</p>
 				</div>

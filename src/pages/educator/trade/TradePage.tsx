@@ -11,6 +11,7 @@ const TradePage = () => {
 			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: true,
+			isUseItemTab: false,
 		});
 	}, []);
 

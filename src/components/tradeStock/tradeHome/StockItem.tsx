@@ -1,9 +1,11 @@
 import { IStockItem } from "@/interface/tradeHome";
 import { selectedStock } from "@/states/selectedState/selectedTradeStock";
 import IcLow from "@assets/svg/icLow.svg?react";
+import IcHigh from "@assets/svg/icHigh.svg?react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Link, useParams } from "react-router-dom";
 import { userRoleState } from "@/states/userRoleState";
+import { useMemo } from "react";
 
 interface TradeStockItemProps {
 	readonly stockItem: IStockItem;
@@ -17,6 +19,14 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 		userRole === "teacher"
 			? `/${channelId}/trade/stock/detail/${stockItem.id}`
 			: `/${channelId}/stock/${stockItem.id}`;
+
+	const isLow = useMemo(() => {
+		return stockItem.daysRangeRate[0] === "-";
+	}, [stockItem]);
+
+	const isEqual = useMemo(() => {
+		return stockItem.daysRangeRate === "0.00%";
+	}, [stockItem]);
 
 	const handleCheckStock = () => {
 		const index = selectedStocks.findIndex((stockId) => {
@@ -34,7 +44,11 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 
 	return (
 		<div className="mt-2 flex h-[2.875rem] items-center">
-			<div className="mr-3 flex h-full items-center">
+			<div
+				className={`mr-3 h-full ${
+					userRole === "teacher" ? "flex items-center" : "hidden"
+				}`}
+			>
 				<label className="hidden" htmlFor="checkLearner">
 					주식선택
 				</label>
@@ -42,9 +56,7 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 					onChange={handleCheckStock}
 					type="checkbox"
 					id="checkLearner"
-					className={`${
-						userRole === "teacher" ? "inline-block" : "hidden"
-					} custom-checkBox cursor-pointer`}
+					className="custom-checkBox hidden cursor-pointer"
 					checked={selectedStocks.includes(stockItem.id) ? true : false}
 				/>
 			</div>
@@ -56,12 +68,36 @@ const StockItem = ({ stockItem }: TradeStockItemProps) => {
 					<p>{stockItem.name}</p>
 					<div className="mr-[0.875rem] flex text-sm font-medium">
 						<div className="flex items-center">
-							<p className="mr-[0.125rem] text-stock-blue">
+							<p
+								className={`mr-[0.125rem]${
+									isLow
+										? "text-stock-sell"
+										: isEqual
+											? "text-black-800"
+											: "text-stock-buy"
+								}`}
+							>
 								{stockItem.daysRangePrice}
 							</p>
-							<IcLow />
+							{isLow ? (
+								<IcLow />
+							) : isEqual ? (
+								<>
+									<div className="h-[17px] w-[14px]" />
+								</>
+							) : (
+								<IcHigh />
+							)}
 						</div>
-						<p className="ml-[0.125rem] w-12 text-right text-stock-blue">
+						<p
+							className={`ml-[0.125rem] w-12 text-right ${
+								isLow
+									? "text-stock-sell"
+									: isEqual
+										? "text-black-800"
+										: "text-stock-buy"
+							}`}
+						>
 							{stockItem.daysRangeRate}
 						</p>
 					</div>

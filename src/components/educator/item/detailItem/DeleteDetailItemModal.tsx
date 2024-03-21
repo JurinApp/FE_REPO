@@ -1,56 +1,24 @@
+import Spinner from "@/components/common/spinner/Spinner";
+import useDeleteItem from "@/hooks/mutations/item/useDeleteItem";
 import { deleteDetailItemModalState } from "@/states/modalState/confirmModalState";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "@/hooks/useAxios";
-import { useParams, useNavigate } from "react-router-dom";
-import Spinner from "@/components/common/spinner/Spinner";
 
 const DeleteDetailItemModal = () => {
 	const [isOpenModal, setIsOpenModal] = useRecoilState(
 		deleteDetailItemModalState,
 	);
 	const resetIsOpenModal = useResetRecoilState(deleteDetailItemModalState);
-	const { axiosData, isFetchLoading } = useAxios();
-	const { channelId, itemId } = useParams();
-	const navigate = useNavigate();
 	const modalRef = useRef<HTMLDivElement>(null);
-	const queryClient = useQueryClient();
+	const { mutate, isPending } = useDeleteItem();
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		deleteItemMutation.mutate();
+		mutate();
 	};
-
-	const deleteItemData = async () => {
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: `/teachers/api/v1/channels/${channelId}/items/${itemId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 204) {
-				queryClient.removeQueries({
-					queryKey: ["detailItem", channelId, itemId],
-				});
-				queryClient.invalidateQueries({
-					queryKey: ["items", channelId],
-				});
-				alert("아이템 삭제가 완료되었습니다.");
-				navigate(`/${channelId}/item`);
-			}
-		}
-	};
-
-	const deleteItemMutation = useMutation({
-		mutationKey: ["deleteItem"],
-		mutationFn: deleteItemData,
-	});
 
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {
@@ -76,7 +44,7 @@ const DeleteDetailItemModal = () => {
 
 	return (
 		<>
-			{isFetchLoading ? (
+			{isPending ? (
 				<Spinner />
 			) : (
 				<div

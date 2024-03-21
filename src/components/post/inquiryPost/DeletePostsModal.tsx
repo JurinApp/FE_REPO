@@ -1,3 +1,5 @@
+import Spinner from "@/components/common/spinner/Spinner";
+import useDeletePosts from "@/hooks/mutations/post/useDeletePosts";
 import { deletePostsModalState } from "@/states/modalState/confirmModalState";
 import { selectedPostsState } from "@/states/selectedState/selectedPostState";
 import {
@@ -5,54 +7,22 @@ import {
 	lockBodyScroll,
 } from "@/utils/controlBodyScroll";
 import { useEffect, useRef } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import useAxios from "@/hooks/useAxios";
-import Spinner from "@/components/common/spinner/Spinner";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const DeletePostsModal = () => {
-	const [selectedPosts, setSelectedPosts] = useRecoilState(selectedPostsState);
+	const selectedPosts = useRecoilValue(selectedPostsState);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(deletePostsModalState);
 	const resetIsOpenModal = useResetRecoilState(deletePostsModalState);
 	const modalRef = useRef<HTMLDivElement>(null);
-	const { channelId } = useParams();
-	const { axiosData, isFetchLoading } = useAxios();
-	const queryClient = useQueryClient();
+	const { mutate, isPending } = useDeletePosts();
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		deletePostsMutation.mutate();
+		mutate();
 	};
-
-	const deletePosts = async () => {
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: `/teachers/api/v1/channels/${channelId}/posts`,
-			data: {
-				postIds: selectedPosts,
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 204) {
-				alert("삭제가 완료되었습니다.");
-				queryClient.invalidateQueries({ queryKey: ["posts", channelId] });
-				setSelectedPosts([]);
-				setIsOpenModal(false);
-			}
-		}
-	};
-
-	const deletePostsMutation = useMutation({
-		mutationKey: ["deletePosts"],
-		mutationFn: deletePosts,
-	});
 
 	useEffect(() => {
 		const handleOutSideClick = (e: Event) => {
@@ -80,7 +50,7 @@ const DeletePostsModal = () => {
 
 	return (
 		<>
-			{isFetchLoading ? (
+			{isPending ? (
 				<Spinner />
 			) : (
 				<div

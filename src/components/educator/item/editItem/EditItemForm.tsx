@@ -1,17 +1,15 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { ERROR_MESSAGES } from "@/constants/itemErrorMessages";
-import useAxios from "@/hooks/useAxios";
+import useEditDetailItem from "@/hooks/queries/item/useEditDetailItem";
 import { editItemModalState } from "@/states/modalState/confirmModalState";
 import { registerItemForm } from "@/states/registerItemForm";
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import DeleteImage from "@assets/svg/deleteImage.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import Logo from "@assets/svg/subColorLogo.svg?react";
-import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 interface IErrors {
@@ -46,8 +44,6 @@ const EditItemForm = () => {
 	const [itemFormValue, setItemFormValue] = useRecoilState(registerItemForm);
 	const setIsOpenModal = useSetRecoilState(editItemModalState);
 	const resetItemFormValue = useResetRecoilState(registerItemForm);
-	const { channelId, itemId } = useParams();
-	const { axiosData } = useAxios();
 	const [thumbNail, setThumbNail] = useState<string>("");
 	const [replacePrice, setReplacePrice] = useState<string>("");
 	const [errors, setErrors] = useState<IErrors>({
@@ -68,6 +64,7 @@ const EditItemForm = () => {
 			errorMessage: "",
 		},
 	});
+	const { data, isLoading } = useEditDetailItem();
 
 	const successGetItemData = (responseData: IResponseData) => {
 		setItemFormValue({
@@ -81,26 +78,6 @@ const EditItemForm = () => {
 		setThumbNail(responseData.imageUrl);
 		setReplacePrice(responseData.price.toLocaleString());
 	};
-
-	const getDetailItemData = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/teachers/api/v1/channels/${channelId}/items/${itemId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				return response.data.data;
-			}
-		}
-	};
-
-	const { data, isLoading } = useQuery({
-		queryKey: ["editDetailItem", channelId, itemId],
-		queryFn: getDetailItemData,
-	});
 
 	const handleDeleteImage = () => {
 		setThumbNail("");
@@ -201,7 +178,8 @@ const EditItemForm = () => {
 			itemName: itemFormValue.itemName.length === 0,
 			price: itemFormValue.price === 0,
 			content: itemFormValue.content.length === 0,
-			itemImage: itemFormValue.imageFile === null,
+			itemImage:
+				itemFormValue.imageFile === null && itemFormValue.imageUrl.length === 0,
 		};
 
 		Object.keys(validations).forEach((key) => {
@@ -364,7 +342,8 @@ const EditItemForm = () => {
 								</label>
 								<textarea
 									id="content"
-									className={`grow resize-none rounded-none border-b outline-none ${
+									rows={8}
+									className={`w-full grow resize-none rounded-none border-b outline-none ${
 										errors.contentError.isError
 											? "border-danger"
 											: "border-black-100 focus:border-black-300"

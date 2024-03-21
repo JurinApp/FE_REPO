@@ -1,4 +1,4 @@
-import CreateChannelContainer from "@/components/channel/CreateChannelContainer";
+import CreateChannelContainer from "@/components/myPage/channel/CreateChannelContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
 import { useLayoutEffect } from "react";
 import { useSetRecoilState } from "recoil";
@@ -11,6 +11,7 @@ const CreateChannelPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 	return (

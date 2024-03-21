@@ -4,19 +4,20 @@ import { userRoleState } from "@/states/userRoleState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const WithdrawalModal = () => {
+	const role = useRecoilValue(userRoleState);
+	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
+		useRecoilState(withdrawalModalState);
+	const resetOpenWithdrawalModal = useResetRecoilState(withdrawalModalState);
+	const resetUserRoleState = useResetRecoilState(userRoleState);
 	const navigate = useNavigate();
 	const { axiosData } = useAxios();
 	const queryClient = useQueryClient();
-	const modalRef = useRef<HTMLDivElement>(null);
-	const [isOpenWithdrawalModal, setIsOpenWithdrawalModal] =
-		useRecoilState(withdrawalModalState);
-	const resetOpenWithdrwalModal = useResetRecoilState(withdrawalModalState);
-	const role = useRecoilValue(userRoleState);
+	const modalRef = useRef<HTMLFormElement>(null);
 
 	const [password, setPassword] = useState<string>("");
 	const [validatePW, setValidatePW] = useState<boolean>(false);
@@ -32,9 +33,10 @@ const WithdrawalModal = () => {
 		const result = regex.test(password);
 		setValidatePW(result);
 	};
+
 	const debounceValidation = debounce(validatePasswordFormat, 1000);
 
-	const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handlePassword = (event: ChangeEvent<HTMLInputElement>) => {
 		const password = event.target.value;
 		setPassword(password);
 		debounceValidation(password);
@@ -44,6 +46,32 @@ const WithdrawalModal = () => {
 		setPassword("");
 		setVerifiedPW(true);
 		setValidatePW(false);
+	};
+
+	const handleDeleteUser = async (e: FormEvent) => {
+		e.preventDefault();
+
+		const response = await axiosData("useToken", {
+			method: "DELETE",
+			url: `/${role}s/api/v1/users/profile`,
+			data: {
+				password: password,
+			},
+		});
+		if (response) {
+			const status = response.status;
+			if (status === 204) {
+				alert("회원 탈퇴가 완료되었습니다.");
+				navigate("/login");
+				queryClient.clear();
+				resetUserRoleState();
+				removeCookie();
+			} else {
+				alert("비밀번호를 확인해주세요.");
+			}
+		} else {
+			alert("회원탈퇴가 되지 않았습니다. 잠시 후에 다시 시도해주세요");
+		}
 	};
 
 	useEffect(() => {
@@ -62,28 +90,9 @@ const WithdrawalModal = () => {
 
 	useEffect(() => {
 		return () => {
-			resetOpenWithdrwalModal();
+			resetOpenWithdrawalModal();
 		};
 	}, []);
-
-	const handleDeleteUser = async () => {
-		const apiUrl = `/${role}s/api/v1/users/profile`;
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: apiUrl,
-			data: {
-				password: password,
-			},
-		});
-		if (response) {
-			const status = response.status;
-			if (status === 204) {
-				removeCookie();
-				queryClient.clear();
-				navigate("/login");
-			}
-		}
-	};
 
 	return (
 		<>
@@ -92,13 +101,16 @@ const WithdrawalModal = () => {
 					isOpenWithdrawalModal ? "flex" : "hidden"
 				} h-full w-full flex-col items-center justify-center bg-black-700`}
 			>
-				<div ref={modalRef}>
+				<form onSubmit={handleDeleteUser} ref={modalRef}>
 					<div className="left-0 top-0 flex h-[17.625rem] flex-col bg-[#ffffff]">
 						<div className="mx-6 mt-12 flex h-[5.625rem] flex-col items-center justify-between">
-							<div className="text-lg">비밀번호를 입력하세요</div>
-							<p className="flex items-center justify-center text-center text-sm text-danger">
-								회원 탈퇴 시 기존에 있던 상품 및 정보들은
-								<br /> 삭제 처리되어 복구가 불가능합니다.
+							<p className="text-lg">비밀번호를 입력하세요</p>
+							<p className="flex w-64 items-center justify-center text-center text-sm text-danger">
+								회원 탈퇴 시 기존에 있던 상품 및 정보들은 삭제 처리되어 복구가
+								불가능합니다.
+							</p>
+							<p className="mt-4 flex w-64 items-center justify-center text-center text-xs text-danger">
+								* 회원 탈퇴 시 7일 이후에 계정이 자동으로 삭제됩니다.*
 							</p>
 						</div>
 						<div className="mx-6 mt-12 flex h-12 flex-row">
@@ -106,7 +118,7 @@ const WithdrawalModal = () => {
 								type="password"
 								placeholder="비밀번호"
 								className={`w-[17.813rem] border-b pb-2 text-center text-base placeholder-gray-300 focus:border-b focus:border-gray-700 focus:outline-none ${
-									verifiedPW ? "border-danger" : ""
+									verifiedPW && "border-danger"
 								}`}
 								value={password}
 								onChange={handlePassword}
@@ -119,20 +131,24 @@ const WithdrawalModal = () => {
 						)}
 					</div>
 					<div className="flex h-[3.75rem] flex-row">
-						<button className="w-1/2 bg-btn-cancel" onClick={handleModalClose}>
+						<button
+							type="button"
+							className="w-1/2 bg-btn-cancel"
+							onClick={handleModalClose}
+						>
 							취소
 						</button>
 						<button
-							className={`w-1/2 text-[#ffffff] ${
-								validatePW ? "bg-danger" : "bg-disabled-danger"
+							type="submit"
+							className={`w-1/2 text-white ${
+								validatePW ? "bg-danger" : "bg-gray-500"
 							}`}
-							onClick={handleDeleteUser}
 							disabled={!validatePW}
 						>
 							확인
 						</button>
 					</div>
-				</div>
+				</form>
 			</div>
 		</>
 	);

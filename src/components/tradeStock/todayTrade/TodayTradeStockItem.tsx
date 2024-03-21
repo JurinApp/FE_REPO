@@ -1,6 +1,8 @@
 import { ITodayTradeStockItem } from "@/interface/stock";
 import { userRoleState } from "@/states/userRoleState";
 import IcLow from "@assets/svg/icLow.svg?react";
+import IcHigh from "@assets/svg/icHigh.svg?react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -11,10 +13,20 @@ interface TradeStockItemProps {
 const TodayTradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 	const userRole = useRecoilValue(userRoleState);
 	const { channelId } = useParams();
-	const pageLocation =
-		userRole === "teacher"
+
+	const pageLocation = useMemo(() => {
+		return userRole === "teacher"
 			? `/${channelId}/trade/stock/detail/${stockItem.id}`
 			: `/${channelId}/stock/${stockItem.id}`;
+	}, [userRole]);
+
+	const isLow = useMemo(() => {
+		return stockItem.daysRangeRate[0] === "-";
+	}, [stockItem]);
+
+	const isEqual = useMemo(() => {
+		return stockItem.daysRangeRate === "0.00%";
+	}, [stockItem]);
 
 	return (
 		<Link to={pageLocation} className="mt-2 flex h-[2.875rem] items-center">
@@ -25,13 +37,37 @@ const TodayTradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 					<p>{stockItem.name}</p>
 					<div className="mr-[0.875rem] flex text-sm font-medium">
 						<div className="flex items-center">
-							<p className="mr-[0.125rem] text-stock-blue">
+							<p
+								className={`mr-[0.125rem] ${
+									isLow
+										? "text-stock-sell"
+										: isEqual
+											? "text-black-800"
+											: "text-stock-buy"
+								}`}
+							>
 								{stockItem.daysRangePrice}
 							</p>
-							<IcLow />
+							{isLow ? (
+								<IcLow />
+							) : isEqual ? (
+								<>
+									<div className="h-[17px] w-[14px]" />
+								</>
+							) : (
+								<IcHigh />
+							)}
 						</div>
-						<p className="ml-[0.125rem] w-12 text-right text-stock-blue">
-							{stockItem.daysRangeRate}%
+						<p
+							className={`ml-[0.125rem] w-12 text-right ${
+								isLow
+									? "text-stock-sell"
+									: isEqual
+										? "text-black-800"
+										: "text-stock-buy"
+							}`}
+						>
+							{stockItem.daysRangeRate}
 						</p>
 					</div>
 				</div>

@@ -3,7 +3,7 @@ import BucketIcon from "@assets/svg/bucketIcon.svg?react";
 import ClipIcon from "@assets/svg/clipSvg.svg?react";
 import TradeIcon from "@assets/svg/tradeIcon.svg?react";
 import UserIcon from "@assets/svg/userIcon.svg?react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -13,36 +13,33 @@ interface IMenu {
 	readonly path: string;
 }
 
-const menuArr = [
-	{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
-	{ key: "trade", name: "주식거래", path: "/trade/home" },
-	{ key: "item", name: "아이템", path: "/item" },
-	{ key: "post", name: "게시판", path: "/post" },
-];
-
 const Menu = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [selectedMenu, setSelectedMenu] = useState<string>(menuArr[0].key);
+	const [selectedMenu, setSelectedMenu] = useState<string>("manageLearner");
 	const userRole = useRecoilValue(userRoleState);
-	let filterMenuArr: IMenu[] = [];
 
-	if (userRole === "student") {
-		filterMenuArr = menuArr.filter((menu) => menu.key !== "manageLearner");
-	} else {
-		filterMenuArr = menuArr;
-	}
+	const menuArr = useMemo(() => {
+		const teacherMenu = [
+			{ key: "manageLearner", name: "학생관리", path: "/manageLearner" },
+			{ key: "trade", name: "주식거래", path: "/trade/home" },
+			{ key: "item", name: "아이템", path: "/item" },
+			{ key: "post", name: "게시판", path: "/post" },
+		];
+
+		const studentMenu = [
+			{ key: "trade", name: "주식거래", path: "/trade/home" },
+			{ key: "item", name: "아이템", path: "/student/item" },
+			{ key: "post", name: "게시판", path: "/post" },
+		];
+
+		return userRole === "teacher" ? teacherMenu : studentMenu;
+	}, [userRole]);
 
 	const handleClickMenu = (menu: IMenu) => {
 		setSelectedMenu(menu.key);
 		const channelId = location.pathname.substring(1, 2);
-
-		let path = "/";
-		if (userRole === "teacher") {
-			path = `/${channelId}${menu.path}`;
-		} else if (userRole === "student") {
-			path = `/${channelId}/student${menu.path}`;
-		}
+		const path = `/${channelId}${menu.path}`;
 		navigate(path);
 	};
 
@@ -65,7 +62,7 @@ const Menu = () => {
 	return (
 		<div className="sticky bottom-0 z-[99] mx-auto h-[4.188rem] w-full bg-white px-6 py-[0.5rem] sm:w-[24.563rem]">
 			<div className="flex items-center justify-between">
-				{filterMenuArr.map((menu: IMenu) => (
+				{menuArr.map((menu: IMenu) => (
 					<div
 						key={menu.key}
 						className="flex cursor-pointer flex-col items-center"

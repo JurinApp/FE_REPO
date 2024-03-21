@@ -1,32 +1,32 @@
-import { IStockBSHistory } from "@/interface/stock";
-import TradingChart from "../TradingChart";
-import StockSellInterface from "./StockSellInterface";
+import {
+	IStockBSHistory,
+	IStockPriceInfo,
+	IUserPointInfo,
+} from "@/interface/stock";
+import MyPoint from "../MyPoint";
+import TradingChart from "../tradingChart/TradingChart";
+import SellStockForm from "./SellStockForm";
 
-interface IStockSellContainerProps {
+interface ISellStockContainerProps {
+	readonly userPointInfo: IUserPointInfo;
+	readonly stockPriceInfo: IStockPriceInfo;
 	readonly stockBSHistory: IStockBSHistory;
-	readonly stockPrice: number;
-	readonly userPoint: number;
-	readonly stockAmount: number;
-	readonly tax: number;
 }
 
-const StockSellContainer = ({
+const SellStockContainer = ({
+	userPointInfo,
+	stockPriceInfo,
 	stockBSHistory,
-	stockPrice,
-	userPoint,
-	stockAmount,
-	tax,
-}: IStockSellContainerProps) => {
+}: ISellStockContainerProps) => {
 	return (
 		<>
-			<div className="relative mx-auto h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
-				<div className="flex flex-row">
-					<TradingChart stockBSHistory={stockBSHistory} />
-					<StockSellInterface
-						stockPrice={stockPrice}
-						userPoint={userPoint}
-						stockAmount={stockAmount}
-						tax={tax}
+			<div className="relative mx-auto flex h-inTrade-height w-full flex-row overflow-y-auto  bg-btn-cancel-tekhelet">
+				<TradingChart stockBSHistory={stockBSHistory} />
+				<div className="mx-4 flex h-full w-full flex-col items-center pt-6 sm:w-[14.875rem]">
+					<MyPoint userPointInfo={userPointInfo} />
+					<SellStockForm
+						userPointInfo={userPointInfo}
+						stockPriceInfo={stockPriceInfo}
 					/>
 				</div>
 			</div>
@@ -34,4 +34,4 @@ const StockSellContainer = ({
 	);
 };
 
-export default StockSellContainer;
+export default SellStockContainer;

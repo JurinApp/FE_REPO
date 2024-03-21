@@ -1,7 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import { useLayoutEffect } from "react";
-import { UserinfoContainer } from "@/components/userinfo/UserinfoContainer";
 import { headerMenuUseState } from "@/states/headerMenuUseState";
+import MyPageContainer from "@/components/myPage/MyPageContainer";
 
 const MyPage = () => {
 	const setIsUseHeader = useSetRecoilState(headerMenuUseState);
@@ -11,12 +11,13 @@ const MyPage = () => {
 			isUseHeader: true,
 			isUseMenu: false,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 
 	return (
 		<div>
-			<UserinfoContainer />
+			<MyPageContainer />
 		</div>
 	);
 };

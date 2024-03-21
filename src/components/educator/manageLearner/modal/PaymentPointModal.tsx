@@ -1,7 +1,6 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useAxios from "@/hooks/useAxios";
+import usePointPayment from "@/hooks/mutations/manageLearner/usePointPayment";
 import { paymentPointModalState } from "@/states/modalState/confirmModalState";
-import { selectedLearner } from "@/states/selectedState/selectedLearnerState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
@@ -9,26 +8,22 @@ import {
 import Decrease from "@assets/svg/decreaseIcon.svg?react";
 import Increase from "@assets/svg/increaseIcon.svg?react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 const PaymentPointModal = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const [selectedLearners, setSelectedLearners] =
-		useRecoilState(selectedLearner);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(paymentPointModalState);
 	const resetIsOpenModal = useResetRecoilState(paymentPointModalState);
-	const { axiosData, isFetchLoading } = useAxios();
-	const { channelId } = useParams();
 	const [point, setPoint] = useState<number>(0);
 	const [replacePoint, setReplacePoint] = useState<string>("0");
+	const { mutate, isPending } = usePointPayment();
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickPaymentPoint = async () => {
-		submitPaymentPoint();
+		mutate(point);
 		setIsOpenModal(false);
 	};
 
@@ -56,26 +51,6 @@ const PaymentPointModal = () => {
 		} else {
 			setPoint(0);
 			setReplacePoint("0");
-		}
-	};
-
-	const submitPaymentPoint = async () => {
-		const response = await axiosData("useToken", {
-			method: "POST",
-			url: `/teachers/api/v1/channels/${channelId}/management`,
-			data: {
-				userIds: selectedLearners,
-				point: point,
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-			console.log(response);
-			if (status === 200) {
-				alert("포인트 지급이 완료 되었습니다.");
-				setSelectedLearners([]);
-			}
 		}
 	};
 
@@ -107,7 +82,7 @@ const PaymentPointModal = () => {
 
 	return (
 		<>
-			{isFetchLoading ? (
+			{isPending ? (
 				<Spinner />
 			) : (
 				<div

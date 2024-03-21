@@ -11,6 +11,7 @@ import IsLoginRoute from "@components/common/permissionRoute/IsLoginRoute";
 import Menu from "@components/common/menu/Menu";
 import Header from "@components/common/header/Header";
 import TradeTab from "@components/tradeStock/TradeTab";
+import StudentItemTab from "./components/common/studentItemTab/StudentItemTab";
 
 const SplashPage = lazy(() => import("@pages/common/SplashPage"));
 const LoginPage = lazy(() => import("@pages/common/LoginPage"));
@@ -18,9 +19,7 @@ const SignUpPage = lazy(() => import("@pages/common/SignUpPage"));
 const SuccessSignUpPage = lazy(() => import("@pages/common/SuccessSignUpPage"));
 const MyPage = lazy(() => import("@pages/common/MyPage"));
 const CreateChannelPage = lazy(() => import("@pages/common/CreateChannelPage"));
-const ModifyUserinfoPage = lazy(
-	() => import("@pages/common/ModifyUserinfoPage"),
-);
+const ModifyInfoPage = lazy(() => import("@/pages/common/ModifyInfoPage"));
 const ManageLearnerPage = lazy(
 	() => import("@pages/educator/manageLearner/ManageLearnerPage"),
 );
@@ -55,6 +54,7 @@ const PostPage = lazy(() => import("@pages/post/PostPage"));
 const RegisterPostPage = lazy(() => import("@pages/post/RegisterPostPage"));
 const DetailPostPage = lazy(() => import("@pages/post/DetailPostPage"));
 const EditPostPage = lazy(() => import("@pages/post/EditPostPage"));
+const MyStockPage = lazy(() => import("@pages/student/stock/MyStockPage"));
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -65,7 +65,7 @@ const queryClient = new QueryClient({
 });
 
 const Router = () => {
-	const { isUseHeader, isUseMenu, isUseTab } =
+	const { isUseHeader, isUseMenu, isUseTab, isUseItemTab } =
 		useRecoilValue(headerMenuUseState);
 
 	return (
@@ -73,6 +73,7 @@ const Router = () => {
 			<ReactQueryDevtools initialIsOpen={true} />
 			{isUseHeader && <Header />}
 			{isUseTab && <TradeTab />}
+			{isUseItemTab && <StudentItemTab />}
 			<Suspense fallback={<Spinner />}>
 				<Routes>
 					<Route path="/" element={<SplashPage />} />
@@ -82,7 +83,7 @@ const Router = () => {
 					<Route element={<IsLoginRoute />}>
 						<Route path="/mypage" element={<MyPage />} />
 						<Route path="/setting" element={<SettingPage />} />
-						<Route path="/modifyUserinfo" element={<ModifyUserinfoPage />} />
+						<Route path="/modifyUserinfo" element={<ModifyInfoPage />} />
 						<Route path="/:channelId/trade/home" element={<TradeHomePage />} />
 						<Route
 							path="/:channelId/trade/todayTrade"
@@ -148,6 +149,7 @@ const Router = () => {
 							path="/:channelId/student/myItem"
 							element={<StudentMyItemPage />}
 						/>
+						<Route path="/:channelId/trade/myStock" element={<MyStockPage />} />
 					</Route>
 				</Routes>
 			</Suspense>

@@ -11,6 +11,7 @@ const RegisterPostPage = () => {
 			isUseHeader: false,
 			isUseMenu: true,
 			isUseTab: false,
+			isUseItemTab: false,
 		});
 	}, []);
 

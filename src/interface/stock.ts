@@ -1,18 +1,19 @@
-interface IStockTransaction {
+export interface IStockTransaction {
+	readonly tradeDate: string;
 	readonly price: number;
-	readonly quantity: number;
+	readonly amount: number;
 }
 
 export interface IStockBSHistory {
-	buy: IStockTransaction[];
-	sell: IStockTransaction[];
+	readonly buyList: IStockTransaction[];
+	readonly sellList: IStockTransaction[];
 }
 
 export interface IStockItem {
 	readonly id: string;
 	readonly name: string;
-	readonly daysRangeRate: number;
-	readonly daysRangePrice: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
 }
 
 export interface IStockHomeResponseData {
@@ -61,17 +62,71 @@ export interface IStockPriceHistoryData {
 }
 
 export interface IBuyListHistoryData {
-	buyList: {
-		tradeDate: string;
-		amount: number;
-		price: number;
+	readonly buyList: {
+		readonly tradeDate: string;
+		readonly amount: number;
+		readonly price: number;
 	}[];
 }
 
 export interface ISellListHistoryData {
-	sellList: {
-		tradeDate: string;
-		amount: number;
-		price: number;
+	readonly sellList: {
+		readonly tradeDate: string;
+		readonly amount: number;
+		readonly price: number;
 	}[];
+}
+
+export interface IMyStock {
+	readonly id: number;
+	readonly name: string;
+	readonly totalStockAmount: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
+}
+
+export interface IMyStockResponseData {
+	readonly limit: number;
+	readonly offset: number;
+	readonly count: number;
+	readonly next: string | null;
+	readonly previous: string | null;
+	readonly results: IMyStock[];
+}
+
+// 학생권한 주식상세조회
+export interface IStockInfo {
+	readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
+	readonly standard: string;
+	readonly content: string;
+}
+
+export interface IUserPointInfo {
+	readonly point: number;
+	readonly totalStockAmount: number;
+}
+
+export interface IStockPriceInfo {
+	readonly id: number;
+	readonly name: string;
+	readonly purchasePrice: number;
+	readonly tax: number;
+}
+
+export interface IOrderExecution {
+	readonly tradeDate: string;
+	readonly name: string;
+	readonly amount: number;
+	readonly price: number;
+	readonly daysRangeRate: string;
+	readonly daysRangePrice: string;
+	readonly tradeType: string;
+}
+
+export interface IOrderExecutionDate {
+	readonly startDate: string;
+	readonly endDate: string;
 }

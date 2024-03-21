@@ -43,8 +43,8 @@ const LearnerItem = ({ learnerInfo }: ILearnerInfoProps) => {
 			>
 				<div className="flex h-full grow cursor-pointer items-center pl-4 text-sm text-black-800">
 					<p>
-						{learnerInfo.id}
-						<span> ({learnerInfo.nickname}) </span>
+						{learnerInfo.nickname}
+						<span> ({learnerInfo.username}) </span>
 					</p>
 				</div>
 			</div>

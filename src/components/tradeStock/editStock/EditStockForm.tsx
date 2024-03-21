@@ -1,13 +1,12 @@
 import ErrorMsg from "@/components/common/errorMsg/ErrorMsg";
 import Spinner from "@/components/common/spinner/Spinner";
 import { REGISTER_TRADE_STOCK_SCHEMA } from "@/constants/formSchema";
-import useAxios from "@/hooks/useAxios";
+import useEditStock from "@/hooks/mutations/stock/useEditStock";
+import useEditDetailStock from "@/hooks/queries/stock/useEditDetailStock";
 import { editTradeStockModalState } from "@/states/modalState/confirmModalState";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 interface IEditTradeStockFormProps {
@@ -16,12 +15,7 @@ interface IEditTradeStockFormProps {
 
 const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 	const setIsOpenModal = useSetRecoilState(editTradeStockModalState);
-	const queryClient = useQueryClient();
-	const { channelId, stockId } = useParams();
-	const { axiosData, isFetchLoading } = useAxios();
-	const navigate = useNavigate();
 	const [replacePrice, setReplacePrice] = useState<string>("");
-
 	const {
 		register,
 		handleSubmit,
@@ -42,6 +36,9 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		mode: "onChange",
 	});
 
+	const { data, isLoading } = useEditDetailStock();
+	const { mutate, isPending } = useEditStock();
+
 	const handleChangePrice = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		const numericValue = parseFloat(value.replace(/,/g, ""));
@@ -59,75 +56,15 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 		}
 	};
 
-	const getDetailStockData = async () => {
-		const response = await axiosData("useToken", {
-			method: "GET",
-			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				const stockData = response.data.data;
-				return stockData;
-			}
-
-			if (status === 404) {
-				alert("존재하지 않는 주식거래 상품입니다.");
-				navigate(`/${channelId}/trade/home`);
-			}
-		}
-	};
-
-	const { data, isLoading } = useQuery({
-		queryKey: ["editDetailStock", channelId, stockId],
-		queryFn: getDetailStockData,
-	});
-
-	const editStockData = async () => {
-		const response = await axiosData("useToken", {
-			method: "PUT",
-			url: `/teachers/api/v1/channels/${channelId}/stocks/${stockId}`,
-			data: {
-				name: getValues("stockName"),
-				purchasePrice: getValues("price"),
-				tax: getValues("tax"),
-				standard: getValues("standard"),
-				content: getValues("content"),
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 200) {
-				alert("수정이 완료되었습니다.");
-				queryClient.removeQueries({
-					queryKey: ["editDetailStock", channelId, stockId],
-				});
-				queryClient.invalidateQueries({
-					queryKey: ["detailStock", channelId, stockId],
-				});
-				queryClient.invalidateQueries({
-					queryKey: ["stocks", channelId],
-				});
-				navigate(`/${channelId}/trade/stock/detail/${stockId}`);
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const editStockMutation = useMutation({
-		mutationKey: ["editStock"],
-		mutationFn: editStockData,
-	});
-
 	const handleSubmitEditTradeStockForm = () => {
-		editStockMutation.mutate();
+		const submitData = {
+			name: getValues("stockName"),
+			purchasePrice: getValues("price"),
+			tax: getValues("tax"),
+			standard: getValues("standard"),
+			content: getValues("content"),
+		};
+		mutate(submitData);
 	};
 
 	const handleClickRegisterBtn = () => {
@@ -293,7 +230,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 					</form>
 				)}
 			</div>
-			{isFetchLoading && <Spinner />}
+			{isPending && <Spinner />}
 		</>
 	);
 };

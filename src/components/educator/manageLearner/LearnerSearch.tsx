@@ -1,25 +1,19 @@
-import useInput from "@/hooks/useInput";
+import { searchKeyword } from "@/states/searchKeyword";
 import SearchIcon from "@assets/svg/searchIcon.svg?react";
-import { FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRecoilState } from "recoil";
 
-interface ILearnerSearchProps {
-	readonly searchKeyword: string;
-	readonly setSearchKeyword: (keyword: string) => void;
-}
+const LearnerSearch = () => {
+	const [keyword, setKeyword] = useRecoilState(searchKeyword);
+	const [searchInput, setSearchInput] = useState<string>("");
 
-const LearnerSearch = ({
-	searchKeyword,
-	setSearchKeyword,
-}: ILearnerSearchProps) => {
-	const [keyword, setKeyword] = useInput("");
-
-	const searchLearner = async () => {
-		setSearchKeyword(keyword);
+	const handleChangeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+		setSearchInput(e.target.value);
 	};
 
 	const handleSearchLearner = (e: FormEvent) => {
 		e.preventDefault();
-		searchLearner();
+		setKeyword(searchInput);
 	};
 
 	return (
@@ -29,8 +23,8 @@ const LearnerSearch = ({
 		>
 			<input
 				type="text"
-				onChange={setKeyword}
-				defaultValue={searchKeyword}
+				onChange={handleChangeKeyword}
+				defaultValue={keyword}
 				className="h-12 w-full grow bg-inherit outline-none placeholder:text-black-300"
 				placeholder="찾고 있는 학생을 검색해보세요."
 				maxLength={8}

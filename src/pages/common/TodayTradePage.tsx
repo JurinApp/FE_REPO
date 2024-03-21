@@ -11,6 +11,7 @@ const TodayTradePage = () => {
 			isUseHeader: true,
 			isUseMenu: true,
 			isUseTab: true,
+			isUseItemTab: false,
 		});
 	}, []);
 

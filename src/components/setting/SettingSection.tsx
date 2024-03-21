@@ -18,13 +18,13 @@ const SettingSection = () => {
 
 	const handleSignOut = async () => {
 		queryClient.clear();
+		navigate("/login");
 		resetUserRoleState();
 		removeCookie();
-		navigate("/");
 	};
 
 	return (
-		<div className="mx-4 flex h-[calc(100vh-2.938rem)] flex-col justify-between text-base">
+		<div className="mx-4 flex h-[calc(100vh-6rem)] flex-col justify-between text-base">
 			<div>
 				<section
 					id="app-version"
@@ -35,13 +35,6 @@ const SettingSection = () => {
 						<p>2.06 ver</p>
 						<p className="text-sm text-tekhelet">최신 버전입니다.</p>
 					</div>
-				</section>
-				<section
-					id="team-info"
-					className="mt-[1.875rem] flex h-[8.5rem] flex-col"
-				>
-					<h2 className="mb-[0.875rem] font-bold">팀 정보</h2>
-					<div className="h-[6.375rem] rounded border border-black-100 bg-black-100"></div>
 				</section>
 				<section id="etc" className="mt-[1.875rem] flex h-[11.75rem] flex-col">
 					<h2 className="mb-[0.875rem] font-bold ">기타</h2>

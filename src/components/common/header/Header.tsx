@@ -1,11 +1,31 @@
+import { userRoleState } from "@/states/userRoleState";
 import Logo from "@assets/svg/colorLogo.svg?react";
 import Setting from "@assets/svg/setting.svg?react";
+import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 const Header = () => {
+	const userRole = useRecoilValue(userRoleState);
 	const location = useLocation();
-	const path =
-		location.pathname === "/signUp" || "/mypage" ? "/login" : "/mypage";
+
+	const path = useMemo(() => {
+		const pathName = location.pathname;
+
+		if (pathName === "/signUp") {
+			return "/login";
+		}
+
+		if (
+			userRole === "teacher" ||
+			userRole === "student" ||
+			pathName === "/mypage"
+		) {
+			return `/mypage`;
+		}
+
+		return "";
+	}, [location.pathname, userRole]);
 
 	return (
 		<header className="sticky top-0 z-[99] mx-auto h-[2.938rem] w-full border-b border-black-200 bg-white sm:w-[24.563rem]">

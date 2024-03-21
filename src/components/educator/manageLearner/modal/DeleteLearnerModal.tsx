@@ -1,70 +1,27 @@
 import Spinner from "@/components/common/spinner/Spinner";
-import useAxios from "@/hooks/useAxios";
+import useDeleteLearner from "@/hooks/mutations/manageLearner/useDeleteLearner";
 import { deleteConfirmModalState } from "@/states/modalState/confirmModalState";
 import { selectedLearner } from "@/states/selectedState/selectedLearnerState";
 import {
 	cancelLockBodyScroll,
 	lockBodyScroll,
 } from "@/utils/controlBodyScroll";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 const DeleteLearnerModal = () => {
-	const queryClient = useQueryClient();
-	const [selectedLearners, setSelectedLearners] =
-		useRecoilState(selectedLearner);
+	const selectedLearners = useRecoilValue(selectedLearner);
 	const [isOpenModal, setIsOpenModal] = useRecoilState(deleteConfirmModalState);
 	const resetIsOpenModal = useResetRecoilState(deleteConfirmModalState);
-	const { axiosData, isFetchLoading } = useAxios();
-	const { channelId } = useParams();
 	const modalRef = useRef<HTMLDivElement>(null);
-
-	const deleteLearners = async () => {
-		const response = await axiosData("useToken", {
-			method: "DELETE",
-			url: `/teachers/api/v1/channels/${channelId}/management`,
-			data: {
-				userIds: selectedLearners,
-			},
-		});
-
-		if (response) {
-			const status = response.status;
-
-			if (status === 204) {
-				alert("학생 삭제가 되었습니다.");
-				queryClient.invalidateQueries({
-					queryKey: ["learnerList", channelId],
-				});
-				setSelectedLearners([]);
-				setIsOpenModal(false);
-			}
-
-			if (status === 404) {
-				alert(
-					"채널에 해당 학생이 존재하지 않습니다. 잠시 후에 다시 시도해주세요.",
-				);
-			}
-
-			if (status === 500) {
-				alert("서버에 오류가 발생하였습니다. 잠시 후에 다시 시도해주세요.");
-			}
-		}
-	};
-
-	const deleteMutation = useMutation({
-		mutationKey: ["deleteLearner", channelId],
-		mutationFn: deleteLearners,
-	});
+	const { mutate, isPending } = useDeleteLearner();
 
 	const handleClickCancelBtn = () => {
 		setIsOpenModal(false);
 	};
 
 	const handleClickDeleteBtn = () => {
-		deleteMutation.mutate();
+		mutate();
 	};
 
 	useEffect(() => {
@@ -93,7 +50,7 @@ const DeleteLearnerModal = () => {
 
 	return (
 		<>
-			{isFetchLoading ? (
+			{isPending ? (
 				<Spinner />
 			) : (
 				<div
