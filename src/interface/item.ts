@@ -25,21 +25,26 @@ export interface IErrorMessages {
 }
 
 /********* 학생 권한 **********/
-
-export interface MyItem {
+export interface IMyItem {
 	readonly id: number;
 	readonly title: string;
 	readonly imageUrl: string;
 	readonly price: number;
 	readonly remainingAmount: number;
 	readonly isUsed: boolean;
+	readonly type: string;
 }
 
-export interface IMyItemResponseData {
-	readonly limit: number;
-	readonly offset: number;
-	readonly count: number;
-	readonly next: string | null;
-	readonly previous: string | null;
-	readonly results: MyItem[];
+export interface IUsedItem extends IMyItem {
+	readonly usedAmount: number;
+	readonly isAllUsed: boolean;
+}
+
+export interface IAvailableItem extends IMyItem {
+	readonly remainingAmount: number;
+}
+
+export interface IMyItemListData {
+	readonly usedItem: IUsedItem[];
+	readonly availableItem: IAvailableItem[];
 }

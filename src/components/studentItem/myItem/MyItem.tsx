@@ -1,10 +1,10 @@
-import { MyItem } from "@/interface/item";
+import { IAvailableItem, IUsedItem } from "@/interface/item";
 import { itemUseModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import { useSetRecoilState } from "recoil";
 
 interface IMyItemProps {
-	readonly myItem: MyItem;
+	readonly myItem: IUsedItem | IAvailableItem;
 }
 
 const MyItem = ({ myItem }: IMyItemProps) => {
@@ -30,11 +30,10 @@ const MyItem = ({ myItem }: IMyItemProps) => {
 			</div>
 			<div className="flex h-[4.563rem] flex-col rounded-b border-t bg-white py-[0.875rem]">
 				<p className="ml-[0.625rem] text-sm font-normal">{myItem.title}</p>
-				{myItem.remainingAmount !== 0 && (
-					<p className="ml-[0.625rem] text-base font-medium">
-						{myItem.remainingAmount} 개
-					</p>
-				)}
+				<p className="ml-[0.625rem] text-sm font-medium">
+					<span className="text-black-800">사용 가능 : </span>
+					{myItem.remainingAmount} 개
+				</p>
 			</div>
 		</div>
 	);

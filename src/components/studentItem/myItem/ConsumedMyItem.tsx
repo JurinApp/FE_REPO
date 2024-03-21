@@ -1,12 +1,11 @@
-import { MyItem } from "@/interface/item";
+import { IUsedItem } from "@/interface/item";
 import { itemHistoryModalState } from "@/states/modalState/confirmModalState";
 import { studentSelectedItem } from "@/states/studentItem/studentSelectedItem";
 import ItemHis from "@assets/svg/itemHistory.svg?react";
-import UsedItem from "@assets/svg/usedItem.svg?react";
 import { useSetRecoilState } from "recoil";
 
 interface IConsumedMyItemProps {
-	readonly myItem: MyItem;
+	readonly myItem: IUsedItem;
 }
 
 const ConsumedMyItem = ({ myItem }: IConsumedMyItemProps) => {
@@ -30,15 +29,23 @@ const ConsumedMyItem = ({ myItem }: IConsumedMyItemProps) => {
 					className="h-full w-full object-contain"
 				/>
 				<div className="absolute flex h-full w-full items-center justify-center">
-					<UsedItem />
+					<div className="flex h-[1.688rem] w-[5rem] items-center justify-center rounded-[0.25rem] bg-[rgba(26,26,26,0.7)]">
+						{myItem.isAllUsed ? (
+							<p className="mr-1 text-xs text-white">사용 완료</p>
+						) : (
+							<>
+								<p className="mr-1 text-xs text-white">사용 현황</p>
+								<ItemHis />
+							</>
+						)}
+					</div>
 				</div>
 			</div>
 			<div className="flex h-[4.563rem] flex-col rounded-b border-t bg-white py-[0.875rem]">
 				<p className="ml-[0.625rem] text-sm font-normal">{myItem.title}</p>
-				<div className="ml-[0.625rem] flex h-[2.25rem] w-[5.938rem] items-center justify-between">
-					<p className="text-sm text-tekhelet">사용 현황</p>
-					<ItemHis />
-				</div>
+				<p className="ml-[0.625rem] text-sm font-medium text-black-800">
+					사용 완료 : {myItem.usedAmount}
+				</p>
 			</div>
 		</div>
 	);

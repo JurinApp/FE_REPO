@@ -1,6 +1,6 @@
 import useAxios from "@/hooks/useAxios";
 import { myItemFilterState } from "@/states/filterState/myItemFilterState";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -13,11 +13,11 @@ const useMyItemList = () => {
 	const { channelId } = useParams();
 	const { axiosData } = useAxios();
 
-	const getMyItemList = async (pageParam: number) => {
+	const getMyItemList = async () => {
 		const apiUrl: IApiUrl = {
-			all: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}`,
-			available: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}&is_used=false`,
-			used: `/students/api/v1/channels/${channelId}/items/mine?limit=15&offset=${pageParam}&is_used=true`,
+			all: `/students/api/v1/channels/${channelId}/items/mine`,
+			available: `/students/api/v1/channels/${channelId}/items/mine?is_used=false`,
+			used: `/students/api/v1/channels/${channelId}/items/mine?is_used=true`,
 		};
 
 		const response = await axiosData("useToken", {
@@ -25,16 +25,14 @@ const useMyItemList = () => {
 			url: apiUrl[filterState],
 		});
 
+		console.log(response?.data.data);
+
 		return response?.data.data;
 	};
 
-	return useInfiniteQuery({
+	return useQuery({
 		queryKey: ["studentItem", "myItem", channelId, filterState],
-		queryFn: ({ pageParam }) => getMyItemList(pageParam as number),
-		initialPageParam: 0,
-		getNextPageParam: (lastPage) => {
-			return lastPage.next !== null ? lastPage.offset + 15 : undefined;
-		},
+		queryFn: getMyItemList,
 	});
 };
 
