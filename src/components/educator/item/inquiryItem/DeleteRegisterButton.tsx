@@ -1,16 +1,28 @@
 import { deleteItemsModalState } from "@/states/modalState/confirmModalState";
 import { selectedItemState } from "@/states/selectedState/selectedItemState";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+
+const date = new Date();
+const hours = date.getHours();
 
 const DeleteRegisterButton = () => {
 	const selectedItems = useRecoilValue(selectedItemState);
 	const isExistSelectedItems = selectedItems.length !== 0;
 	const setIsOpenModal = useSetRecoilState(deleteItemsModalState);
 	const { channelId } = useParams();
+	const navigate = useNavigate();
 
 	const handleDeleteItems = () => {
 		setIsOpenModal(true);
+	};
+
+	const checkRegisterTime = () => {
+		if (hours >= 9 && hours < 15) {
+			alert("아이템 등록은 09:00 ~ 15:00 이후에 가능합니다");
+		} else {
+			navigate(`/${channelId}/item/register`);
+		}
 	};
 
 	return (
@@ -23,12 +35,13 @@ const DeleteRegisterButton = () => {
 			>
 				삭제
 			</button>
-			<Link
-				to={`/${channelId}/item/register`}
+			<button
+				type="button"
+				onClick={checkRegisterTime}
 				className="ml-2 flex h-box-height grow items-center justify-center rounded bg-tekhelet font-bold text-white"
 			>
 				등록
-			</Link>
+			</button>
 		</div>
 	);
 };
