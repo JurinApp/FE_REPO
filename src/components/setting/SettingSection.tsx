@@ -4,13 +4,13 @@ import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 const SettingSection = () => {
 	const setIsWithdrawalModalOpen = useSetRecoilState(withdrawalModalState);
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-	const resetUserRoleState = useResetRecoilState(userRoleState);
+	const setUserRole = useSetRecoilState(userRoleState);
 
 	const handleWithdrawalModalOpen = () => {
 		setIsWithdrawalModalOpen(true);
@@ -18,9 +18,9 @@ const SettingSection = () => {
 
 	const handleSignOut = async () => {
 		queryClient.clear();
-		navigate("/login");
-		resetUserRoleState();
+		setUserRole("anonymous");
 		removeCookie();
+		navigate("/login");
 	};
 
 	return (
