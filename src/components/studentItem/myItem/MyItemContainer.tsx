@@ -9,6 +9,7 @@ import ItemFilterButton from "./MyItemFilter";
 import MyItemList from "./MyItemList";
 import ItemHistoryModal from "./modal/ItemHistoryModal";
 import ItemUseModal from "./modal/ItemUseModal";
+import UserPoint from "../UserPoint";
 
 const MyItemContainer = () => {
 	const isOpenMyItemUseModal = useRecoilValue(itemUseModalState);
@@ -21,6 +22,7 @@ const MyItemContainer = () => {
 				<Spinner />
 			) : (
 				<>
+					<UserPoint />
 					<ItemFilterButton />
 					<MyItemList data={data} />
 				</>

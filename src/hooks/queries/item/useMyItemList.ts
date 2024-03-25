@@ -25,8 +25,6 @@ const useMyItemList = () => {
 			url: apiUrl[filterState],
 		});
 
-		console.log(response?.data.data);
-
 		return response?.data.data;
 	};
 

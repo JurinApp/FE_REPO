@@ -5,6 +5,7 @@ import { itemBuyModalState } from "@/states/modalState/confirmModalState";
 import { useRecoilValue } from "recoil";
 import ItemBuyModal from "./StudentItemBuyModal";
 import StudentItemList from "./StudentItemList";
+import UserPoint from "../UserPoint";
 
 const ItemContainer = () => {
 	const isItemBuyModalOpen = useRecoilValue(itemBuyModalState);
@@ -19,15 +20,18 @@ const ItemContainer = () => {
 
 	return (
 		<>
-			<div className="relative mx-auto flex h-inTrade-height w-full bg-btn-cancel-tekhelet sm:w-[24.536rem]">
+			<div className="relative mx-auto flex h-inTrade-height w-full flex-col bg-btn-cancel-tekhelet sm:w-[24.536rem]">
 				{isLoading || !data ? (
 					<Spinner />
 				) : (
-					<StudentItemList
-						responseData={data.pages}
-						isFetching={isFetching}
-						observeTargetRef={observeTargetRef}
-					/>
+					<>
+						<UserPoint />
+						<StudentItemList
+							responseData={data.pages}
+							isFetching={isFetching}
+							observeTargetRef={observeTargetRef}
+						/>
+					</>
 				)}
 				{isItemBuyModalOpen && <ItemBuyModal />}
 			</div>
