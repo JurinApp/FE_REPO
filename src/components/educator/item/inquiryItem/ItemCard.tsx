@@ -27,22 +27,34 @@ const ItemCard = ({ item }: IItemCardProps) => {
 	};
 
 	return (
-		<div className="relative">
+		<div className="relative ">
 			<Link
 				to={`/${channelId}/item/detail/${item.id}`}
-				className="mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem]"
+				className={`mb-[0.875rem] flex h-40 w-full flex-col rounded-[0.25rem] sm:w-[7.188rem] ${
+					item.isSoldOut ? "bg-black-300" : "bg-white"
+				}`}
 			>
 				<div className="flex h-[7.188rem] w-full items-center justify-center rounded-t-[0.25rem]">
 					{item.imageUrl === "" ? (
 						<Logo className="h-[3.875rem] w-[3.25rem] bg-sub2-selected" />
 					) : (
-						<div className="flex h-full w-full items-center justify-center border-none bg-white">
+						<div className="flex h-full w-full items-center justify-center border-none ">
 							<img src={item.imageUrl} alt="itemImage" className="bg-cover" />
 						</div>
 					)}
 				</div>
-				<div className="flex grow items-center justify-center rounded-b-[0.25rem] border-t bg-white">
-					<p className="truncate text-sm">{item.title}</p>
+				<div
+					className={`flex grow items-center justify-center rounded-b-[0.25rem] ${
+						!item.isSoldOut && "border-t"
+					}`}
+				>
+					<p
+						className={`truncate ${
+							item.isSoldOut ? "text-base font-semibold" : "text-sm"
+						}`}
+					>
+						{item.isSoldOut ? "품절" : item.title}
+					</p>
 				</div>
 			</Link>
 			<input

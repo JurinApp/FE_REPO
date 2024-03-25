@@ -2,6 +2,7 @@ export interface IItem {
 	readonly id: number;
 	readonly title: string;
 	readonly imageUrl: string;
+	readonly isSoldOut: boolean;
 	readonly amount?: number;
 	readonly price?: number;
 }
