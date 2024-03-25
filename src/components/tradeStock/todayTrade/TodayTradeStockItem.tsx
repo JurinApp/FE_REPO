@@ -46,7 +46,7 @@ const TodayTradeStockItem = ({ stockItem }: TradeStockItemProps) => {
 											: "text-stock-buy"
 								}`}
 							>
-								{stockItem.daysRangePrice}
+								{stockItem.purchasePrice}
 							</p>
 							{isLow ? (
 								<IcLow />

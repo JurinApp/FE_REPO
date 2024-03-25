@@ -30,7 +30,7 @@ const OrderExecutionItem = ({ order }: IOrderExecutionItemProps) => {
 									: "text-stock-buy"
 						} mr-1`}
 					>
-						{order.daysRangePrice}
+						{order.purchasePrice}
 					</p>
 					{isLow ? (
 						<IcLow />

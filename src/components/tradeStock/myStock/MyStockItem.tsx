@@ -34,7 +34,7 @@ const MyStockItem = ({ myStock }: IMyStockItem) => {
 											: "text-stock-buy"
 								}`}
 							>
-								{myStock.daysRangePrice}
+								{myStock.purchasePrice}
 							</p>
 							{isLow ? (
 								<IcLow />

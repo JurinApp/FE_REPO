@@ -13,7 +13,7 @@ export interface IStockItem {
 	readonly id: string;
 	readonly name: string;
 	readonly daysRangeRate: string;
-	readonly daysRangePrice: string;
+	readonly purchasePrice: string;
 }
 
 export interface IStockHomeResponseData {
@@ -30,7 +30,7 @@ export interface ITodayTradeStockItem {
 	readonly amount: number;
 	readonly name: string;
 	readonly daysRangeRate: string;
-	readonly daysRangePrice: string;
+	readonly purchasePrice: string;
 	readonly tradeType: string;
 }
 
@@ -82,7 +82,7 @@ export interface IMyStock {
 	readonly name: string;
 	readonly totalStockAmount: number;
 	readonly daysRangeRate: string;
-	readonly daysRangePrice: string;
+	readonly purchasePrice: string;
 }
 
 export interface IMyStockResponseData {
@@ -122,7 +122,7 @@ export interface IOrderExecution {
 	readonly amount: number;
 	readonly price: number;
 	readonly daysRangeRate: string;
-	readonly daysRangePrice: string;
+	readonly purchasePrice: string;
 	readonly tradeType: string;
 }
 
