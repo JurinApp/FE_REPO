@@ -10,6 +10,9 @@ interface IBuyInterfaceProps {
 	readonly stockPriceInfo: IStockPriceInfo;
 }
 
+const date = new Date();
+const hours = date.getHours();
+
 const BuyStockForm = ({
 	userPointInfo,
 	stockPriceInfo,
@@ -37,8 +40,19 @@ const BuyStockForm = ({
 		return result;
 	};
 
+	const checkBuyTime = () => {
+		if (hours < 9 || hours >= 15) {
+			alert("매수는 09:00 ~ 15:00 사이에 가능합니다");
+			return false;
+		}
+
+		return true;
+	};
+
 	const handleBuyStock = (e: FormEvent) => {
 		e.preventDefault();
+
+		if (!checkBuyTime()) return;
 
 		const confirmBuyStockAlert = () => {
 			const result = confirm("매수를 하시겠습니까?");

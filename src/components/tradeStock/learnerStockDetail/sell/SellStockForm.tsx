@@ -9,6 +9,10 @@ interface ISellInterfaceProps {
 	readonly userPointInfo: IUserPointInfo;
 	readonly stockPriceInfo: IStockPriceInfo;
 }
+
+const date = new Date();
+const hours = date.getHours();
+
 const SellStockForm = ({
 	stockPriceInfo,
 	userPointInfo,
@@ -30,8 +34,19 @@ const SellStockForm = ({
 		setStockCount(stockCount - 1);
 	};
 
+	const checkSellTime = () => {
+		if (hours < 9 || hours >= 15) {
+			alert("매도는 09:00 ~ 15:00 사이에 가능합니다");
+			return false;
+		}
+
+		return true;
+	};
+
 	const handleSellStock = (e: FormEvent) => {
 		e.preventDefault();
+
+		if (!checkSellTime()) return;
 
 		if (userPointInfo.totalStockAmount === 0) {
 			alert("보유중인 주식이 없습니다.");
