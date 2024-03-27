@@ -35,6 +35,9 @@ const useBuyItem = () => {
 					queryClient.invalidateQueries({
 						queryKey: ["studentItem", "myItem"],
 					});
+					queryClient.invalidateQueries({
+						queryKey: [channelId, "myPoint"],
+					});
 				}
 
 				if (status === 400) {
