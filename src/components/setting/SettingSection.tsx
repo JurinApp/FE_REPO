@@ -3,7 +3,6 @@ import { userRoleState } from "@/states/userRoleState";
 import { removeCookie } from "@/utils/cookies";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 const SettingSection = () => {
@@ -23,6 +22,10 @@ const SettingSection = () => {
 		navigate("/login");
 	};
 
+	const handleClickManualBtn = () => {
+		alert("개발중입니다.");
+	};
+
 	return (
 		<div className="mx-4 flex h-[calc(100vh-6rem)] flex-col justify-between text-base">
 			<div>
@@ -38,13 +41,14 @@ const SettingSection = () => {
 				</section>
 				<section id="etc" className="mt-[1.875rem] flex h-[11.75rem] flex-col">
 					<h2 className="mb-[0.875rem] font-bold ">기타</h2>
-					<ul className="flex h-[9.625rem] flex-col justify-between gap-2">
-						<Link to={"/manual"}>
-							<li className="flex h-[2.875rem] items-center rounded border border-black-100 py-[0.875rem] pl-[0.875rem] text-sm text-black-800">
-								도움말
-							</li>
-						</Link>
-					</ul>
+					<div className="flex h-[9.625rem] flex-col justify-between gap-2">
+						<button
+							onClick={handleClickManualBtn}
+							className="flex h-[2.875rem] items-center rounded border border-black-100 py-[0.875rem] pl-[0.875rem] text-sm text-black-800"
+						>
+							도움말
+						</button>
+					</div>
 				</section>
 			</div>
 			<div>
