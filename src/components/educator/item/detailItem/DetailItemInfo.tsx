@@ -14,7 +14,7 @@ const DetailItemInfo = () => {
 					<div className="mx-auto h-[calc(100vh-20rem)] w-full overflow-y-auto rounded-[0.25rem] border border-black-100 bg-white pb-6 sm:w-[22.653rem]">
 						<div className="px-4">
 							<p className="mt-6 border-b border-black-800 pb-4 font-bold">
-								의자 우선권
+								{data.title}
 							</p>
 							<div className="mt-[0.875rem] flex h-[9.375rem] items-center justify-center rounded-[0.25rem] bg-sub2-selected">
 								{data.imageUrl === "" ? (

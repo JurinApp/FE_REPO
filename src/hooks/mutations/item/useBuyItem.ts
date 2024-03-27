@@ -32,6 +32,9 @@ const useBuyItem = () => {
 				if (status === 200) {
 					alert("구매가 완료되었습니다.");
 					queryClient.invalidateQueries({ queryKey: ["items"] });
+					queryClient.invalidateQueries({
+						queryKey: ["studentItem", "myItem"],
+					});
 				}
 
 				if (status === 400) {
