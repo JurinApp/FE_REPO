@@ -11,7 +11,7 @@ const SellList = ({ sellList }: ISellListProps) => {
 				sellList.length === 0
 					? "flex items-center justify-center"
 					: "grid grid-cols-1 grid-rows-7"
-			} grow border-t border-black-300 bg-stock-red`}
+			} grow border-t border-black-300 bg-stock-blue`}
 		>
 			{sellList.length === 0 ? (
 				<p className="px-2 text-xs">거래된 내역이 없습니다.</p>

@@ -147,6 +147,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 											errors.price && "border-danger"
 										}`}
 										id="replacePrice"
+										disabled
 										value={replacePrice}
 										onChange={handleChangePrice}
 									/>
@@ -213,6 +214,7 @@ const EditStockForm = ({ isEdit }: IEditTradeStockFormProps) => {
 											errors.standard && "border-danger"
 										}`}
 										id="content"
+										rows={5}
 										{...register("content")}
 									/>
 								</div>
