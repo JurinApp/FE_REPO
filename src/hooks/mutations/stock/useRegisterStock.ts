@@ -6,7 +6,7 @@ interface ISubmitData {
 	readonly name: string;
 	readonly purchasePrice: string;
 	readonly tax: string;
-	readonly standard: string;
+	readonly standard: number;
 	readonly content: string;
 }
 

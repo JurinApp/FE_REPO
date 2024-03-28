@@ -42,7 +42,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 			name: getValues().stockName,
 			purchasePrice: getValues().price,
 			tax: getValues().tax,
-			standard: getValues().standard,
+			standard: Number(getValues().standard),
 			content: getValues().content,
 		};
 		mutate(submitData);
@@ -174,7 +174,7 @@ const RegisterStockForm = ({ isRegister }: IRegisterTradeStockFormProps) => {
 									기준
 								</label>
 								<input
-									type="text"
+									type="number"
 									className={`w-full rounded-none border-b pb-[0.625rem] outline-none ${
 										errors.standard
 											? "border-danger"
