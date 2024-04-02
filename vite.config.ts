@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import svgr from "vite-plugin-svgr";
 import { resolve } from "path";
+import dotenv from "dotenv";
+dotenv.config();
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,15 +22,15 @@ export default defineConfig({
 			},
 		],
 	},
-	// 백엔드 서버 올라갔을 때 추가 예정 target은 env로 설정
-	// server: {
-	// 	proxy: {
-	// 		"/api": {
-	// 			target: "웹사이트",
-	// 			changeOrigin: true,
-	// 			rewrite: (path) => path.replace(/^\/api/, ""),
-	// 			ws: true,
-	// 		},
-	// 	},
-	// },
+
+	server: {
+		proxy: {
+			"/api": {
+				target: process.env.VITE_DEV_SERVER_PATH,
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, ""),
+				ws: true,
+			},
+		},
+	},
 });

@@ -1,0 +1,31 @@
+.rdp-head_row > .rdp-head_cell {
+	color: rgba(0, 0, 0, 0.3);
+	font-weight: 400;
+	font-size: 0.875rem;
+}
+
+.rdp-head_row > .rdp-head_cell:nth-child(1) {
+	color: rgba(224, 23, 23, 0.5);
+}
+
+.rdp-head_row > .rdp-head_cell:nth-child(7) {
+	color: rgba(0, 117, 255, 0.5);
+}
+
+.rdp-day:hover {
+	background-color: rgba(118, 120, 237, 0.5) !important;
+	color: #ffffff;
+}
+
+.rdp-day_selected .rdp-day_selected:hover {
+	background-color: rgba(118, 120, 237, 1);
+}
+
+.rdp-day_selected {
+	background-color: rgba(118, 120, 237, 1) !important;
+}
+
+.rdp-day_range_middle {
+	background-color: rgba(118, 120, 237, 0.3) !important;
+	color: black;
+}
