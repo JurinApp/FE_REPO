@@ -1,27 +1,15 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![01_프_표지](https://github.com/JurinApp/FE_REPO/assets/122018331/e8a113bb-2465-44a0-84c9-f32a212ffa7e)
+![02_팀원소개](https://github.com/JurinApp/FE_REPO/assets/122018331/57d9d3a4-dbd8-432c-a75c-889905505ff1)
+![03_Desk Research_백그라운드](https://github.com/JurinApp/FE_REPO/assets/122018331/46875969-ef34-4c5d-830a-f072c89902af)
+![04_Desk Research_국내교육사례](https://github.com/JurinApp/FE_REPO/assets/122018331/6838cb07-de4b-43b4-95bf-3017272b72c5)
+![05_Desk Research_해외교육사례](https://github.com/JurinApp/FE_REPO/assets/122018331/670766d4-6c6b-448d-8111-e2bf72f1a8b8)
+![06_Insight](https://github.com/JurinApp/FE_REPO/assets/122018331/1b5624fe-6530-43d9-bd2d-50a9ab437f6f)
+![07_Persona_선생님](https://github.com/JurinApp/FE_REPO/assets/122018331/da5cd166-eff0-4eb2-9cb3-385cc667eea0)
+![08_Persona_학생](https://github.com/JurinApp/FE_REPO/assets/122018331/e61e9df8-9267-44d0-bfc4-255a7dfe271b)
+![09_Project goal (1)](https://github.com/JurinApp/FE_REPO/assets/122018331/1c1d397a-0145-497f-9182-66caab7ecf5c)
+![10_IA](https://github.com/JurinApp/FE_REPO/assets/122018331/d1ba02ca-7a93-40ea-8c7c-3ffb4a2c314f)
+![12_Design system](https://github.com/JurinApp/FE_REPO/assets/122018331/9c86d78e-ceac-4ff8-880a-e6fac019b134)
+![13_Dev system](https://github.com/JurinApp/FE_REPO/assets/122018331/f537a028-421f-41a1-bb62-d9f2191ba253)
+![14_Screen_게시판_주식거래](https://github.com/JurinApp/FE_REPO/assets/122018331/b960ba06-fb25-4d03-978d-4ed9609a205f)
+![15_screen_아이템](https://github.com/JurinApp/FE_REPO/assets/122018331/6906c400-09d1-4686-95ed-73fe5aad077a)
+![16_마무리](https://github.com/JurinApp/FE_REPO/assets/122018331/ec92eea0-3130-4b0f-a73d-481811787884)
