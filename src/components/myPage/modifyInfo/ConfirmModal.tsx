@@ -2,10 +2,11 @@ import { modifyUserinfoModalState } from "@/states/modalState/confirmModalState"
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 
-interface TConfirmModalProps {
+interface IConfirmModalProps {
 	onConfirm: () => void;
 }
-export const ConfirmModal = ({ onConfirm }: TConfirmModalProps) => {
+
+export const ConfirmModal = ({ onConfirm }: IConfirmModalProps) => {
 	const setIsOpenModifyUserinfoModal = useSetRecoilState(
 		modifyUserinfoModalState,
 	);
